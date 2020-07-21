@@ -10,10 +10,10 @@ const menuList = [
         icon: 'bar-chart',
         children: [
           {
-            title: 'P0',
-            key: '/manage/P0',
+            title: 'multiple',
+            key: '/manage/multiple',
             icon: 'bars'
-          },
+          }
         ]
       },
     ]

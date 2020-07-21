@@ -6,13 +6,13 @@ import mainView from '../page/trans-bank/mainView.vue'
 
 
 const ManageAnalysis = () => import('../page/manage-analysis')
-const p0 = () => import('../page/small/p0.vue')
+const multiple = () => import('../page/small/multipleShow.vue')
 const test = () => import('../page/small/test.vue')
 Vue.use(Router)
 
 export default new Router({
   routes: [{
-    path: '/test',
+    path: '/home',
     name: 'home',
     component: Home
   },
@@ -24,11 +24,13 @@ export default new Router({
     path: '/manage',
     component: loadable(ManageAnalysis),
     children: [
-
       {
-        path: 'p0',
-        component: loadable(p0),
-      },
+        path: 'multiple',
+        component: loadable(multiple)
+      }, {
+        path: 'test',
+        component: loadable(test)
+      }
     ]
   }]
 })
