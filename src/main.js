@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './route/router';
 import echarts from 'echarts';
-import china from './assets/json/china.json'
+// import china from './assets/json/china.json'
 import Antd from 'ant-design-vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -19,7 +19,7 @@ import store from '@/store/index'
 moment.locale('zh-cn');
 
 
-echarts.registerMap('china', china)
+// echarts.registerMap('china', china)
 Vue.config.productionTip = false;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$moment = moment;

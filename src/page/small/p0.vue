@@ -1,19 +1,16 @@
 <template>
   <div class="container">
     <div :class="'brain-bgg'">
-      <video id="video" width="640" height="360" :src="mp4" autobuffer autoplay> 
-    </video>
     </div>
+    <!-- <iframe width="100%" height="100%" src="http://localhost:3880/#/manage/P1" name='{"status":0,"msg":"OK","data":{"data":[{"total":1390,"days":"20190920"},{"total":1180,"days":"20190921"},{"total":148,"days":"20190924"},{"total":508,"days":"20190925"}]}}' frameborder="0"></iframe> -->
   </div>
 </template>
 
 <script>
 import Vue from "vue";
-import mp4 from '@/assets/video/aiWelcome.1977e135.mp4'
 export default {
   data() {
     return {
-      mp4: mp4
     }
   },
   mounted() {
@@ -30,8 +27,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .container {
-  width: 4224px;
-  height: 1536px;
+  width: 2560px;
+  height: 1440px;
   position: absolute;
   top: 0;
   right: 0;

@@ -1,8 +1,5 @@
 <template>
 <a-layout class="layout" id="components-layout-demo-side" style="min-height: 100vh">
-  <a-layout-sider class="left-nav" v-if="showNav">
-    <LaftNav />
-  </a-layout-sider>
   <a-layout class="content">
     <a-layout-content>
         <transition>
@@ -19,7 +16,6 @@
 </template>
 
 <script>
-import LaftNav from './laft-nav.vue'
 export default {
   data() {
     return {
@@ -51,7 +47,6 @@ export default {
     });
   },
   components: {
-    LaftNav
   }
 };
 </script>
