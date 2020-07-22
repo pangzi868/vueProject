@@ -124,7 +124,7 @@ export default {
   position: absolute;
   // height: 500px;
   // width: 500px;
-  height: 0;
+  height: 500px;
   width: 0;
   border: 1px;
   z-index: 10;
