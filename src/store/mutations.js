@@ -1,14 +1,11 @@
 export default {
-    LOGIN_IN(state, token) {
-        state.UserToken = token
+    newFirstScreenData(state, data) {
+        state.firstScreenData = data || {}
     },
-    LOGIN_OUT(state) {
-        state.UserToken = ''
+    newDialogVisible(state, judge) {
+        state.dialogVisible = judge
     },
-    toggleNavCollapse(state) {
-        state.isSidebarNavCollapse = !state.isSidebarNavCollapse
-    },
-    setCrumbList(state, list) {
-        state.crumbList = list
+    newDialogData(state, data) {
+        state.dialogData = data
     }
 }

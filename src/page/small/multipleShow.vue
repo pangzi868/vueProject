@@ -6,7 +6,16 @@
         :id="ids['left2']"
         @mouseover="mouseOverHander($event)"
         @mouseout="mouseOutHander($event)"
-      ></div>
+      >
+        <!-- <button @click="toggleModal()">111</button> -->
+        <pie-and-column
+          v-if="leftSecJudge"
+          :ids="leftSecChart"
+          :chartData="leftSecData"
+          @mouseover.native="mouseOverChildHander($event)"
+          @mouseout.native="mouseOutChildHander($event)"
+        />
+      </div>
       <div
         :class="'test-div1 ' + (mouseOverJudge['left3'] ? 'transform-test-div' : '')"
         :id="ids['left3']"
@@ -14,14 +23,27 @@
         @mouseout="mouseOutHander($event)"
       ></div>
     </div>
+    <move-modal />
+    <div class="cover-div" v-if="dialogVisible"></div>
   </div>
 </template>
 
 <script>
+import MoveModal from "@/components/moveModal.vue";
+import PieAndColumn from "@/components/multiple/pieAndColumn.vue";
 export default {
   name: "",
   props: [],
-  mounted() {},
+  mounted() {
+    //   if (
+    //     window.name !== "" ||
+    //     window.name !== null ||
+    //     widnow.name !== undefined
+    //   ) {
+    //     let data = JSON.parse(window.name);
+    //     this.$store.commit("newFirstScreenData", data);
+    //   }
+  },
   data() {
     return {
       // 存放id
@@ -29,24 +51,59 @@ export default {
         left2: "left2",
         left3: "left3"
       },
+      leftSecChart: [
+        { id: "leftSecPie", name: "pie" },
+        { id: "leftSecCol", name: "col" }
+      ],
+      leftSecData: {
+        pie: [],
+        col: []
+      },
+      leftSecJudge: true,
+
       mouseOverJudge: {
         left2: false,
         left3: false
-      }
+      },
+      modalJudge: false
     };
   },
-  computed: {},
+  computed: {
+    dialogVisible: {
+      get: function() {
+        return this.$store.state.dialogVisible;
+      },
+      set: function(newValue) {
+        this.$store.commit("newDialogVisible", newValue);
+      }
+    }
+  },
   methods: {
     mouseOverHander(e) {
+      // debugger
       let id = e.target.id;
+      this.mouseOverJudge[id] = true;
+    },
+    mouseOverChildHander(e) {
+      let id = e.currentTarget.parentElement.id;
       this.mouseOverJudge[id] = true;
     },
     mouseOutHander(e) {
       let id = e.target.id;
       this.mouseOverJudge[id] = false;
+    },
+    mouseOutChildHander(e) {
+      let id = e.currentTarget.parentElement.id;
+      this.mouseOverJudge[id] = false;
+    },
+    toggleModal() {
+      this.modalJudge = !this.modalJudge;
     }
   },
-  components: {}
+  components: {
+    "move-modal": MoveModal,
+    "pie-and-column": PieAndColumn
+  }
 };
 </script>
 
@@ -95,6 +152,15 @@ export default {
       // 位移 x， y
       transform: translate(1.05, 1.05);
     }
+  }
+  .cover-div {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2560px;
+    height: 1440px;
+    z-index: 5;
+    background-color: rgba(255, 255, 255, 0.4);
   }
 }
 </style>

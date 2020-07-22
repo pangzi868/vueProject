@@ -16,6 +16,9 @@ import 'moment/locale/zh-cn'
 
 import store from '@/store/index'
 
+import ElementUI from 'element-ui' //element-ui的全部组件
+import 'element-ui/lib/theme-chalk/index.css'//element-ui的css
+
 moment.locale('zh-cn');
 
 
@@ -27,6 +30,7 @@ Vue.prototype.$mock = Mock;
 Vue.prototype._ = _;
 Vue.use(VueAxios, axios);
 Vue.use(Antd);
+Vue.use(ElementUI) //使用elementUI
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
