@@ -20,12 +20,12 @@
       <slot>这里是内容：{{dialogData}}</slot>
       <button @mouseup="testClick($event)">dkjddjkj</button>
     </el-main>
-    <el-footer>
+    <!-- <el-footer>
       <span class="dialog-footer">
         <el-button @click="closeDialog()">取 消</el-button>
-        <!-- <el-button type="primary" @click="closeDialog()">确 定</el-button> -->
+        <el-button type="primary" @click="closeDialog()">确 定</el-button>
       </span>
-    </el-footer>
+    </el-footer>-->
   </el-container>
 </template>
 
@@ -86,9 +86,14 @@ export default {
       var distanceY = event.clientY - this.selectElement.offsetTop;
       let moveX = 0,
         moveY = 0,
-        that = this;
+        that = this,
+        dragTime = 0,
+        dragDis = 0,
+        startTime = 0,
+        endTime = 0;
+      startTime = event.timeStamp;
       document.onmousemove = function(ev) {
-        var oevent = ev || event;
+        let oevent = ev || event;
         div1.style.left = oevent.clientX - distanceX + "px";
         div1.style.top = oevent.clientY - distanceY + "px";
         moveX += oevent.movementX;
@@ -98,7 +103,17 @@ export default {
           that.dragable = true;
         }
       };
-      document.onmouseup = function() {
+      document.onmouseup = function(uv) {
+        let uevent = uv || event;
+        endTime = uevent.timeStamp;
+        dragTime = parseInt(endTime) - parseInt(startTime);
+        dragDis = Math.abs(moveX) + Math.abs(moveY);
+        // console.log(dragTime, "d t");
+        // console.log(Math.abs(moveX) + Math.abs(moveY), "mxy");
+        // 如果（拖动距离）大于5且小于200 且（拖动时长）小于200ms
+        if (dragDis > 5 && dragDis < 200 && dragTime < 200) {
+          that.closeDialog();
+        }
         that.dragable = false;
         document.onmousemove = null;
         document.onmouseup = null;
@@ -127,15 +142,19 @@ export default {
   height: 500px;
   width: 0;
   border: 1px;
-  z-index: 10;
+  z-index: 14;
   top: 20%;
   left: 35%;
   border-radius: 2px;
 
-  -webkit-transition: width 0.4s ease-out, opacity 0.2s ease-in, visibility 0.2s ease-in;
-  -moz-transition: width 0.4s ease-out, opacity 0.2s ease-in, visibility 0.2s ease-in;
-  -ms-transition: width 0.4s ease-out, opacity 0.2s ease-in, visibility 0.2s ease-in;
-  -o-transition: width 0.4s ease-out, opacity 0.2s ease-in, visibility 0.2s ease-in;
+  -webkit-transition: width 0.4s ease-out, opacity 0.2s ease-in,
+    visibility 0.2s ease-in;
+  -moz-transition: width 0.4s ease-out, opacity 0.2s ease-in,
+    visibility 0.2s ease-in;
+  -ms-transition: width 0.4s ease-out, opacity 0.2s ease-in,
+    visibility 0.2s ease-in;
+  -o-transition: width 0.4s ease-out, opacity 0.2s ease-in,
+    visibility 0.2s ease-in;
   transition: width 0.4s ease-out, opacity 0.2s ease-in, visibility 0.2s ease-in;
   visibility: 0;
   opacity: 0;

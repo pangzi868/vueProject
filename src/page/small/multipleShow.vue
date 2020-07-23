@@ -23,6 +23,9 @@
         @mouseout="mouseOutHander($event)"
       ></div>
     </div>
+    <div class="multiple-middle">
+      <img-rotation class="img-rotation" />
+    </div>
     <move-modal />
     <div class="cover-div" v-if="dialogVisible"></div>
   </div>
@@ -31,6 +34,9 @@
 <script>
 import MoveModal from "@/components/moveModal.vue";
 import PieAndColumn from "@/components/multiple/pieAndColumn.vue";
+import ImgRotation from "@/components/multiple/imgRotation.vue";
+
+import { setInterval, clearInterval } from "timers";
 export default {
   name: "",
   props: [],
@@ -102,7 +108,8 @@ export default {
   },
   components: {
     "move-modal": MoveModal,
-    "pie-and-column": PieAndColumn
+    "pie-and-column": PieAndColumn,
+    "img-rotation": ImgRotation
   }
 };
 </script>
@@ -116,6 +123,22 @@ export default {
   background-size: 100% 100%;
   overflow-x: hidden;
   overflow-y: hidden;
+  .multiple-middle {
+    position: absolute;
+    left: 800px;
+    top: 100px;
+    width: 1200px;
+    height: 1300px;
+    // background-color: #000;
+    .img-rotation {
+      position: absolute;
+      left: 10px;
+      top: 20px;
+      width: 600px;
+      height: 400px;
+      // background-color: #D24545;
+    }
+  }
   .multiple-left {
     position: absolute;
     left: 50px;
@@ -159,7 +182,7 @@ export default {
     top: 0;
     width: 2560px;
     height: 1440px;
-    z-index: 5;
+    z-index: 12;
     background-color: rgba(255, 255, 255, 0.4);
   }
 }
