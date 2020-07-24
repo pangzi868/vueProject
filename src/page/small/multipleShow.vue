@@ -24,9 +24,10 @@
       ></div>
     </div>
     <div class="multiple-middle">
-      <img-rotation class="img-rotation" />
+      <img-rotation class="img-rotation" :autoMove="autoMove" />
     </div>
     <move-modal />
+    <button class="control-btn" @click="controlMove">control</button>
     <div class="cover-div" v-if="dialogVisible"></div>
   </div>
 </template>
@@ -71,7 +72,8 @@ export default {
         left2: false,
         left3: false
       },
-      modalJudge: false
+      modalJudge: false,
+      autoMove: true
     };
   },
   computed: {
@@ -104,6 +106,10 @@ export default {
     },
     toggleModal() {
       this.modalJudge = !this.modalJudge;
+    },
+    controlMove() {
+      debugger;
+      this.autoMove = !this.autoMove;
     }
   },
   components: {
@@ -140,6 +146,15 @@ export default {
       height: 400px;
       // background-color: #D24545;
     }
+  }
+  .control-btn {
+    position: absolute;
+    left: 800px;
+    top: 600px;
+    height: 100px;
+    width: 200px;
+    color: #999;
+    font-size: 48px;
   }
   .multiple-left {
     position: absolute;
