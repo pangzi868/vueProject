@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      AUTOSPEED: 1 / 2,
       productGrp: [
         { name: "长春", type: "normal", style: {}, nameStyle: {} },
         { name: "吉林", type: "normal", style: {}, nameStyle: {} },
@@ -57,7 +58,7 @@ export default {
         touchstartX: 0,
         touchstartY: 0
       },
-      maxItem: undefined
+      maxItem: undefined,
     };
   },
   computed: {},
@@ -141,7 +142,7 @@ export default {
       };
       this.setAnimate = setInterval(
         (func, that) => {
-          that.speed = that.speed <= 0 ? that.speed - 1 : 360;
+          that.speed = that.speed <= 0 ? that.speed - that.AUTOSPEED : 360;
           func(that.speed);
         },
         100,
@@ -213,7 +214,7 @@ export default {
       let that = this;
       this.setAnimate = setInterval(
         (func, that) => {
-          that.speed = that.speed <= 360 ? that.speed + 1 : 2;
+          that.speed = that.speed <= 360 ? that.speed + that.AUTOSPEED : 2;
           func(that.speed);
         },
         100,
