@@ -2,8 +2,14 @@
   <el-container
     :class="(dialogVisible ? 'trans' : '')"
     v-bind:id="id"
-    @mousedown.native="mousedown"
+    @mousedown.native.prevent="down($event)"
+    @touchstart.native.prevent="down($event)"
+    @mousemove.native.prevent="move($event)"
+    @touchmove.native.prevent="move($event)"
+    @mouseup.native.prevent="end($event)"
+    @touchend.native.prevent="end($event)"
   >
+    <!-- @mousedown.native="mousedown" -->
     <!-- <el-header>
       <div >
         <h2 v-html="title"></h2>
@@ -18,7 +24,7 @@
     </el-header>-->
     <el-main>
       <slot>这里是内容：{{dialogData}}</slot>
-      <button @mouseup="testClick($event)">dkjddjkj</button>
+      <button @mouseup="testClick($event)" @touchend.prevent="testClick($event)">dkjddjkj</button>
     </el-main>
     <!-- <el-footer>
       <span class="dialog-footer">
@@ -44,7 +50,21 @@ export default {
       title: this.titlex,
       selectElement: "",
       id: "moveableBox",
-      dragable: false
+      dragging: false,
+      downDrag: false,
+      dragObj: {
+        moveX: 0,
+        moveY: 0,
+        dragTime: 0,
+        startTime: 0,
+        endTime: 0,
+        distanceX: 0,
+        distanceY: 0,
+        touchmoveX: 0,
+        touchmoveY: 0,
+        touchstartX: 0,
+        touchstartY: 0
+      }
     };
   },
   computed: {
@@ -77,52 +97,70 @@ export default {
     //   // alert(this.dialogVisible)
     //   this.$store.commit("newDialogVisible", true);
     // },
-    mousedown(event) {
+    down(e) {
+      e.prevent;
+      this.downDrag = true;
+      let mouseType = e.type.indexOf("mouse") !== -1 ? true : false;
+      let clientX = mouseType ? e.clientX : e.touches[0].clientX;
+      let clientY = mouseType ? e.clientY : e.touches[0].clientY;
+      if (!mouseType) {
+        this.dragObj.touchstartX = clientX;
+        this.dragObj.touchstartY = clientY;
+      }
       this.selectElement = document.getElementById(this.id);
-      var div1 = this.selectElement;
       this.selectElement.style.cursor = "move";
-      this.isDowm = true;
-      var distanceX = event.clientX - this.selectElement.offsetLeft;
-      var distanceY = event.clientY - this.selectElement.offsetTop;
-      let moveX = 0,
-        moveY = 0,
-        that = this,
-        dragTime = 0,
-        dragDis = 0,
-        startTime = 0,
-        endTime = 0;
-      startTime = event.timeStamp;
-      document.onmousemove = function(ev) {
-        let oevent = ev || event;
-        div1.style.left = oevent.clientX - distanceX + "px";
-        div1.style.top = oevent.clientY - distanceY + "px";
-        moveX += oevent.movementX;
-        moveY += oevent.movementY;
-        // 这里的数据越小，越精确
-        if (Math.abs(moveX) + Math.abs(moveY) > 5) {
-          that.dragable = true;
-        }
+      this.distanceX = clientX - this.selectElement.offsetLeft;
+      this.distanceY = clientY - this.selectElement.offsetTop;
+      this.dragObj.startTime = e.timeStamp;
+    },
+    move(e) {
+      if (!this.downDrag) return;
+      let mouseType = e.type.indexOf("mouse") !== -1 ? true : false;
+      let clientX = mouseType ? e.clientX : e.touches[0].clientX;
+      let clientY = mouseType ? e.clientY : e.touches[0].clientY;
+      this.selectElement.style.left = clientX - this.distanceX + "px";
+      this.selectElement.style.top = clientY - this.distanceY + "px";
+      this.dragObj.moveX += e.movementX;
+      this.dragObj.moveY += e.movementY;
+      if (!mouseType) {
+        this.dragObj.moveX = clientX - this.dragObj.touchstartX;
+        this.dragObj.moveY = clientY - this.dragObj.touchstartY;
+      }
+      // 这里的数据越小，越精确
+      if (Math.abs(this.dragObj.moveX) + Math.abs(this.dragObj.moveY) > 5) {
+        this.dragging = true;
+      }
+    },
+    end(e) {
+      let dragDis = 0;
+      this.downDrag = false;
+      this.dragObj.endTime = e.timeStamp;
+      this.dragObj.dragTime =
+        parseInt(this.dragObj.endTime) - parseInt(this.dragObj.startTime);
+      dragDis = Math.abs(this.dragObj.moveX) + Math.abs(this.dragObj.moveY);
+      // 如果（拖动距离）大于5且小于200 且（拖动时长）小于200ms
+      if (dragDis > 5 && dragDis < 1000 && this.dragObj.dragTime < 200) {
+        this.closeDialog();
+      }
+      this.dragging = false;
+      this.dragObj = {
+        moveX: 0,
+        moveY: 0,
+        dragTime: 0,
+        startTime: 0,
+        endTime: 0,
+        distanceX: 0,
+        distanceY: 0,
+        touchmoveX: 0,
+        touchmoveY: 0,
+        touchstartX: 0,
+        touchstartY: 0
       };
-      document.onmouseup = function(uv) {
-        let uevent = uv || event;
-        endTime = uevent.timeStamp;
-        dragTime = parseInt(endTime) - parseInt(startTime);
-        dragDis = Math.abs(moveX) + Math.abs(moveY);
-        // console.log(dragTime, "d t");
-        // console.log(Math.abs(moveX) + Math.abs(moveY), "mxy");
-        // 如果（拖动距离）大于5且小于200 且（拖动时长）小于200ms
-        if (dragDis > 5 && dragDis < 200 && dragTime < 200) {
-          that.closeDialog();
-        }
-        that.dragable = false;
-        document.onmousemove = null;
-        document.onmouseup = null;
-        div1.style.cursor = "default";
-      };
+      this.selectElement.style.cursor = "default";
     },
     testClick(e) {
-      if (this.dragable) {
-        this.dragable = !this.dragable;
+      if (this.dragging) {
+        this.dragging = !this.dragging;
         return;
       }
       alert("下钻");

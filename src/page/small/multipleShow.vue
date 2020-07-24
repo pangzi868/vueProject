@@ -118,6 +118,8 @@ export default {
 .multiple {
   width: 2560px;
   height: 1440px;
+  // width: 7680px;
+  // height: 4320px;
   color: #fff;
   background: url("../../assets/images/background.png") no-repeat;
   background-size: 100% 100%;
@@ -182,6 +184,8 @@ export default {
     top: 0;
     width: 2560px;
     height: 1440px;
+    // width: 7680px;
+    // height: 4320px;
     z-index: 12;
     background-color: rgba(255, 255, 255, 0.4);
   }
