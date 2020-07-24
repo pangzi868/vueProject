@@ -28,6 +28,7 @@
     </div>
     <move-modal />
     <button class="control-btn" @click="controlMove">control</button>
+    <div v-html="currentPro" class="current-pro"></div>
     <div class="cover-div" v-if="dialogVisible"></div>
   </div>
 </template>
@@ -83,6 +84,14 @@ export default {
       },
       set: function(newValue) {
         this.$store.commit("newDialogVisible", newValue);
+      }
+    },
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
       }
     }
   },
@@ -152,6 +161,18 @@ export default {
     left: 800px;
     top: 600px;
     height: 100px;
+    width: 200px;
+    color: #999;
+    font-size: 48px;
+  }
+  .current-pro {
+    position: absolute;
+    left: 1100px;
+    top: 600px;
+    height: 100px;
+    background-color: #fff;
+    text-align: center;
+    line-height: 100px;
     width: 200px;
     color: #999;
     font-size: 48px;

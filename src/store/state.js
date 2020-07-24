@@ -11,4 +11,5 @@ export default {
     crumbList: [],
     dialogVisible: false,
     dialogData: {},
+    currentPro: ''
 }

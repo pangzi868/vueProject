@@ -7,5 +7,8 @@ export default {
     },
     newDialogData(state, data) {
         state.dialogData = data
+    },
+    newCurrentPro(state, pro) {
+        state.currentPro = pro
     }
 }
