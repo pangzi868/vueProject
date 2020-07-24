@@ -9,14 +9,15 @@
     @mouseup="end($event)"
     @touchend="end($event)"
   >
-    <img
-      v-for="(item, index) in productGrp"
-      :key="index"
-      :src="(item.type === 'normal' ? TestPic: ServerPic)"
-      alt
-      class="pro-img"
-      :style="item.style"
-    />
+    <div v-for="(item, index) in productGrp" :key="index">
+      <img
+        :src="(item.type === 'normal' ? TestPic: ServerPic)"
+        alt
+        class="pro-img"
+        :style="item.style"
+      />
+      <span v-html="item.name" :style="item.style" class="pro-name"></span>
+    </div>
   </div>
 </template>
 
@@ -33,16 +34,16 @@ export default {
   data() {
     return {
       productGrp: [
-        { name: "长春", type: "normal", style: {} },
-        { name: "吉林", type: "normal", style: {} },
-        { name: "四平", type: "normal", style: {} },
-        { name: "辽原", type: "normal", style: {} },
-        { name: "通化", type: "normal", style: {} },
-        { name: "白山", type: "normal", style: {} },
-        { name: "松原", type: "normal", style: {} },
-        { name: "白城", type: "normal", style: {} },
-        { name: "延边", type: "normal", style: {} },
-        { name: "直属", type: "normal", style: {} }
+        { name: "长春", type: "normal", style: {}, nameStyle: {} },
+        { name: "吉林", type: "normal", style: {}, nameStyle: {} },
+        { name: "四平", type: "normal", style: {}, nameStyle: {} },
+        { name: "辽原", type: "normal", style: {}, nameStyle: {} },
+        { name: "通化", type: "normal", style: {}, nameStyle: {} },
+        { name: "白山", type: "normal", style: {}, nameStyle: {} },
+        { name: "松原", type: "normal", style: {}, nameStyle: {} },
+        { name: "白城", type: "normal", style: {}, nameStyle: {} },
+        { name: "延边", type: "normal", style: {}, nameStyle: {} },
+        { name: "直属", type: "normal", style: {}, nameStyle: {} }
       ],
       TestPic: Test,
       ServerPic: serverA,
@@ -113,6 +114,12 @@ export default {
             width: wpers * wid + "px",
             height: hpers * hei + "px",
             opacity: allpers
+          };
+          item.nameStyle = {
+            left: Math.sin(ahd * index + ainhd) * a + dotLeft + "px",
+            top: Math.cos(ahd * index + ainhd) * b + dotTop + "px",
+            opacity: allpers,
+            zIndex: Math.ceil(allpers * 10)
           };
           if (item.style.zIndex > maxNum) {
             maxNum = item.style.zIndex;
@@ -241,7 +248,13 @@ export default {
     position: absolute;
     width: 65px;
     height: 100px;
-    cursor: pointer;
+  }
+  .pro-name {
+    position: absolute;
+    width: 65px;
+    height: 28px;
+    font-size: 28px;
+    white-space: nowrap;
   }
 }
 </style>
