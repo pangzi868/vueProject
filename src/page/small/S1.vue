@@ -8,16 +8,16 @@
         <div class="sidebar-title">
           <img :src="manageTitle" alt class="sidebar-title-img" />
         </div>
-        <div class="sidebar-first">
+        <hover-box class="sidebar-first left-side-bar" :ids="boxIds['left1']">
           <div class="sidebar-content-title">审计项目计划情况执行分析</div>
-        </div>
-        <div class="sidebar-second">
+        </hover-box>
+        <div class="sidebar-second left-side-bar">
           <div class="sidebar-content-title">审计项目执行状态分析</div>
         </div>
-        <div class="sidebar-third">
+        <div class="sidebar-third left-side-bar">
           <div class="sidebar-content-title">项目审计费用预算分析</div>
         </div>
-        <div class="sidebar-forth">
+        <div class="sidebar-forth left-side-bar">
           <div class="sidebar-content-title">审计项目计划年度对比</div>
         </div>
       </div>
@@ -34,16 +34,16 @@
         <div class="sidebar-title">
           <img :src="analysisTitle" alt class="sidebar-title-img" />
         </div>
-        <div class="sidebar-first">
+        <div class="sidebar-first right-side-bar">
           <div class="sidebar-content-title">各单位问题整改分析</div>
         </div>
-        <div class="sidebar-second">
+        <div class="sidebar-second right-side-bar">
           <div class="sidebar-content-title">审计问题类型分析（分专业）</div>
         </div>
-        <div class="sidebar-third">
+        <div class="sidebar-third right-side-bar">
           <div class="sidebar-content-title">高频多发问题分析</div>
         </div>
-        <div class="sidebar-forth">
+        <div class="sidebar-forth right-side-bar">
           <div class="sidebar-content-title">审计成果年度对比</div>
         </div>
       </div>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import HoverBox from "@/components/S1/hoverBox.vue";
+
 import Title from "@/assets/images/first/title-main.png";
 import ManageTitle from "@/assets/images/first/title-2.png";
 import AnalysisTitle from "@/assets/images/first/title-1.png";
@@ -67,12 +69,24 @@ export default {
       title: Title,
       manageTitle: ManageTitle,
       messageTitle: MessageTitle,
-      analysisTitle: AnalysisTitle
+      analysisTitle: AnalysisTitle,
+      boxIds: {
+        left1: "left1",
+        left2: "left2",
+        left3: "left3",
+        left4: "left4",
+        right1: "right1",
+        right2: "right2",
+        right3: "right3",
+        right4: "right4"
+      }
     };
   },
   computed: {},
   methods: {},
-  components: {}
+  components: {
+    HoverBox
+  }
 };
 </script>
 
@@ -201,6 +215,21 @@ export default {
           margin: 0 auto;
           margin-top: 42px;
         }
+      }
+      .left-side-bar {
+        box-shadow: rgba(0, 0, 0, 0.3) -30px -30px 10px;
+        transition: all 0.3s;
+      }
+      .right-side-bar {
+        box-shadow: rgba(0, 0, 0, 0.3) 30px -30px 10px;
+        transition: all 0.3s;
+      }
+
+      .transform-side-bar {
+        // 放大x， y
+        transform: scale(1.05, 1.05);
+        // 位移 x， y
+        transform: translate(1.05, 1.05);
       }
       .sidebar-first {
         position: absolute;
