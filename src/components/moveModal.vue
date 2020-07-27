@@ -64,7 +64,8 @@ export default {
         touchmoveY: 0,
         touchstartX: 0,
         touchstartY: 0
-      }
+      },
+      styleArr: ["singlemove", "rotatemove"]
     };
   },
   computed: {
@@ -167,7 +168,18 @@ export default {
     }
   },
   watch: {
-    // dialogVisible: function(newValue) {}
+    dialogVisible: function(newValue) {
+      this.selectElement = document.getElementById(this.id);
+      this.selectElement.style.left = "35%";
+      this.selectElement.style.top = "20%";
+      debugger;
+      if (this.selectElement.classList.length > 1) {
+        this.selectElement.classList.remove;
+      }
+      this.selectElement.classList.add(
+        this.styleArr[parseInt(Math.random() * 10) % this.styleArr.length]
+      );
+    }
   }
 };
 </script>
@@ -177,7 +189,7 @@ export default {
   position: absolute;
   // height: 500px;
   // width: 500px;
-  height: 500px;
+  height: 0;
   width: 0;
   border: 1px;
   z-index: 14;
@@ -185,23 +197,36 @@ export default {
   left: 35%;
   border-radius: 2px;
 
-  -webkit-transition: width 0.4s ease-out, opacity 0.2s ease-in,
-    visibility 0.2s ease-in;
-  -moz-transition: width 0.4s ease-out, opacity 0.2s ease-in,
-    visibility 0.2s ease-in;
-  -ms-transition: width 0.4s ease-out, opacity 0.2s ease-in,
-    visibility 0.2s ease-in;
-  -o-transition: width 0.4s ease-out, opacity 0.2s ease-in,
-    visibility 0.2s ease-in;
-  transition: width 0.4s ease-out, opacity 0.2s ease-in, visibility 0.2s ease-in;
+  // transition: all 0.4s ease-in-out;
   visibility: 0;
   opacity: 0;
+  transform: rotate(0.5turn);
+  -webkit-transition: all 0.4s ease-in-out, left 0s, top 0s;
+  -moz-transition: all 0.4s ease-in-out, left 0s, top 0s;
+  -ms-transition: all 0.4s ease-in-out, left 0s, top 0s;
+  -o-transition: all 0.4s ease-in-out, left 0s, top 0s;
+  transition: all 0.4s ease-in-out, left 0s, top 0s;
+}
+.singlemove {
+  -webkit-transition: width 0.4s ease-out, height 0.4s ease-out,
+    opacity 0.2s ease-in, visibility 0.2s ease-in;
+  -moz-transition: width 0.4s ease-out, height 0.4s ease-out,
+    opacity 0.2s ease-in, visibility 0.2s ease-in;
+  -ms-transition: width 0.4s ease-out, height 0.4s ease-out,
+    opacity 0.2s ease-in, visibility 0.2s ease-in;
+  -o-transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.2s ease-in,
+    visibility 0.2s ease-in;
+  transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.2s ease-in,
+    visibility 0.2s ease-in;
+}
+.rotatemove {
 }
 .trans {
   opacity: 1;
   visibility: 1;
   height: 500px;
   width: 500px;
+  transform: rotate(0);
 }
 .dialog-footer {
   text-align: right;

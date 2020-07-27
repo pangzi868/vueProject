@@ -13,6 +13,11 @@ const menuList = [
             title: 'multiple',
             key: '/manage/multiple',
             icon: 'bars'
+          },
+          {
+            title: 'S1',
+            key: '/manage/S1',
+            icon: 'bars'
           }
         ]
       },
