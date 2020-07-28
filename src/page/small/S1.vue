@@ -10,26 +10,35 @@
         </div>
         <hover-box class="sidebar-first left-side-bar" :ids="boxIds['left1']">
           <div class="sidebar-content-title">审计项目计划情况执行分析</div>
+          <indicator-box class="indicator-box" :ids="left1Ids" :chartData="left1ChartData" />
+          <column-box
+            class="left-in-column-box"
+            :ids="left1ColumnIds"
+            :chartData="left1ColumnData"
+          />
         </hover-box>
         <hover-box class="sidebar-second left-side-bar" :ids="boxIds['left2']">
           <div class="sidebar-content-title">审计项目执行状态分析</div>
         </hover-box>
         <hover-box class="sidebar-third left-side-bar" :ids="boxIds['left3']">
           <div class="sidebar-content-title">项目审计费用预算分析</div>
+          <column-box class="left-column-box" :ids="left2ColumnIds" :chartData="left2ColumnData" />
         </hover-box>
         <hover-box class="sidebar-forth left-side-bar" :ids="boxIds['left4']">
           <div class="sidebar-content-title">审计项目计划年度对比</div>
+          <line-chart class="left-line-box" :ids="left1LineIds" :chartData="left1LineData" />
         </hover-box>
       </div>
       <div class="message-field">
         <div class="message-title">
           <img :src="messageTitle" alt class="message-title-img" />
         </div>
-        <div class="message-cloud"></div>
+        <div class="message-cloud">
+          <img :src="moveCloud" alt class="cloud-img" />
+        </div>
         <div class="message-indicator"></div>
         <div class="message-cut-off"></div>
-        <!-- <div class></div> -->
-        <hover-box class="message-roll" :ids="boxIds['bottom1']"></hover-box>
+        <div class="message-roll"></div>
       </div>
       <div class="analysis-field sidebar-field">
         <div class="sidebar-title">
@@ -39,7 +48,7 @@
           <div class="sidebar-content-title">各单位问题整改分析</div>
         </hover-box>
         <hover-box class="sidebar-second right-side-bar" :ids="boxIds['right2']">
-          <div class="sidebar-content-title">审计问题类型分析（分专业）</div>
+          <div class="sidebar-content-title">审计问题类型分析</div>
         </hover-box>
         <hover-box class="sidebar-third right-side-bar" :ids="boxIds['right3']">
           <div class="sidebar-content-title">高频多发问题分析</div>
@@ -54,9 +63,13 @@
 
 <script>
 import HoverBox from "@/components/S1/hoverBox.vue";
+import IndicatorBox from "@/components/S1/indicatorBox.vue";
+import ColumnBox from "@/components/S1/columnBox.vue";
+import LineChart from "@/components/S1/lineChart.vue";
 
 import Title from "@/assets/images/first/title-main.png";
 import ManageTitle from "@/assets/images/first/title-2.png";
+import MoveCloud from "@/assets/images/first/Untitled.png";
 import AnalysisTitle from "@/assets/images/first/title-1.png";
 import MessageTitle from "@/assets/images/first/title-3.png";
 import Bg1 from "@/assets/images/first/bg-1.png";
@@ -71,6 +84,7 @@ export default {
       manageTitle: ManageTitle,
       messageTitle: MessageTitle,
       analysisTitle: AnalysisTitle,
+      moveCloud: MoveCloud,
       boxIds: {
         left1: "left1",
         left2: "left2",
@@ -81,13 +95,29 @@ export default {
         right3: "right3",
         right4: "right4",
         bottom1: "bottom1"
-      }
+      },
+
+      //审计项目计划情况执行分析
+      left1Ids: [
+        { id: "leftIndicator1", name: "项目计划数" },
+        { id: "leftIndicator2", name: "年度实际数" }
+      ],
+      left1ChartData: [],
+      left1ColumnIds: "left1ColumnChart",
+      left1ColumnData: [],
+      left2ColumnIds: "left2ColumnChart",
+      left2ColumnData: [],
+      left1LineIds: "left1LineChart",
+      left1LineData: []
     };
   },
   computed: {},
   methods: {},
   components: {
-    HoverBox
+    HoverBox,
+    IndicatorBox,
+    ColumnBox,
+    LineChart
   }
 };
 </script>
@@ -165,7 +195,13 @@ export default {
         top: 160px;
         width: 100%;
         height: 2500px;
-        background-color: rgba(255, 0, 0, 0.2);
+        .cloud-img {
+          position: absolute;
+          left: 1976px;
+          top: 450px;
+          width: 1620px;
+          height: 1740px;
+        }
       }
       .message-indicator {
         position: absolute;
@@ -281,6 +317,32 @@ export default {
         padding-left: 60px;
         font-family: "ShiShangZhongHeiJianTi";
         color: rgba(255, 255, 255, 0.7);
+      }
+      .indicator-box {
+        display: flex;
+        position: absolute;
+        top: 192px;
+        left: 0;
+        width: 100%;
+        height: 316px;
+      }
+      .left-in-column-box {
+        position: absolute;
+        top: 540px;
+        width: 100%;
+        height: 590px;
+      }
+      .left-column-box {
+        position: absolute;
+        top: 180px;
+        width: 100%;
+        height: 600px;
+      }
+      .left-line-box {
+        position: absolute;
+        top: 180px;
+        width: 100%;
+        height: 600px;
       }
     }
   }
