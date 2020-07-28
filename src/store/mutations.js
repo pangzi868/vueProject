@@ -10,5 +10,8 @@ export default {
     },
     newCurrentPro(state, pro) {
         state.currentPro = pro
+    },
+    newAmplification(state, obj) {
+        state.amplification = Object.assign({}, state.amplification, obj)
     }
 }

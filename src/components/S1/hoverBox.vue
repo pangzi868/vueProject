@@ -1,10 +1,12 @@
 <template>
   <div
-    :class="(mouseOverJudge[ids] ? 'transform-test-div' : '')"
+    :class="(amplification[ids] == true ? 'transform-test-div' : '')"
     :id="ids"
     @mouseover="mouseOverHandler($event)"
     @mouseout="mouseOutHandler($event)"
-  ></div>
+  >
+    <slot></slot>
+  </div>
 </template>
 
 <script>
@@ -13,19 +15,30 @@ export default {
   props: ["ids"],
   mounted() {},
   data() {
-    return {
-      mouseOverJudge: {}
-    };
+    return {};
   },
-  computed: {},
+  computed: {
+    amplification: {
+      get: function() {
+        return this.$store.state.amplification;
+      },
+      set: function(newValue) {
+        this.$store.commit("newAmplification", newValue);
+      }
+    }
+  },
   methods: {
     mouseOverHandler(e) {
       let id = e.target.id;
-      this.mouseOverJudge[id] = true;
+      let temp = {};
+      temp[id] = true;
+      this.$store.commit("newAmplification", temp);
     },
     mouseOutHandler(e) {
       let id = e.target.id;
-      this.mouseOverJudge[id] = false;
+      let temp = {};
+      temp[id] = false;
+      this.$store.commit("newAmplification", temp);
     }
   },
   components: {}
@@ -35,8 +48,8 @@ export default {
 <style lang="less" scoped>
 .transform-test-div {
   // 放大x， y
-  transform: scale(1.05, 1.05);
+  transform: scale(1.03, 1.03);
   // 位移 x， y
-  transform: translate(1.05, 1.05);
+  transform: translate(1.03, 1.03);
 }
 </style>

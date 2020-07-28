@@ -11,15 +11,15 @@
         <hover-box class="sidebar-first left-side-bar" :ids="boxIds['left1']">
           <div class="sidebar-content-title">审计项目计划情况执行分析</div>
         </hover-box>
-        <div class="sidebar-second left-side-bar">
+        <hover-box class="sidebar-second left-side-bar" :ids="boxIds['left2']">
           <div class="sidebar-content-title">审计项目执行状态分析</div>
-        </div>
-        <div class="sidebar-third left-side-bar">
+        </hover-box>
+        <hover-box class="sidebar-third left-side-bar" :ids="boxIds['left3']">
           <div class="sidebar-content-title">项目审计费用预算分析</div>
-        </div>
-        <div class="sidebar-forth left-side-bar">
+        </hover-box>
+        <hover-box class="sidebar-forth left-side-bar" :ids="boxIds['left4']">
           <div class="sidebar-content-title">审计项目计划年度对比</div>
-        </div>
+        </hover-box>
       </div>
       <div class="message-field">
         <div class="message-title">
@@ -28,24 +28,25 @@
         <div class="message-cloud"></div>
         <div class="message-indicator"></div>
         <div class="message-cut-off"></div>
-        <div class="message-roll"></div>
+        <!-- <div class></div> -->
+        <hover-box class="message-roll" :ids="boxIds['bottom1']"></hover-box>
       </div>
       <div class="analysis-field sidebar-field">
         <div class="sidebar-title">
           <img :src="analysisTitle" alt class="sidebar-title-img" />
         </div>
-        <div class="sidebar-first right-side-bar">
+        <hover-box class="sidebar-first right-side-bar" :ids="boxIds['right1']">
           <div class="sidebar-content-title">各单位问题整改分析</div>
-        </div>
-        <div class="sidebar-second right-side-bar">
+        </hover-box>
+        <hover-box class="sidebar-second right-side-bar" :ids="boxIds['right2']">
           <div class="sidebar-content-title">审计问题类型分析（分专业）</div>
-        </div>
-        <div class="sidebar-third right-side-bar">
+        </hover-box>
+        <hover-box class="sidebar-third right-side-bar" :ids="boxIds['right3']">
           <div class="sidebar-content-title">高频多发问题分析</div>
-        </div>
-        <div class="sidebar-forth right-side-bar">
+        </hover-box>
+        <hover-box class="sidebar-forth right-side-bar" :ids="boxIds['right4']">
           <div class="sidebar-content-title">审计成果年度对比</div>
-        </div>
+        </hover-box>
       </div>
     </div>
   </div>
@@ -78,7 +79,8 @@ export default {
         right1: "right1",
         right2: "right2",
         right3: "right3",
-        right4: "right4"
+        right4: "right4",
+        bottom1: "bottom1"
       }
     };
   },
@@ -191,6 +193,8 @@ export default {
         height: 704px;
         background: url("../../assets/images/first/bg-2.png") no-repeat;
         background-size: 100% 100%;
+        transition: all 0.3s;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px -30px 10px;
       }
     }
     .analysis-field {
@@ -224,7 +228,6 @@ export default {
         box-shadow: rgba(0, 0, 0, 0.3) 30px -30px 10px;
         transition: all 0.3s;
       }
-
       .transform-side-bar {
         // 放大x， y
         transform: scale(1.05, 1.05);
