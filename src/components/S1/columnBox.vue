@@ -131,8 +131,8 @@ export default {
             splitLine: {
               show: true,
               lineStyle: {
-                color: ["#fff"],
-                opacity: 0.06
+                color: 'rgba(255,255,255,1)',
+                opacity: 0.2
               }
             }
           }
@@ -150,11 +150,11 @@ export default {
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   {
                     offset: 0,
-                    color: "rgba(21,255,255,1)"
+                    color: "rgba(13,139,255,1)"
                   },
                   {
                     offset: 1,
-                    color: "rgba(0,79,255,1)"
+                    color: "rgba(24,40,255,1)"
                   }
                 ]),
                 barBorderRadius: [30, 30, 0, 0],
@@ -174,11 +174,11 @@ export default {
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   {
                     offset: 0,
-                    color: "rgba(21,177,255,1)"
+                    color: "rgba(21,255,255,1)"
                   },
                   {
                     offset: 1,
-                    color: "rgba(43,40,219,1)"
+                    color: "rgba(0,150,255,1)"
                   }
                 ]),
                 barBorderRadius: [30, 30, 0, 0],

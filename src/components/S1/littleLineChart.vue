@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :id="ids"></div>
+  <div class="little-line-chart" :id="ids"></div>
 </template>
 
 <script>
@@ -31,7 +31,7 @@ export default {
             color: "#fff",
             fontStyle: "normal",
             fontFamily: "微软雅黑",
-            fontSize: 52
+            fontSize: 44
           }
         },
         grid: {
@@ -40,24 +40,21 @@ export default {
           bottom: "1%",
           top: "20%",
           //	padding:'0 0 10 0',
-          containLabel: true,
-          
+          containLabel: true
         },
         legend: {
           //图例组件，颜色和名字
           right: "3%",
           top: "3%",
           itemGap: 64,
-          itemWidth: 64,
-          itemHeight: 12,
+          itemWidth: 34,
+          itemHeight: 34,
           data: [
             {
-              name: "计划数",
-              icon: 'rect'
+              name: "计划数"
             },
             {
-              name: "实际数",
-              icon: 'rect'
+              name: "实际数"
             }
           ],
           textStyle: {
@@ -89,10 +86,10 @@ export default {
               //		interval: 0,//设置为 1，表示『隔一个标签显示一个标签』
               //	margin:15,
               textStyle: {
-                color: "rgba(255,255,255,.6)",
+                color: "rgba(255,255,255,.4)",
                 fontStyle: "normal",
                 fontFamily: "微软雅黑",
-                fontSize: 52
+                fontSize: 44
               }
             },
             axisTick: {
@@ -118,10 +115,10 @@ export default {
             splitNumber: 5,
             axisLabel: {
               textStyle: {
-                color: "#a8aab0",
+                color: "rgba(255, 255, 255, 0.4)",
                 fontStyle: "normal",
                 fontFamily: "微软雅黑",
-                fontSize: 52
+                fontSize: 44
               }
             },
             axisLine: {
@@ -149,7 +146,7 @@ export default {
             lineStyle: {
               normal: {
                 width: 10,
-                color: "rgba(0,129,248,1)"
+                color: "rgba(0,232,246,1)"
               }
             },
             label: {
@@ -160,9 +157,7 @@ export default {
               }
             },
             itemStyle: {
-              color: "rgba(0,129,248,1)",
-              borderColor: "#fff",
-              borderWidth: 3
+              color: "rgba(0,232,246,1)"
             },
             tooltip: {
               show: true
@@ -177,11 +172,11 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "rgba(0,129,248,0.3)"
+                      color: "rgba(0,247,255,0.3)"
                     },
                     {
                       offset: 1,
-                      color: "rgba(0,129,248,0)"
+                      color: "rgba(0,247,255,0)"
                     }
                   ],
                   false
@@ -201,7 +196,7 @@ export default {
             lineStyle: {
               normal: {
                 width: 10,
-                color: "rgba(0,247,255,1)"
+                color: "rgba(255,179,88,1)"
               }
             },
             label: {
@@ -212,9 +207,7 @@ export default {
               }
             },
             itemStyle: {
-              color: "rgba(0,247,255,1)",
-              borderColor: "#fff",
-              borderWidth: 3
+              color: "rgba(255,179,88,1)"
             },
             tooltip: {
               show: true
@@ -224,11 +217,11 @@ export default {
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   {
                     offset: 0,
-                    color: "rgba(0,247,255,0.3)"
+                    color: "rgba(255,179,88,0.3)"
                   },
                   {
                     offset: 1,
-                    color: "rgba(0,247,255,0)"
+                    color: "rgba(255,179,88,0)"
                   }
                 ]),
                 shadowColor: "rgba(108,80,243, 0.9)",

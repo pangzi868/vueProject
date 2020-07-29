@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :id="ids"></div>
+  <div class="merge-column-box" :id="ids"></div>
 </template>
 
 <script>
@@ -40,24 +40,22 @@ export default {
           bottom: "1%",
           top: "20%",
           //	padding:'0 0 10 0',
-          containLabel: true,
-          
+          containLabel: true
         },
         legend: {
           //图例组件，颜色和名字
           right: "3%",
           top: "3%",
           itemGap: 64,
-          itemWidth: 64,
-          itemHeight: 12,
+          itemWidth: 44,
+          itemHeight: 44,
           data: [
             {
-              name: "计划数",
-              icon: 'rect'
+              name: "整改数"
+              //icon:'image://../wwwroot/js/url2.png', //路径
             },
             {
-              name: "实际数",
-              icon: 'rect'
+              name: "未整改数"
             }
           ],
           textStyle: {
@@ -133,7 +131,7 @@ export default {
             splitLine: {
               show: true,
               lineStyle: {
-                color: "rgba(255,255,255,1)",
+                color: 'rgba(255,255,255,1)',
                 opacity: 0.2
               }
             }
@@ -141,101 +139,56 @@ export default {
         ],
         series: [
           {
-            name: "计划数",
-            type: "line",
-            showAllSymbol: true,
-            symbol: "circle",
-            symbolSize: 25,
-            lineStyle: {
-              normal: {
-                width: 10,
-                color: "rgba(0,129,248,1)"
-              }
-            },
-            label: {
-              show: true,
-              position: "top",
-              textStyle: {
-                color: "#6c50f3"
-              }
-            },
+            name: "整改数",
+            stack: "总量",
+            type: "bar",
+            data: [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60],
+            barWidth: 48,
+            barGap: 0, //柱间距离
             itemStyle: {
-              color: "rgba(0,129,248,1)",
-              borderColor: "#fff",
-              borderWidth: 3
-            },
-            tooltip: {
-              show: true
-            },
-            areaStyle: {
               normal: {
-                color: new this.$echarts.graphic.LinearGradient(
-                  0,
-                  0,
-                  0,
-                  1,
-                  [
-                    {
-                      offset: 0,
-                      color: "rgba(0,129,248,0.3)"
-                    },
-                    {
-                      offset: 1,
-                      color: "rgba(0,129,248,0)"
-                    }
-                  ],
-                  false
-                ),
-                shadowColor: "rgba(108,80,243, 0.9)",
-                shadowBlur: 20
+                show: true,
+                color: "rgba(9,117,217,1)",
+                // color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //   {
+                //     offset: 0,
+                //     color: "rgba(21,255,255,1)"
+                //   },
+                //   {
+                //     offset: 1,
+                //     color: "rgba(0,79,255,1)"
+                //   }
+                // ]),
+                barBorderRadius: 0,
+                borderWidth: 0
               }
-            },
-            data: [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60]
+            }
           },
           {
-            name: "实际数",
-            type: "line",
-            showAllSymbol: true,
-            symbol: "circle",
-            symbolSize: 25,
-            lineStyle: {
-              normal: {
-                width: 10,
-                color: "rgba(0,247,255,1)"
-              }
-            },
-            label: {
-              show: true,
-              position: "top",
-              textStyle: {
-                color: "#6c50f3"
-              }
-            },
+            name: "未整改数",
+            stack: "总量",
+            type: "bar",
+            data: [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60],
+            barWidth: 48,
+            barGap: 0, //柱间距离
             itemStyle: {
-              color: "rgba(0,247,255,1)",
-              borderColor: "#fff",
-              borderWidth: 3
-            },
-            tooltip: {
-              show: true
-            },
-            areaStyle: {
               normal: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: "rgba(0,247,255,0.3)"
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(0,247,255,0)"
-                  }
-                ]),
-                shadowColor: "rgba(108,80,243, 0.9)",
-                shadowBlur: 20
+                show: true,
+                color: "rgba(120,231,255,1)",
+                // color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //   {
+                //     offset: 0,
+                //     color: "rgba(21,177,255,1)"
+                //   },
+                //   {
+                //     offset: 1,
+                //     color: "rgba(43,40,219,1)"
+                //   }
+                // ]),
+                barBorderRadius: 0,
+                borderWidth: 0
               }
-            },
-            data: [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60]
+            }
           }
         ]
       });

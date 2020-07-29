@@ -2,10 +2,12 @@
   <div
     :class="(amplification[ids] == true ? 'transform-test-div' : '')"
     :id="ids"
-    @mouseover="mouseOverHandler($event)"
-    @mouseout="mouseOutHandler($event)"
+    @mouseenter="mouseOverHandler($event)"
+    @mouseleave="mouseOutHandler($event)"
   >
-    <slot></slot>
+    <slot
+      
+    ></slot>
   </div>
 </template>
 
@@ -36,6 +38,18 @@ export default {
     },
     mouseOutHandler(e) {
       let id = e.target.id;
+      let temp = {};
+      temp[id] = false;
+      this.$store.commit("newAmplification", temp);
+    },
+    mouseOverChildHander(e) {
+      let id = e.currentTarget.parentElement.id;
+      let temp = {};
+      temp[id] = true;
+      this.$store.commit("newAmplification", temp);
+    },
+    mouseOutChildHander(e) {
+      let id = e.currentTarget.parentElement.id;
       let temp = {};
       temp[id] = false;
       this.$store.commit("newAmplification", temp);

@@ -34,6 +34,8 @@
           <img :src="messageTitle" alt class="message-title-img" />
         </div>
         <div class="message-cloud">
+          <img :src="cloudleft" alt class="left-cloud-img" />
+          <img-rotation class="img-rotation" :autoMove="autoMove" />
           <img :src="moveCloud" alt class="cloud-img" />
         </div>
         <div class="message-indicator"></div>
@@ -46,15 +48,28 @@
         </div>
         <hover-box class="sidebar-first right-side-bar" :ids="boxIds['right1']">
           <div class="sidebar-content-title">各单位问题整改分析</div>
+          <merge-column-box
+            class="right-column-box"
+            :ids="right1ColumnIds"
+            :chartData="right1ColumnData"
+          />
         </hover-box>
         <hover-box class="sidebar-second right-side-bar" :ids="boxIds['right2']">
           <div class="sidebar-content-title">审计问题类型分析</div>
+          <huan-chart class="right-huan-chart" :ids="right2HuanIds" :chartData="right2HuanData" />
+          <little-line-chart
+            class="right-little-line"
+            :ids="right2LineIds"
+            :chartData="right2LineData"
+          />
         </hover-box>
         <hover-box class="sidebar-third right-side-bar" :ids="boxIds['right3']">
           <div class="sidebar-content-title">高频多发问题分析</div>
+          <bar-chart class="left-line-box" :ids="right3BarIds" :chartData="right3BarData" />
         </hover-box>
         <hover-box class="sidebar-forth right-side-bar" :ids="boxIds['right4']">
           <div class="sidebar-content-title">审计成果年度对比</div>
+          <line-chart class="left-line-box" :ids="right4LineIds" :chartData="right4LineData" />
         </hover-box>
       </div>
     </div>
@@ -65,12 +80,18 @@
 import HoverBox from "@/components/S1/hoverBox.vue";
 import IndicatorBox from "@/components/S1/indicatorBox.vue";
 import ColumnBox from "@/components/S1/columnBox.vue";
+import MergeColumnBox from "@/components/S1/mergeColumnBox.vue";
 import LineChart from "@/components/S1/lineChart.vue";
+import ImgRotation from "@/components/S1/imgRotation.vue";
+import BarChart from "@/components/S1/barChart.vue";
+import HuanChart from "@/components/S1/huanChart.vue";
+import LittleLineChart from "@/components/S1/littleLineChart.vue";
 
 import Title from "@/assets/images/first/title-main.png";
 import ManageTitle from "@/assets/images/first/title-2.png";
 import MoveCloud from "@/assets/images/first/Untitled.png";
 import AnalysisTitle from "@/assets/images/first/title-1.png";
+import CloudLeft from "@/assets/images/first/cloud-left.png";
 import MessageTitle from "@/assets/images/first/title-3.png";
 import Bg1 from "@/assets/images/first/bg-1.png";
 import Bg2 from "@/assets/images/first/bg-2.png";
@@ -85,6 +106,7 @@ export default {
       messageTitle: MessageTitle,
       analysisTitle: AnalysisTitle,
       moveCloud: MoveCloud,
+      cloudleft: CloudLeft,
       boxIds: {
         left1: "left1",
         left2: "left2",
@@ -97,6 +119,8 @@ export default {
         bottom1: "bottom1"
       },
 
+      autoMove: true,
+
       //审计项目计划情况执行分析
       left1Ids: [
         { id: "leftIndicator1", name: "项目计划数" },
@@ -108,7 +132,17 @@ export default {
       left2ColumnIds: "left2ColumnChart",
       left2ColumnData: [],
       left1LineIds: "left1LineChart",
-      left1LineData: []
+      left1LineData: [],
+      right1ColumnIds: "right1ColumnChart",
+      right1ColumnData: [],
+      right2HuanIds: "right2HuanChart",
+      right2HuanData: [],
+      right2LineIds: "right2LineChart",
+      right2LineData: [],
+      right3BarIds: "right3BarChart",
+      right3BarData: [],
+      right4LineIds: "right4LineChart",
+      right4LineData: []
     };
   },
   computed: {},
@@ -117,7 +151,12 @@ export default {
     HoverBox,
     IndicatorBox,
     ColumnBox,
-    LineChart
+    MergeColumnBox,
+    LineChart,
+    ImgRotation,
+    BarChart,
+    HuanChart,
+    LittleLineChart
   }
 };
 </script>
@@ -202,6 +241,21 @@ export default {
           width: 1620px;
           height: 1740px;
         }
+        .left-cloud-img {
+          position: absolute;
+          left: -200px;
+          top: 100px;
+          height: 2260px;
+          width: 2407px;
+        }
+        .img-rotation {
+          position: absolute;
+          left: 300px;
+          top: 1400px;
+          width: 1500px;
+          height: 600px;
+          // background-color: #D24545;
+        }
       }
       .message-indicator {
         position: absolute;
@@ -259,10 +313,12 @@ export default {
       .left-side-bar {
         box-shadow: rgba(0, 0, 0, 0.3) -30px -30px 10px;
         transition: all 0.3s;
+        z-index: 10;
       }
       .right-side-bar {
         box-shadow: rgba(0, 0, 0, 0.3) 30px -30px 10px;
         transition: all 0.3s;
+        z-index: 10;
       }
       .transform-side-bar {
         // 放大x， y
@@ -343,6 +399,26 @@ export default {
         top: 180px;
         width: 100%;
         height: 600px;
+      }
+      .right-column-box {
+        position: absolute;
+        top: 180px;
+        width: 100%;
+        height: 960px;
+      }
+      .right-huan-chart {
+        position: absolute;
+        top: 180px;
+        width: 50%;
+        height: 600px;
+        left: 0;
+      }
+      .right-little-line {
+        position: absolute;
+        top: 180px;
+        width: 50%;
+        height: 600px;
+        left: 50%;
       }
     }
   }
