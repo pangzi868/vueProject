@@ -65,7 +65,6 @@ export default {
                 margin: 90, // 布局为两端对称时候需要外边距防止图表变形 数值随意不要太大
                 distanceToLabelLine: 0, // label距离引导线距离
                 formatter: params => {
-                  // console.log(params);
                   return (
                     "{b| " +
                     params.name +

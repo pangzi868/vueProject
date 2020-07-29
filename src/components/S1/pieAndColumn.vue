@@ -1,15 +1,6 @@
 <template>
   <div class="pie-and-col">
-    <div class="span-top"></div>
     <div v-for="(item, index) in ids" :key="index" :id="item.id" class="inline-chart"></div>
-
-    <!-- <move-modal
-      v-if="modalJudge"
-      id="1111"
-      titlex="1111"
-      :dialogJudge="modalJudge"
-      :dialogData="dialogData"
-    />-->
   </div>
 </template>
 
@@ -19,12 +10,10 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    // for (var i in this.ids) {
     let curId1 = this.ids[0];
     let curId2 = this.ids[1];
     this.initPie(curId1.id, this.chartData[curId1.name]);
     this.initCol(curId2.id, this.chartData[curId2.name]);
-    // }
   },
   data() {
     return {
@@ -36,9 +25,9 @@ export default {
   methods: {
     initPie(curId, curData) {
       const colorList = [
-        "#47A2FF ",
-        "#53C8D1",
-        "#59CB74",
+        "rgba(0,87,248,1)",
+        "rgba(255,179,88,1)",
+        "rgba(0,247,255,1)",
         "#FBD444",
         "#7F6AAD",
         "#585247"
@@ -47,74 +36,88 @@ export default {
       if (!curId) return;
       let chart = this.$echarts.init(document.getElementById(curId));
       chart.setOption({
-        // title: {
-        //   text: "Cluster",
-        //   subtext: "3",
-        //   textStyle: {
-        //     fontSize: 16,
-        //     color: "#FFF",
-        //     lineHeight: 20
-        //   },
-        //   subtextStyle: {
-        //     fontSize: 28,
-        //     color: "#FFF"
-        //   },
-        //   textAlign: "center",
-        //   left: "39.8%",
-        //   top: "45%"
-        // },
         tooltip: {
           trigger: "item"
         },
         legend: {
-          //   type: "scroll",
           orient: "horizontal",
-          right: "10%",
-          top: "80%",
-          //   itemGap: 30,
-          //   selectedMode: false,
-          //   icon: "pin",
-          data: ["南京a", "南京b", "南京c", "南京d", "南京e"],
+          left: "center",
+          bottom: "10%",
+          itemGap: 64,
+          itemWidth: 22,
+          itemHeight: 40,
+          data: [
+            {
+              name: "南京a",
+              icon: "roundRect"
+            },
+            {
+              name: "南京b",
+              icon: "roundRect"
+            },
+            {
+              name: "南京c",
+              icon: "roundRect"
+            }
+          ],
           textStyle: {
-            color: "#FFF"
-            // rich: {
-            //   uname: {
-            //     width: 100
-            //   },
-            //   unum: {
-            //     color: "#4ed139",
-            //     width: 40,
-            //     align: "right"
-            //   }
-            // }
+            color: "rgba(255, 255, 255, 0.5)",
+            fontSize: 44
           }
-          //   formatter(name) {
-          //     return `{uname|${name}}{unum|1132}`;
-          //   }
         },
         color: colorList,
         series: [
           {
             name: "姓名",
             type: "pie",
-            radius: [60, 90],
-            center: ["45%", "40%"],
+            radius: [160, 190],
+            center: ["45%", "45%"],
             label: {
-              show: false
+              show: false,
+              formatter: "{b}",
+              position: "center"
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: "20",
+                fontWeight: "bold",
+                formatter: function(params) {
+                  return (
+                    "{type| " +
+                    params.name +
+                    "}  " +
+                    "\n" +
+                    "{value|" +
+                    params.value +
+                    "}"
+                  );
+                },
+                rich: {
+                  type: {
+                    fontSize: 64,
+                    color: "rgba(255,255,255,.7)",
+                    padding: [15, 0, 5, 0]
+                  },
+                  value: {
+                    fontSize: 66,
+                    color: "#fff",
+                    padding: [15, 0, 5, 0]
+                  }
+                }
+              }
             },
             labelLine: {
               show: false
             },
             itemStyle: {
               borderWidth: 3,
-              borderColor: "#fff"
+              borderColor: "#082b3a"
             },
             data: [
               { name: "南京a", value: 100 },
               { name: "南京b", value: 100 },
-              { name: "南京c", value: 100 },
-              { name: "南京d", value: 100 },
-              { name: "南京e", value: 100 }
+              { name: "南京c", value: 100 }
             ]
           }
         ]
@@ -124,29 +127,21 @@ export default {
         this.$store.commit("newDialogVisible", true);
       });
     },
+
     initCol(curId, curData) {
       var spNum = 5,
         _max = 100;
       var legendData = ["常住人口", "户籍人口", "农村人口", "城镇居民"];
-      var y_data = [
-        "成都市",
-        "绵阳市",
-        "自贡市",
-        "攀枝花市",
-        "泸州市",
-        "德阳市"
-      ];
-      var _datamax = [100, 100, 100, 100, 100, 100],
-        _data1 = [10, 15, 10, 13, 15, 11],
-        _data2 = [19, 5, 40, 33, 15, 51],
-        _data3 = [21, 55, 10, 13, 35, 11],
-        _data4 = [21, 55, 10, 13, 35, 11];
+      var y_data = ["经济责任", "工程", "财务收支", "营销管理", "人资管理"];
+      var _data1 = [10, 15, 10, 13, 15],
+        _data2 = [19, 5, 40, 33, 12],
+        _data3 = [21, 55, 10, 13, 35];
       var fomatter_fn = function(v) {
         return ((v.value / _max) * 100).toFixed(0);
       };
       var _label = {
         normal: {
-          show: true,
+          show: false,
           position: "inside",
           formatter: fomatter_fn,
           textStyle: {
@@ -166,7 +161,7 @@ export default {
         // },
         grid: {
           containLabel: true,
-          top: 0,
+          top: "5%",
           left: 0,
           right: 15,
           bottom: 30
@@ -199,14 +194,14 @@ export default {
         },
         xAxis: {
           splitNumber: spNum,
-          interval: _max / spNum,
-          max: _max,
+          // interval: _max / spNum,
+          // max: _max,
           axisLabel: {
-            show: false,
-            formatter: function(v) {
-              var _v = ((v / _max) * 100).toFixed(0);
-              return _v == 0 ? _v : _v + "%";
-            }
+            show: false
+            // formatter: function(v) {
+            //   var _v = ((v / _max) * 100).toFixed(0);
+            //   return _v == 0 ? _v : _v + "%";
+            // }
           },
           axisLine: {
             show: false
@@ -222,8 +217,9 @@ export default {
           {
             data: y_data,
             axisLabel: {
-              fontSize: 16,
-              color: "#fff"
+              fontSize: 32,
+              textAlign: "left",
+              color: "rgba(255, 255, 255, 0.6)"
             },
             axisLine: {
               show: false
@@ -253,10 +249,10 @@ export default {
             barWidth: 40,
             itemStyle: {
               normal: {
-                color: "#7E47FF"
+                color: "rgba(0,87,248,1)"
               },
               emphasis: {
-                color: "#7E47FF"
+                color: "rgba(0,87,248,1)"
               }
             },
             data: _data1
@@ -270,10 +266,10 @@ export default {
             label: _label,
             itemStyle: {
               normal: {
-                color: "#FD5916"
+                color: "rgba(255,179,88,1)"
               },
               emphasis: {
-                color: "#FD5916"
+                color: "rgba(255,179,88,1)"
               }
             },
             data: _data2
@@ -287,30 +283,13 @@ export default {
             label: _label,
             itemStyle: {
               normal: {
-                color: "#01A4F7"
+                color: "rgba(0,247,255,1)"
               },
               emphasis: {
-                color: "#01A4F7"
+                color: "rgba(0,247,255,1)"
               }
             },
             data: _data3
-          },
-          {
-            type: "bar",
-            stack: "2",
-            name: "城镇居民",
-            legendHoverLink: false,
-            barWidth: 40,
-            label: _label,
-            itemStyle: {
-              normal: {
-                color: "#2EDDCD"
-              },
-              emphasis: {
-                color: "#2EDDCD"
-              }
-            },
-            data: _data4
           }
         ]
       });
@@ -334,14 +313,10 @@ export default {
 .pie-and-col {
   width: 100%;
   height: 100%;
-  .span-top {
-    height: 15%;
-    width: 100%;
-  }
   .inline-chart {
     display: inline-block;
     width: 50%;
-    height: 85%;
+    height: 100%;
   }
 }
 </style>

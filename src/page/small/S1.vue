@@ -19,6 +19,7 @@
         </hover-box>
         <hover-box class="sidebar-second left-side-bar" :ids="boxIds['left2']">
           <div class="sidebar-content-title">审计项目执行状态分析</div>
+          <pie-and-column class="left-analysis" :ids="leftSecChart" :chartData="leftSecData" />
         </hover-box>
         <hover-box class="sidebar-third left-side-bar" :ids="boxIds['left3']">
           <div class="sidebar-content-title">项目审计费用预算分析</div>
@@ -36,9 +37,12 @@
         <div class="message-cloud">
           <img :src="cloudleft" alt class="left-cloud-img" />
           <img-rotation class="img-rotation" :autoMove="autoMove" />
+          <div class="control-div" @click="controlMove"></div>
           <img :src="moveCloud" alt class="cloud-img" />
+          <span class="cloud-title">智慧审计</span>
+          <cloud-span class="cloud-span" />
         </div>
-        <div class="message-indicator"></div>
+        <middle-indicator class="message-indicator" />
         <div class="message-cut-off"></div>
         <div class="message-roll"></div>
       </div>
@@ -86,6 +90,9 @@ import ImgRotation from "@/components/S1/imgRotation.vue";
 import BarChart from "@/components/S1/barChart.vue";
 import HuanChart from "@/components/S1/huanChart.vue";
 import LittleLineChart from "@/components/S1/littleLineChart.vue";
+import PieAndColumn from "@/components/S1/pieAndColumn.vue";
+import CloudSpan from "@/components/S1/cloudSpan.vue";
+import MiddleIndicator from "@/components/S1/middleIndicator.vue";
 
 import Title from "@/assets/images/first/title-main.png";
 import ManageTitle from "@/assets/images/first/title-2.png";
@@ -131,6 +138,14 @@ export default {
       left1ColumnData: [],
       left2ColumnIds: "left2ColumnChart",
       left2ColumnData: [],
+      leftSecChart: [
+        { id: "leftSecPie", name: "pie" },
+        { id: "leftSecCol", name: "col" }
+      ],
+      leftSecData: {
+        pie: [],
+        col: []
+      },
       left1LineIds: "left1LineChart",
       left1LineData: [],
       right1ColumnIds: "right1ColumnChart",
@@ -146,10 +161,17 @@ export default {
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    controlMove() {
+      this.autoMove = !this.autoMove;
+    }
+  },
   components: {
     HoverBox,
     IndicatorBox,
+    PieAndColumn,
+    CloudSpan,
+    MiddleIndicator,
     ColumnBox,
     MergeColumnBox,
     LineChart,
@@ -241,6 +263,24 @@ export default {
           width: 1620px;
           height: 1740px;
         }
+        .cloud-title {
+          position: absolute;
+          left: 2583px;
+          top: 920px;
+          color: rgba(0, 73, 136, 1);
+          font-family: PingFang SC;
+          font-size: 96px;
+          line-height: normal;
+          letter-spacing: 0px;
+          text-align: left;
+        }
+        .cloud-span {
+          position: absolute;
+          left: 2083px;
+          top: 1450px;
+          width: 1400px;
+          height: 600px;
+        }
         .left-cloud-img {
           position: absolute;
           left: -200px;
@@ -255,6 +295,15 @@ export default {
           width: 1500px;
           height: 600px;
           // background-color: #D24545;
+        }
+        .control-div {
+          position: absolute;
+          left: 2336px;
+          top: 720px;
+          width: 900px;
+          height: 500px;
+          z-index: 10;
+          cursor: pointer;
         }
       }
       .message-indicator {
@@ -381,6 +430,13 @@ export default {
         left: 0;
         width: 100%;
         height: 316px;
+      }
+      .left-analysis {
+        position: absolute;
+        top: 182px;
+        left: 0;
+        width: 100%;
+        height: 600px;
       }
       .left-in-column-box {
         position: absolute;
