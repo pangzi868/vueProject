@@ -8,5 +8,6 @@ export default {
     dialogVisible: false,
     dialogData: {},
     currentPro: '',
-    amplification: {}
+    amplification: {},
+    visual: {}
 }

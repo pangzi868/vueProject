@@ -13,5 +13,8 @@ export default {
     },
     newAmplification(state, obj) {
         state.amplification = Object.assign({}, state.amplification, obj)
+    },
+    newVisual(state, obj) {
+        state.visual = Object.assign({}, state.visual, obj)
     }
 }
