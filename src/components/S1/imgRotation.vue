@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       AUTOSPEED: 1 / 2,
+      MOVEABLESPEED: 60,  // 数字越大，移动距离越小
       productGrp: [
         { name: "长春", type: "normal", style: {}, nameStyle: {} },
         { name: "吉林", type: "normal", style: {}, nameStyle: {} },
@@ -184,8 +185,8 @@ export default {
 
       this.speed =
         this.speed <= 360
-          ? this.speed + this.dragObj.moveX / 100
-          : this.dragObj.moveX / 100;
+          ? this.speed + this.dragObj.moveX / this.MOVEABLESPEED
+          : this.dragObj.moveX / this.MOVEABLESPEED;
       this.fun_animat(this.speed);
 
       // 这里的数据越小，越精确
@@ -255,7 +256,7 @@ export default {
     height: 28px;
     font-size: 28px;
     white-space: nowrap;
-    color: #FFF;
+    color: #fff;
   }
 }
 </style>

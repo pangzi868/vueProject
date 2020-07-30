@@ -2,6 +2,7 @@
   <div class="first-screen">
     <div class="top-title">
       <img :src="title" alt class="title-img" />
+      <dv-decoration-5 />
     </div>
     <div class="main-content">
       <div class="management-field sidebar-field">
@@ -44,7 +45,11 @@
         </div>
         <middle-indicator class="message-indicator" />
         <div class="message-cut-off"></div>
-        <div class="message-roll"></div>
+        <decorate-1 class="decorate-1" />
+        <div class="message-roll">
+          <!-- <roll-box /> -->
+          <dv-scroll-board :config="config" style="width:3400px;height:640px" />
+        </div>
       </div>
       <div class="analysis-field sidebar-field">
         <div class="sidebar-title">
@@ -93,6 +98,9 @@ import LittleLineChart from "@/components/S1/littleLineChart.vue";
 import PieAndColumn from "@/components/S1/pieAndColumn.vue";
 import CloudSpan from "@/components/S1/cloudSpan.vue";
 import MiddleIndicator from "@/components/S1/middleIndicator.vue";
+import RollBox from "@/components/S1/rollBox.vue";
+
+import Decorate1 from "@/components/multiple/decorate-1.vue";
 
 import Title from "@/assets/images/first/title-main.png";
 import ManageTitle from "@/assets/images/first/title-2.png";
@@ -157,7 +165,149 @@ export default {
       right3BarIds: "right3BarChart",
       right3BarData: [],
       right4LineIds: "right4LineChart",
-      right4LineData: []
+      right4LineData: [],
+      config: {
+        header: [
+          "序号",
+          "单位",
+          "问题类型",
+          "疑点工单",
+          "疑点核实",
+          "审计底稿",
+          "问题整改",
+          "整改率",
+          "问题资金（万元）"
+        ],
+        data: [
+          [
+            "1",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "2",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "3",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "4",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "5",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "6",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "7",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "8",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "9",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ],
+          [
+            "10",
+            "国网白山供电公司",
+            "问题类型",
+            "45",
+            "233",
+            "341",
+            "75",
+            "13.21%",
+            "32"
+          ]
+        ],
+        headerBGC: "rgba(15,67,97,0.4)",
+        oddRowBGC: "rgba(50,218,255,0.1)",
+        evenRowBGC: "rgba(15,67,97,0.4)",
+        headerHeight: 128,
+        columnWidth: [250, 550, 350, 350, 350, 350, 350, 350],
+        carousel: "single",
+        align: [
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center"
+        ]
+      }
     };
   },
   computed: {},
@@ -172,13 +322,15 @@ export default {
     PieAndColumn,
     CloudSpan,
     MiddleIndicator,
+    RollBox,
     ColumnBox,
     MergeColumnBox,
     LineChart,
     ImgRotation,
     BarChart,
     HuanChart,
-    LittleLineChart
+    LittleLineChart,
+    "decorate-1": Decorate1
   }
 };
 </script>
@@ -318,7 +470,7 @@ export default {
       .message-cut-off {
         position: absolute;
         left: 0;
-        top: 3160px;
+        top: 3144px;
         width: 100%;
         height: 16px;
         background: url("../../assets/images/first/Frame-735@4x.png") no-repeat;
@@ -332,6 +484,7 @@ export default {
         height: 704px;
         background: url("../../assets/images/first/bg-2.png") no-repeat;
         background-size: 100% 100%;
+        padding: 32px 78px;
         transition: all 0.3s;
         box-shadow: rgba(0, 0, 0, 0.3) 0px -30px 10px;
       }
@@ -477,6 +630,27 @@ export default {
         left: 50%;
       }
     }
+  }
+
+  // 装饰
+  .decorate-1 {
+    position: absolute;
+    left: 0;
+    top: 3150px;
+    width: 3600px;
+    height: 32px;
+  }
+  .dv-decoration-5 {
+    width: 1996px;
+    height: 194px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    margin-top: 135px;
+  }
+  .dv-scroll-board {
+    color: rgba(255, 255, 255, 0.5);
   }
 }
 </style>

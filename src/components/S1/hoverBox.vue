@@ -5,9 +5,7 @@
     @mouseenter="mouseOverHandler($event)"
     @mouseleave="mouseOutHandler($event)"
   >
-    <slot
-      
-    ></slot>
+    <slot></slot>
   </div>
 </template>
 
@@ -31,6 +29,8 @@ export default {
   },
   methods: {
     mouseOverHandler(e) {
+      let className = e.target && e.target.classList.value;
+
       let id = e.target.id;
       let temp = {};
       temp[id] = true;
@@ -38,18 +38,6 @@ export default {
     },
     mouseOutHandler(e) {
       let id = e.target.id;
-      let temp = {};
-      temp[id] = false;
-      this.$store.commit("newAmplification", temp);
-    },
-    mouseOverChildHander(e) {
-      let id = e.currentTarget.parentElement.id;
-      let temp = {};
-      temp[id] = true;
-      this.$store.commit("newAmplification", temp);
-    },
-    mouseOutChildHander(e) {
-      let id = e.currentTarget.parentElement.id;
       let temp = {};
       temp[id] = false;
       this.$store.commit("newAmplification", temp);

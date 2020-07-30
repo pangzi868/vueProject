@@ -41,7 +41,13 @@
 export default {
   name: "",
   props: ["ids", "chartData"],
-  mounted() {},
+  mounted() {
+    let temp = this.leftIn.concat(this.rightIn);
+    for (var i in temp) {
+      this.initChart(temp[i].id, 40);
+      // this.initChart(temp[i].id, this.chartData[temp[i].id]);
+    }
+  },
   data() {
     return {
       leftIn: [
@@ -75,7 +81,127 @@ export default {
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    initChart(id, value) {
+      let myEcharts = this.$echarts.init(document.getElementById(id));
+      var maxValue = 100;
+      var colorReMain = "rgba(255, 255, 255, 0.3)";
+      var color = "rgba(235,117,26,1)";
+
+      var percent = (value * 100) / maxValue;
+      myEcharts.setOption({
+        series: [
+          {
+            type: "pie",
+            radius: [90, 114],
+            center: ["50%", "50%"],
+            hoverAnimation: false,
+            clockwise: false,
+            label: {
+              show: false
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              {
+                name: "remainCircle", // 开始的圆角
+                value: 0,
+                itemStyle: {
+                  color: color
+                },
+                label: {
+                  show: true,
+                  position: "inside",
+                  padding: [6, 0, 0, 0],
+                  borderRadius: 30,
+                  rich: {
+                    name: {
+                      // 宽度为14
+                      width: 24,
+                      height: 24,
+                      borderRadius: 10,
+                      backgroundColor: color
+                    }
+                  },
+                  formatter() {
+                    return `{name|}`;
+                  }
+                }
+              },
+              {
+                name: "remain",
+                value: 100 - value,
+                itemStyle: {
+                  borderColor: colorReMain,
+                  borderWidth: 0,
+                  color: colorReMain
+                },
+                label: {
+                  show: false
+                },
+                emphasis: {
+                  itemStyle: {
+                    borderColor: colorReMain,
+                    borderWidth: 0,
+                    color: colorReMain
+                  }
+                }
+              },
+              {
+                name: "remainCircle", // 结束的圆角
+                value: 0,
+                curVal: value,
+                label: {
+                  show: true,
+                  rotate: true,
+                  position: "inside",
+                  borderRadius: 30,
+                  rich: {
+                    margin: {
+                      width: 6
+                    },
+                    name: {
+                      width: 24,
+                      height: 24,
+                      borderRadius: 10,
+                      backgroundColor: color
+                    }
+                  },
+                  formatter: percent
+                    ? percent < 50
+                      ? "{name|}{margin|}"
+                      : "{margin|}{name|}"
+                    : ""
+                }
+              },
+              {
+                name: "情况",
+                value: value,
+                itemStyle: {
+                  color: color
+                },
+                label: {
+                  show: true,
+                  position: "center",
+                  rich: {
+                    num: {
+                      fontSize: 60,
+                      color: "#FFF",
+                      padding: [5, 0, 0, 0]
+                    }
+                  },
+                  formatter(params) {
+                    return `{num|${params.value}}`;
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      });
+    }
+  },
   components: {}
 };
 </script>

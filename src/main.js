@@ -4,6 +4,7 @@ import router from './route/router';
 import echarts from 'echarts';
 // import china from './assets/json/china.json'
 import Antd from 'ant-design-vue';
+import DataV from '@jiaminghi/data-view'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import moment from 'moment';
@@ -30,6 +31,7 @@ Vue.prototype.$mock = Mock;
 Vue.prototype._ = _;
 Vue.use(VueAxios, axios);
 Vue.use(Antd);
+Vue.use(DataV);
 Vue.use(ElementUI) //使用elementUI
 
 Object.keys(filters).forEach(key => {
