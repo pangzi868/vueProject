@@ -1,17 +1,17 @@
 <template>
-  <div
-    class="img-rotation-div"
-    id="imgRotation"
-    @mousedown="down($event)"
-    @touchstart="down($event)"
-    @mousemove="move($event)"
-    @touchmove="move($event)"
-    @mouseup="end($event)"
-    @touchend="end($event)"
-  >
+  <div class="img-rotation-div" id="imgRotation">
+    <div
+      class="control-div"
+      @mousedown="down($event)"
+      @touchstart="down($event)"
+      @mousemove="move($event)"
+      @touchmove="move($event)"
+      @mouseup="end($event)"
+      @touchend="end($event)"
+    ></div>
     <div v-for="(item, index) in productGrp" :key="index">
       <img
-        :src="(item.type === 'normal' ? companyPic: hoverPic)"
+        :src="(item.type === 'normal' ? companyPic :  shiJudge ? hoverPic : companyPic)"
         alt
         class="pro-img"
         :style="item.style"
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       AUTOSPEED: 1 / 2,
-      MOVEABLESPEED: 60,  // 数字越大，移动距离越小
+      MOVEABLESPEED: 60, // 数字越大，移动距离越小
       productGrp: [
         { name: "长春", type: "normal", style: {}, nameStyle: {} },
         { name: "吉林", type: "normal", style: {}, nameStyle: {} },
@@ -61,7 +61,32 @@ export default {
       maxItem: undefined
     };
   },
-  computed: {},
+  computed: {
+    shiJudge: {
+      get: function() {
+        return this.$store.state.shiJudge;
+      },
+      set: function(newval) {
+        this.$store.commit("newShiJudge", newval);
+      }
+    },
+    wholeJudge: {
+      get: function() {
+        return this.$store.state.wholeJudge;
+      },
+      set: function(newval) {
+        this.$store.commit("newWholeJudge", newval);
+      }
+    },
+    middleJudge: {
+      get: function() {
+        return this.$store.state.middleJudge;
+      },
+      set: function(newval) {
+        this.$store.commit("newMiddleJudge", newval);
+      }
+    }
+  },
   methods: {
     initArc() {
       let container = document.getElementById("imgRotation");
@@ -140,19 +165,20 @@ export default {
           }
         }
       };
-      this.setAnimate = setInterval(
-        (func, that) => {
-          that.speed = that.speed <= 0 ? that.speed - that.AUTOSPEED : 360;
-          func(that.speed);
-        },
-        100,
-        this.fun_animat,
-        that
-      );
+      this.fun_animat(that.speed);
+      // this.setAnimate = setInterval(
+      //   (func, that) => {
+      //     that.speed = that.speed <= 0 ? that.speed - that.AUTOSPEED : 360;
+      //     func(that.speed);
+      //   },
+      //   100,
+      //   this.fun_animat,
+      //   that
+      // );
     },
 
     down(e) {
-      if (this.autoMove) return;
+      if (this.autoMove || !this.shiJudge) return;
       this.downDrag = true;
       let mouseType = e.type.indexOf("mouse") !== -1 ? true : false;
       let clientX = mouseType ? e.clientX : e.touches[0].clientX;
@@ -161,7 +187,7 @@ export default {
       this.dragObj.touchstartY = clientY;
     },
     move(e) {
-      if (this.autoMove) return;
+      if (this.autoMove || !this.shiJudge) return;
       let mouseType = e.type.indexOf("mouse") !== -1 ? true : false;
       if (mouseType && !this.downDrag) return;
       let clientX = mouseType ? e.clientX : e.touches[0].clientX;
@@ -195,6 +221,14 @@ export default {
       }
     },
     end(e) {
+      if (!this.shiJudge) {
+        this.wholeJudge = false;
+        this.middleJudge = false;
+        this.shiJudge = true;
+      } else {
+        return;
+      }
+
       if (this.autoMove) return;
       let prePro = this.$store.state.currentPro;
       if (prePro !== this.maxItem.name) {
@@ -257,6 +291,14 @@ export default {
     font-size: 28px;
     white-space: nowrap;
     color: #fff;
+  }
+  .control-div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    z-index: 20;
   }
 }
 </style>

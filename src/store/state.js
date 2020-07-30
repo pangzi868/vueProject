@@ -9,5 +9,9 @@ export default {
     dialogData: {},
     currentPro: '',
     amplification: {},
-    visual: {}
+    visual: {},
+
+    shiJudge: false,
+    wholeJudge: true,
+    middleJudge: false
 }

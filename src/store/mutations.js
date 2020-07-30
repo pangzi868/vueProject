@@ -16,5 +16,16 @@ export default {
     },
     newVisual(state, obj) {
         state.visual = Object.assign({}, state.visual, obj)
+    },
+
+    // 管理产品切换
+    newShiJudge(state, data) {
+        state.shiJudge = data
+    },
+    newWholeJudge(state, data) {
+        state.wholeJudge = data
+    },
+    newMiddleJudge(state, data) {
+        state.middleJudge = data
     }
 }

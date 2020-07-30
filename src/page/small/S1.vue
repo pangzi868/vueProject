@@ -37,7 +37,19 @@
         </div>
         <div class="message-cloud">
           <img :src="cloudleft" alt class="left-cloud-img" />
-          <img-rotation class="img-rotation" :autoMove="autoMove" />
+          <img
+            :src="wholeJudge ? topCactive : topCnor"
+            alt
+            class="left-cloud-top"
+            @click="wholeClickHander"
+          />
+          <img
+            :src="middleJudge ? middleCactive : middleCnor"
+            alt
+            class="left-cloud-middle"
+            @click="middleClickHander"
+          />
+          <img-rotation class="img-rotation" :autoMove="autoMove" :middleJudge="middleJudge" />
           <div class="control-div" @click="controlMove"></div>
           <img :src="moveCloud" alt class="cloud-img" />
           <span class="cloud-title">智慧审计</span>
@@ -106,10 +118,15 @@ import Title from "@/assets/images/first/title-main.png";
 import ManageTitle from "@/assets/images/first/title-2.png";
 import MoveCloud from "@/assets/images/first/Untitled.png";
 import AnalysisTitle from "@/assets/images/first/title-1.png";
-import CloudLeft from "@/assets/images/first/cloud-left.png";
+import CloudLeft from "@/assets/images/first/cloud-left-ar.png";
 import MessageTitle from "@/assets/images/first/title-3.png";
 import Bg1 from "@/assets/images/first/bg-1.png";
 import Bg2 from "@/assets/images/first/bg-2.png";
+import topCactive from "@/assets/images/first/topCactive.png";
+import topCnor from "@/assets/images/first/topCnor.png";
+import middleCactive from "@/assets/images/first/middleCactive.png";
+import middleCnor from "@/assets/images/first/middleCnor.png";
+
 export default {
   name: "",
   props: [],
@@ -122,6 +139,10 @@ export default {
       analysisTitle: AnalysisTitle,
       moveCloud: MoveCloud,
       cloudleft: CloudLeft,
+      middleCnor: middleCnor,
+      topCnor: topCnor,
+      middleCactive: middleCactive,
+      topCactive: topCactive,
       boxIds: {
         left1: "left1",
         left2: "left2",
@@ -134,7 +155,7 @@ export default {
         bottom1: "bottom1"
       },
 
-      autoMove: true,
+      autoMove: false,
 
       //审计项目计划情况执行分析
       left1Ids: [
@@ -310,10 +331,48 @@ export default {
       }
     };
   },
-  computed: {},
+  computed: {
+    shiJudge: {
+      get: function() {
+        return this.$store.state.shiJudge;
+      },
+      set: function(newval) {
+        this.$store.commit("newShiJudge", newval);
+      }
+    },
+    wholeJudge: {
+      get: function() {
+        return this.$store.state.wholeJudge;
+      },
+      set: function(newval) {
+        this.$store.commit("newWholeJudge", newval);
+      }
+    },
+    middleJudge: {
+      get: function() {
+        return this.$store.state.middleJudge;
+      },
+      set: function(newval) {
+        this.$store.commit("newMiddleJudge", newval);
+      }
+    }
+  },
   methods: {
     controlMove() {
+      if (!this.shiJudge) return;
       this.autoMove = !this.autoMove;
+    },
+    wholeClickHander() {
+      if (this.wholeJudge) return;
+      this.shiJudge = false;
+      this.middleJudge = false;
+      this.wholeJudge = true;
+    },
+    middleClickHander() {
+      if (this.middleJudge) return;
+      this.shiJudge = false;
+      this.wholeJudge = false;
+      this.middleJudge = true;
     }
   },
   components: {
@@ -439,6 +498,21 @@ export default {
           top: 100px;
           height: 2260px;
           width: 2407px;
+        }
+        .left-cloud-top {
+          position: absolute;
+          left: 500px;
+          top: 560px;
+          height: 612px;
+          width: 970px;
+        }
+        .left-cloud-middle {
+          position: absolute;
+          left: 670px;
+          top: 1300px;
+          height: 412px;
+          width: 670px;
+          z-index: 5;
         }
         .img-rotation {
           position: absolute;
