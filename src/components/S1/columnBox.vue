@@ -62,7 +62,7 @@ export default {
             color: "#a8aab0",
             fontStyle: "normal",
             fontFamily: "微软雅黑",
-            fontSize: 42
+            fontSize: 56
           }
         },
         xAxis: [

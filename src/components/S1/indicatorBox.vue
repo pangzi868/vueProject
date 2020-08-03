@@ -44,7 +44,7 @@ export default {
     color: rgba(255, 255, 255, 1);
     font-family: Microsoft YaHei;
     font-weight: bold;
-    font-size: 28px;
+    font-size: 56px;
     letter-spacing: 0px;
     text-align: left;
     padding-left: 40px;
@@ -55,7 +55,7 @@ export default {
     color: rgba(255, 255, 255, 1);
     font-family: PingFang SC;
     font-weight: medium;
-    font-size: 24px;
+    font-size: 56px;
     text-align: left;
 
     .content-num,
@@ -66,6 +66,7 @@ export default {
       color: rgba(255, 179, 88, 1);
       font-size: 128px;
       padding-left: 40px;
+      font-family: Google Sans;
       .content-unit {
         font-size: 56px;
       }
@@ -75,12 +76,14 @@ export default {
       right: 100px;
       width: 160px;
       top: 30px;
+      font-size: 56px;
     }
     .sz {
       position: absolute;
       right: 100px;
       width: 160px;
       top: 90px;
+      font-size: 56px;
     }
   }
 }

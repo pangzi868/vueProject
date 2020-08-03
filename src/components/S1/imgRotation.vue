@@ -288,7 +288,7 @@ export default {
     position: absolute;
     width: 65px;
     height: 28px;
-    font-size: 28px;
+    font-size: 56px;
     white-space: nowrap;
     color: #fff;
   }

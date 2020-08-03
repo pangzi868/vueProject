@@ -62,7 +62,7 @@ export default {
           ],
           textStyle: {
             color: "rgba(255, 255, 255, 0.5)",
-            fontSize: 44
+            fontSize: 48
           }
         },
         color: colorList,
@@ -217,8 +217,9 @@ export default {
           {
             data: y_data,
             axisLabel: {
-              fontSize: 32,
+              fontSize: 56,
               textAlign: "left",
+              padding: [0, 40, 0, 0],
               color: "rgba(255, 255, 255, 0.6)"
             },
             axisLine: {

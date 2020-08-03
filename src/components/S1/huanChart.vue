@@ -84,13 +84,13 @@ export default {
                 color: "#3494BD",
                 rich: {
                   b: {
-                    fontSize: 44,
+                    fontSize: 48,
                     lineHeight: 44,
                     color: "rgba(255,255,255,.7)",
                     padding: [15, 0, 5, 0]
                   },
                   c: {
-                    fontSize: 46,
+                    fontSize: 50,
                     lineHeight: 44,
                     color: "#fff",
                     padding: [15, 0, 25, 0]

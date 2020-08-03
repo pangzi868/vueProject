@@ -223,7 +223,7 @@ export default {
     color: rgba(255, 255, 255, 1);
     font-family: Microsoft YaHei;
     font-weight: regular;
-    font-size: 28px;
+    font-size: 56px;
     line-height: 44px;
     letter-spacing: 0px;
     text-align: left;
@@ -233,7 +233,7 @@ export default {
     color: rgba(0, 255, 163, 1);
     font-family: Google Sans;
     font-weight: bold;
-    font-size: 32px;
+    font-size: 56px;
     line-height: 80px;
     letter-spacing: 0px;
     text-align: left;
@@ -251,6 +251,7 @@ export default {
   width: 44%;
   height: 100%;
   padding: 58px 68px;
+   font-size: 56px;
   color: rgba(255, 255, 255, 1);
   .single-indicator {
     width: 50%;

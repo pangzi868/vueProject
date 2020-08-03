@@ -43,12 +43,14 @@
             class="left-cloud-top"
             @click="wholeClickHander"
           />
+          <span class="whole-par">全部</span>
           <img
             :src="middleJudge ? middleCactive : middleCnor"
             alt
             class="left-cloud-middle"
             @click="middleClickHander"
           />
+          <span class="current-par">本部</span>
           <img-rotation class="img-rotation" :autoMove="autoMove" :middleJudge="middleJudge" />
           <div class="control-div" @click="controlMove"></div>
           <img :src="moveCloud" alt class="cloud-img" />
@@ -60,7 +62,7 @@
         <decorate-1 class="decorate-1" />
         <div class="message-roll">
           <!-- <roll-box /> -->
-          <dv-scroll-board :config="config" style="width:3400px;height:640px" />
+          <dv-scroll-board :config="config" style="width:3400px;height:640px;font-size: 48px;" />
         </div>
       </div>
       <div class="analysis-field sidebar-field">
@@ -467,6 +469,24 @@ export default {
         top: 160px;
         width: 100%;
         height: 2500px;
+        .whole-par {
+          position: absolute;
+          left: 1174px;
+          top: 1000px;
+          display: block;
+          font-size: 100px;
+          color: rgba(255, 224, 114, 1);
+          transform: skew(0deg, -25deg);
+        }
+        .current-par {
+          position: absolute;
+          left: 1174px;
+          top: 1000px;
+          display: block;
+          font-size: 80px;
+          color: rgba(255, 224, 114, 1);
+          transform: skew(0deg, -25deg);
+        }
         .cloud-img {
           position: absolute;
           left: 1976px;
@@ -723,8 +743,21 @@ export default {
     margin: 0 auto;
     margin-top: 135px;
   }
-  .dv-scroll-board {
-    color: rgba(255, 255, 255, 0.5);
+}
+.dv-scroll-board {
+  color: rgba(255, 255, 255, 0.5);
+}
+</style>
+
+<style lang="less">
+.dv-scroll-board {
+  .header {
+    font-size: 48px;
+  }
+  .rows {
+    .row-item {
+      font-size: 56px;
+    }
   }
 }
 </style>

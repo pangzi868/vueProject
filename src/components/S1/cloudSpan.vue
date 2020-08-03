@@ -66,7 +66,7 @@ export default {
   color: rgba(255, 255, 255, 1);
   font-family: Microsoft YaHei;
   font-weight: bold;
-  font-size: 28px;
+  font-size: 56px;
   line-height: 38.01px;
   letter-spacing: 0px;
 }
