@@ -94,7 +94,6 @@ export default {
   },
   methods: {
     toggleModal() {
-      debugger;
       this.modalJudge = !this.modalJudge;
     }
   }

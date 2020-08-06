@@ -23,8 +23,8 @@
       </div>
     </el-header>-->
     <el-main>
-      <slot>这里是内容：{{dialogData}}</slot>
-      <button @mouseup="testClick($event)" @touchend.prevent="testClick($event)">dkjddjkj</button>
+      <slot></slot>
+      <!-- <button @mouseup="testClick($event)" @touchend.prevent="testClick($event)">dkjddjkj</button> -->
     </el-main>
     <!-- <el-footer>
       <span class="dialog-footer">
@@ -170,9 +170,8 @@ export default {
   watch: {
     dialogVisible: function(newValue) {
       this.selectElement = document.getElementById(this.id);
-      this.selectElement.style.left = "35%";
+      this.selectElement.style.left = "24%";
       this.selectElement.style.top = "20%";
-      debugger;
       if (this.selectElement.classList.length > 1) {
         this.selectElement.classList.remove;
       }
@@ -192,40 +191,40 @@ export default {
   height: 0;
   width: 0;
   border: 1px;
-  z-index: 14;
+  z-index: 20;
   top: 20%;
-  left: 35%;
+  left: 24%;
   border-radius: 2px;
 
   // transition: all 0.4s ease-in-out;
   visibility: 0;
   opacity: 0;
   transform: rotate(0.5turn);
-  -webkit-transition: all 0.4s ease-in-out, left 0s, top 0s;
-  -moz-transition: all 0.4s ease-in-out, left 0s, top 0s;
-  -ms-transition: all 0.4s ease-in-out, left 0s, top 0s;
-  -o-transition: all 0.4s ease-in-out, left 0s, top 0s;
-  transition: all 0.4s ease-in-out, left 0s, top 0s;
+  -webkit-transition: all 0.8s ease-in-out, left 0s, top 0s;
+  -moz-transition: all 0.8s ease-in-out, left 0s, top 0s;
+  -ms-transition: all 0.8s ease-in-out, left 0s, top 0s;
+  -o-transition: all 0.8s ease-in-out, left 0s, top 0s;
+  transition: all 0.8s ease-in-out, left 0s, top 0s;
+  border-radius: 34px;
+  box-shadow: rgba(0, 0, 0, 1) 0px -30px 10px;
 }
 .singlemove {
-  -webkit-transition: width 0.4s ease-out, height 0.4s ease-out,
-    opacity 0.2s ease-in, visibility 0.2s ease-in;
-  -moz-transition: width 0.4s ease-out, height 0.4s ease-out,
-    opacity 0.2s ease-in, visibility 0.2s ease-in;
-  -ms-transition: width 0.4s ease-out, height 0.4s ease-out,
-    opacity 0.2s ease-in, visibility 0.2s ease-in;
-  -o-transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.2s ease-in,
-    visibility 0.2s ease-in;
-  transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.2s ease-in,
-    visibility 0.2s ease-in;
-}
-.rotatemove {
+  -webkit-transition: width 0.8s ease-out, height 0.8s ease-out,
+    opacity 0.4s ease-in, visibility 0.4s ease-in;
+  -moz-transition: width 0.8s ease-out, height 0.8s ease-out,
+    opacity 0.4s ease-in, visibility 0.4s ease-in;
+  -ms-transition: width 0.8s ease-out, height 0.8s ease-out,
+    opacity 0.4s ease-in, visibility 0.4s ease-in;
+  -o-transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
+    visibility 0.4s ease-in;
+  transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
+    visibility 0.4s ease-in;
 }
 .trans {
   opacity: 1;
   visibility: 1;
-  height: 500px;
-  width: 500px;
+  height: 2500px;
+  width: 3900px;
   transform: rotate(0);
 }
 .dialog-footer {
@@ -235,7 +234,10 @@ export default {
 .el-main {
   background-color: white;
   font-size: 20px;
-  color: #000;
+  color: #FFF;
+  border-radius: 34px;
+  padding: 78px;
+  background: rgba(45, 100, 121, 1);
 }
 
 .el-footer {

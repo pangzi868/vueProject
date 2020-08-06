@@ -27,5 +27,10 @@ export default {
     },
     newMiddleJudge(state, data) {
         state.middleJudge = data
+    },
+
+    // 存储一屏数据
+    newScreenFirstData(state, data) {
+        state.screenFirstData = data
     }
 }

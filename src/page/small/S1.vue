@@ -1,5 +1,5 @@
 <template>
-  <div class="first-screen">
+  <div class="first-screen" @contextmenu.prevent>
     <div class="top-title">
       <img :src="title" alt class="title-img" />
       <dv-decoration-5 />
@@ -43,7 +43,7 @@
             class="left-cloud-top"
             @click="wholeClickHander"
           />
-          <span class="whole-par">全部</span>
+          <span class="whole-par">全省</span>
           <img
             :src="middleJudge ? middleCactive : middleCnor"
             alt
@@ -52,7 +52,7 @@
           />
           <span class="current-par">本部</span>
           <img-rotation class="img-rotation" :autoMove="autoMove" :middleJudge="middleJudge" />
-          <div class="control-div" @click="controlMove"></div>
+          <div class="control-scroll-div" @click="controlMove"></div>
           <img :src="moveCloud" alt class="cloud-img" />
           <span class="cloud-title">智慧审计</span>
           <cloud-span class="cloud-span" />
@@ -96,10 +96,13 @@
         </hover-box>
       </div>
     </div>
+    <move-modal />
+    <div class="cover-div" v-if="dialogVisible"></div>
   </div>
 </template>
 
 <script>
+import MoveModal from "@/components/moveModal.vue";
 import HoverBox from "@/components/S1/hoverBox.vue";
 import IndicatorBox from "@/components/S1/indicatorBox.vue";
 import ColumnBox from "@/components/S1/columnBox.vue";
@@ -129,10 +132,21 @@ import topCnor from "@/assets/images/first/topCnor.png";
 import middleCactive from "@/assets/images/first/middleCactive.png";
 import middleCnor from "@/assets/images/first/middleCnor.png";
 
+import * as dataJson from "@/assets/dataJson.js";
+
 export default {
   name: "",
   props: [],
-  mounted() {},
+  mounted() {
+    let data = null;
+    if (window.name) {
+      data = JSON.parse(window.name);
+    } else {
+      data = JSON.parse(dataJson.S1);
+    }
+    this.screenFirstData = data;
+    this.initData();
+  },
   data() {
     return {
       title: Title,
@@ -164,31 +178,28 @@ export default {
         { id: "leftIndicator1", name: "项目计划数" },
         { id: "leftIndicator2", name: "年度实际数" }
       ],
-      left1ChartData: [],
+      left1ChartData: null,
       left1ColumnIds: "left1ColumnChart",
-      left1ColumnData: [],
+      left1ColumnData: null,
       left2ColumnIds: "left2ColumnChart",
-      left2ColumnData: [],
+      left2ColumnData: null,
       leftSecChart: [
         { id: "leftSecPie", name: "pie" },
         { id: "leftSecCol", name: "col" }
       ],
-      leftSecData: {
-        pie: [],
-        col: []
-      },
+      leftSecData: null,
       left1LineIds: "left1LineChart",
-      left1LineData: [],
+      left1LineData: null,
       right1ColumnIds: "right1ColumnChart",
-      right1ColumnData: [],
+      right1ColumnData: null,
       right2HuanIds: "right2HuanChart",
-      right2HuanData: [],
+      right2HuanData: null,
       right2LineIds: "right2LineChart",
-      right2LineData: [],
+      right2LineData: null,
       right3BarIds: "right3BarChart",
-      right3BarData: [],
+      right3BarData: null,
       right4LineIds: "right4LineChart",
-      right4LineData: [],
+      right4LineData: null,
       config: {
         header: [
           "序号",
@@ -357,24 +368,59 @@ export default {
       set: function(newval) {
         this.$store.commit("newMiddleJudge", newval);
       }
+    },
+    dialogVisible: {
+      get: function() {
+        return this.$store.state.dialogVisible;
+      },
+      set: function(newValue) {
+        this.$store.commit("newDialogVisible", newValue);
+      }
+    },
+    screenFirstData: {
+      get: function() {
+        return this.$store.state.screenFirstData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newScreenFirstData", newValue);
+      }
+    },
+
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
     }
   },
   methods: {
+    // 初始化全屏数据
+    initData() {
+      this.left1ColumnData = this.screenFirstData.leftFirst;
+      this.leftSecData = this.screenFirstData.leftSecond;
+      this.left2ColumnData = this.screenFirstData.leftThird;
+      this.left1LineData = this.screenFirstData.leftForth;
+    },
     controlMove() {
       if (!this.shiJudge) return;
       this.autoMove = !this.autoMove;
     },
     wholeClickHander() {
-      if (this.wholeJudge) return;
+      if (this.wholeJudge || this.autoMove) return;
       this.shiJudge = false;
       this.middleJudge = false;
       this.wholeJudge = true;
+      this.currentPro = "全省";
     },
     middleClickHander() {
-      if (this.middleJudge) return;
+      if (this.middleJudge || this.autoMove) return;
       this.shiJudge = false;
       this.wholeJudge = false;
       this.middleJudge = true;
+      this.currentPro = "本部";
     }
   },
   components: {
@@ -391,7 +437,8 @@ export default {
     BarChart,
     HuanChart,
     LittleLineChart,
-    "decorate-1": Decorate1
+    "decorate-1": Decorate1,
+    "move-modal": MoveModal
   }
 };
 </script>
@@ -480,8 +527,8 @@ export default {
         }
         .current-par {
           position: absolute;
-          left: 1174px;
-          top: 1000px;
+          left: 1134px;
+          top: 1540px;
           display: block;
           font-size: 80px;
           color: rgba(255, 224, 114, 1);
@@ -540,9 +587,8 @@ export default {
           top: 1400px;
           width: 1500px;
           height: 600px;
-          // background-color: #D24545;
         }
-        .control-div {
+        .control-scroll-div {
           position: absolute;
           left: 2336px;
           top: 720px;
@@ -759,5 +805,14 @@ export default {
       font-size: 56px;
     }
   }
+}
+.cover-div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7680px;
+  height: 4320px;
+  z-index: 18;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 </style>

@@ -1,6 +1,13 @@
 <template>
   <div class="pie-and-col">
     <div v-for="(item, index) in ids" :key="index" :id="item.id" class="inline-chart"></div>
+    <move-modal
+      v-if="modalJudge"
+      id="1111"
+      titlex="1111"
+      :dialogJudge="modalJudge"
+      :dialogData="dialogData"
+    />
   </div>
 </template>
 
@@ -12,8 +19,8 @@ export default {
   mounted() {
     let curId1 = this.ids[0];
     let curId2 = this.ids[1];
-    this.initPie(curId1.id, this.chartData[curId1.name]);
-    this.initCol(curId2.id, this.chartData[curId2.name]);
+    this.initPie(curId1.id, {});
+    this.initCol(curId2.id, {});
   },
   data() {
     return {
@@ -70,7 +77,7 @@ export default {
           {
             name: "姓名",
             type: "pie",
-            radius: [160, 190],
+            radius: [120, 190],
             center: ["45%", "45%"],
             label: {
               show: false,
@@ -81,6 +88,7 @@ export default {
               label: {
                 show: true,
                 fontSize: "20",
+                lineHeight: 64,
                 fontWeight: "bold",
                 formatter: function(params) {
                   return (

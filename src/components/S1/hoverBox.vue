@@ -5,7 +5,9 @@
     @mouseenter="mouseOverHandler($event)"
     @mouseleave="mouseOutHandler($event)"
   >
-    <slot></slot>
+    <dv-border-box-8 :reverse="true">
+      <slot></slot>
+    </dv-border-box-8>
   </div>
 </template>
 

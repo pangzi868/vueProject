@@ -7,11 +7,14 @@ export default {
     },
     dialogVisible: false,
     dialogData: {},
-    currentPro: '',
+    currentPro: '全省',
     amplification: {},
     visual: {},
 
     shiJudge: false,
     wholeJudge: true,
-    middleJudge: false
+    middleJudge: false,
+
+    // 存储一屏数据
+    screenFirstData: {}
 }

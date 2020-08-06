@@ -1,6 +1,7 @@
 <template>
   <div class="loading-div">
-    <div class="middle-div">loading...</div>
+    <!-- <div class="middle-div">loading...</div> -->
+    <dv-loading>Loading...</dv-loading>
   </div>
 </template>
 

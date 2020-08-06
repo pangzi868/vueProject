@@ -2,12 +2,12 @@
   <div class="img-rotation-div" id="imgRotation">
     <div
       class="control-div"
-      @mousedown="down($event)"
-      @touchstart="down($event)"
-      @mousemove="move($event)"
-      @touchmove="move($event)"
-      @mouseup="end($event)"
-      @touchend="end($event)"
+      @mousedown.stop.prevent="down($event)"
+      @touchstart.stop.prevent="down($event)"
+      @mousemove.stop.prevent="move($event)"
+      @touchmove.stop.prevent="move($event)"
+      @mouseup.stop.prevent="end($event)"
+      @touchend.stop.prevent="end($event)"
     ></div>
     <div v-for="(item, index) in productGrp" :key="index">
       <img
@@ -34,11 +34,12 @@ export default {
     return {
       AUTOSPEED: 1 / 2,
       MOVEABLESPEED: 60, // 数字越大，移动距离越小
+      currentPri: "",
       productGrp: [
         { name: "长春", type: "normal", style: {}, nameStyle: {} },
         { name: "吉林", type: "normal", style: {}, nameStyle: {} },
         { name: "四平", type: "normal", style: {}, nameStyle: {} },
-        { name: "辽原", type: "normal", style: {}, nameStyle: {} },
+        { name: "辽源", type: "normal", style: {}, nameStyle: {} },
         { name: "通化", type: "normal", style: {}, nameStyle: {} },
         { name: "白山", type: "normal", style: {}, nameStyle: {} },
         { name: "松原", type: "normal", style: {}, nameStyle: {} },
@@ -158,8 +159,11 @@ export default {
         that.productGrp.forEach((item, index) => {
           item.type = item.name === that.maxItem.name ? "cur" : "normal";
         });
+        let prePro = that.$store.state.currentPro;
+        if (that.currentPri !== that.maxItem.name) {
+          that.currentPri = that.maxItem.name;
+        }
         if (that.autoMove) {
-          let prePro = that.$store.state.currentPro;
           if (prePro !== that.maxItem.name) {
             that.$store.commit("newCurrentPro", that.maxItem.name);
           }
@@ -221,6 +225,12 @@ export default {
       }
     },
     end(e) {
+      this.downDrag = false;
+      if (this.autoMove) return;
+      let prePro = this.$store.state.currentPro;
+      if (prePro !== this.currentPri) {
+        this.$store.commit("newCurrentPro", this.currentPri);
+      }
       if (!this.shiJudge) {
         this.wholeJudge = false;
         this.middleJudge = false;
@@ -229,12 +239,6 @@ export default {
         return;
       }
 
-      if (this.autoMove) return;
-      let prePro = this.$store.state.currentPro;
-      if (prePro !== this.maxItem.name) {
-        this.$store.commit("newCurrentPro", this.maxItem.name);
-      }
-      this.downDrag = false;
       this.dragging = false;
       this.dragObj = {
         moveX: 0,
@@ -294,11 +298,12 @@ export default {
   }
   .control-div {
     position: absolute;
-    bottom: 0;
+    bottom: -30%;
     left: 0;
     width: 100%;
-    height: 50%;
+    height: 80%;
     z-index: 20;
+    cursor: pointer;
   }
 }
 </style>
