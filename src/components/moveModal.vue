@@ -23,8 +23,19 @@
       </div>
     </el-header>-->
     <el-main>
-      <slot></slot>
+      <!-- <slot></slot> -->
       <!-- <button @mouseup="testClick($event)" @touchend.prevent="testClick($event)">dkjddjkj</button> -->
+      <!-- <el-table
+        :data="tableData"
+        height="100%"
+        style="width: 100%"
+        :row-class-name="tableRowClassName"
+      >
+        <el-table-column prop="date" label="日期" width="600"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="300"></el-table-column>
+        <el-table-column prop="address" label="地址"></el-table-column>
+      </el-table>-->
+      <dv-scroll-board :config="config" style="width:100%;height:100%;font-size: 48px;" />
     </el-main>
     <!-- <el-footer>
       <span class="dialog-footer">
@@ -65,7 +76,165 @@ export default {
         touchstartX: 0,
         touchstartY: 0
       },
-      styleArr: ["singlemove", "rotatemove"]
+      styleArr: ["singlemove", "rotatemove"],
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        }
+      ],
+      config: {
+        header: [
+          "序号",
+          "项目名称",
+          "项目类型",
+          "项目状态",
+          "实施单位",
+          "实施时间"
+        ],
+        data: [
+          // [
+          //   "1",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "2",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "3",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "4",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "5",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "6",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "7",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "8",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "9",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ],
+          // [
+          //   "10",
+          //   "国网白山供电公司",
+          //   "问题类型",
+          //   "45",
+          //   "233",
+          //   "341",
+          //   "75",
+          //   "13.21%",
+          //   "32"
+          // ]
+        ],
+        headerBGC: "rgba(15,67,97,0.4)",
+        oddRowBGC: "rgba(50,218,255,0.1)",
+        evenRowBGC: "rgba(15,67,97,0.4)",
+        headerHeight: 128,
+        columnWidth: [250, 550, 550, 550, 550, 500],
+        carousel: "single",
+        align: [
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center"
+        ]
+      }
     };
   },
   computed: {
@@ -92,7 +261,14 @@ export default {
       // alert(this.dialogVisible)
       this.$store.commit("newDialogVisible", false);
     },
-
+    tableRowClassName({ row, rowIndex }) {
+      if ((rowIndex + 2) % 2 === 1) {
+        return "even-row";
+      } else if ((rowIndex + 2) % 2 === 0) {
+        return "odd-row";
+      }
+      return "";
+    },
     // optenDialog(e) {
     //   this.dialogVisible = true;
     //   // alert(this.dialogVisible)
@@ -232,9 +408,8 @@ export default {
 }
 
 .el-main {
-  background-color: white;
   font-size: 20px;
-  color: #FFF;
+  color: #fff;
   border-radius: 34px;
   padding: 78px;
   background: rgba(45, 100, 121, 1);
@@ -252,5 +427,27 @@ export default {
 
 .el-aside {
   color: #333;
+}
+</style>
+
+<style lang="less">
+.el-table {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 54px;
+
+  .odd-row {
+    background: rgba(50, 218, 255, 0.1);
+  }
+  .even-row {
+    background: rgba(15, 67, 97, 0.4);
+  }
+  .el-table__row {
+    height: 64px;
+    line-height: 64px;
+    .cell {
+      line-height: 64px;
+    }
+  }
 }
 </style>

@@ -117,7 +117,6 @@ export default {
       this.modalJudge = !this.modalJudge;
     },
     controlMove() {
-      debugger;
       this.autoMove = !this.autoMove;
     }
   },

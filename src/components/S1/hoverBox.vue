@@ -93,8 +93,10 @@ export default {
 .transform-test-div {
   // 放大x， y
   transform: scale(1.03, 1.03);
+  -webkit-transform: scale(1.03, 1.03);
   // 位移 x， y
   transform: translate(1.03, 1.03);
+  -webkit-transform: translate(1.03, 1.03);
 }
 .visual {
   opacity: 0.3;

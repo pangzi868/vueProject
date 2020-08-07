@@ -528,7 +528,7 @@ export default {
         .current-par {
           position: absolute;
           left: 1134px;
-          top: 1540px;
+          top: 1580px;
           display: block;
           font-size: 80px;
           color: rgba(255, 224, 114, 1);
@@ -572,6 +572,7 @@ export default {
           top: 560px;
           height: 612px;
           width: 970px;
+          cursor: pointer;
         }
         .left-cloud-middle {
           position: absolute;
@@ -580,6 +581,7 @@ export default {
           height: 412px;
           width: 670px;
           z-index: 5;
+          cursor: pointer;
         }
         .img-rotation {
           position: absolute;

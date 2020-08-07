@@ -7,14 +7,53 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    this.initColumnChart(this.ids, this.chartData);
+    this.initChartData();
+    this.initColumnChart(this.ids, this.chartData, this.currentPro);
   },
   data() {
-    return {};
+    return {
+      dataIndex: 0,
+      xAxis: null,
+      yAxis1: null,
+      yAxis2: null,
+      type: null
+    };
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
+    }
+  },
   methods: {
-    initColumnChart(id, data) {
+    // 处理数据
+    initChartData() {
+      if (!this.chartData || JSON.stringify(this.chartData) == '"{}"') return;
+      this.type = Array.from(new Set(this.chartData.x[1].data));
+      this.xAxis = this.chartData.y.map((item, index) => {
+        return item.name;
+      });
+      this.yAxis1 = [];
+      this.yAxis2 = [];
+      this.chartData.x[0].data.map((item, index) => {
+        if (item === this.currentPro) {
+          this.chartData.y.map((items, indexs) => {
+            let num = this.type.indexOf(this.chartData.x[1].data[index]);
+            num === 0
+              ? this.yAxis1.push(items.data[index])
+              : this.yAxis2.push(items.data[index]);
+          });
+        }
+      });
+    },
+
+    initColumnChart(id, data, cp) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
       let myCharts = this.$echarts.init(document.getElementById(id));
       myCharts.setOption({
         tooltip: {
@@ -40,8 +79,7 @@ export default {
           bottom: "1%",
           top: "20%",
           //	padding:'0 0 10 0',
-          containLabel: true,
-          
+          containLabel: true
         },
         legend: {
           //图例组件，颜色和名字
@@ -50,16 +88,23 @@ export default {
           itemGap: 64,
           itemWidth: 64,
           itemHeight: 12,
-          data: [
-            {
-              name: "计划数",
-              icon: 'rect'
-            },
-            {
-              name: "实际数",
-              icon: 'rect'
-            }
-          ],
+          data: this.type
+            ? this.type.map((item, index) => {
+                return {
+                  name: item,
+                  icon: "rect"
+                };
+              })
+            : [
+                {
+                  name: "计划数",
+                  icon: "rect"
+                },
+                {
+                  name: "实际数",
+                  icon: "rect"
+                }
+              ],
           textStyle: {
             color: "#a8aab0",
             fontStyle: "normal",
@@ -71,19 +116,21 @@ export default {
           {
             type: "category",
             //	boundaryGap: true,//坐标轴两边留白
-            data: [
-              "22:18",
-              "22:23",
-              "22:25",
-              "22:28",
-              "22:30",
-              "22:33",
-              "22:35",
-              "22:40",
-              "22:18",
-              "22:23",
-              "22:25"
-            ],
+            data: this.xAxis
+              ? this.xAxis
+              : [
+                  "22:18",
+                  "22:23",
+                  "22:25",
+                  "22:28",
+                  "22:30",
+                  "22:33",
+                  "22:35",
+                  "22:40",
+                  "22:18",
+                  "22:23",
+                  "22:25"
+                ],
             axisLabel: {
               //坐标轴刻度标签的相关设置。
               //		interval: 0,//设置为 1，表示『隔一个标签显示一个标签』
@@ -190,7 +237,9 @@ export default {
                 shadowBlur: 20
               }
             },
-            data: [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60]
+            data: this.yAxis1
+              ? this.yAxis1
+              : [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60]
           },
           {
             name: "实际数",
@@ -235,7 +284,9 @@ export default {
                 shadowBlur: 20
               }
             },
-            data: [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60]
+            data: this.yAxis2
+              ? this.yAxis2
+              : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60]
           }
         ]
       });
@@ -244,7 +295,12 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData);
+      this.initChartData();
+      this.initColumnChart(this.ids, newVal, this.currentPro);
+    },
+    currentPro: function(newVal) {
+      this.initChartData();
+      this.initColumnChart(this.ids, this.chartData, newVal);
     }
   }
 };

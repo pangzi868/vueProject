@@ -17,20 +17,83 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
+    this.initChartData();
     let curId1 = this.ids[0];
     let curId2 = this.ids[1];
-    this.initPie(curId1.id, {});
-    this.initCol(curId2.id, {});
+    this.initPie(curId1.id);
+    this.initCol(curId2.id);
   },
   data() {
     return {
       dialogData: "",
-      modalJudge: false
+      modalJudge: false,
+
+      dataIndex: 0,
+      xAxis: null,
+      yAxis1: null,
+      yAxis2: null,
+      yAxis3: null,
+      type: null,
+      leftData: null
     };
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
+    }
+  },
   methods: {
-    initPie(curId, curData) {
+    // 处理数据
+    initChartData() {
+      if (!this.chartData || JSON.stringify(this.chartData) == '"{}"') return;
+      this.type = Array.from(new Set(this.chartData.x[1].data));
+      this.xAxis = this.chartData.y.map((item, index) => {
+        return item.name;
+      });
+      this.yAxis1 = [];
+      this.yAxis2 = [];
+      this.yAxis3 = [];
+      this.chartData.x[0].data.map((item, index) => {
+        if (item === this.currentPro) {
+          this.chartData.y.map((items, indexs) => {
+            let num = this.type.indexOf(this.chartData.x[1].data[index]);
+            switch (num) {
+              case 0:
+                this.yAxis1.push(items.data[index]);
+                break;
+              case 1:
+                this.yAxis2.push(items.data[index]);
+                break;
+              case 2:
+                this.yAxis3.push(items.data[index]);
+                break;
+              default:
+                break;
+            }
+          });
+        }
+      });
+
+      this.leftData = [];
+      let temp1 = this.yAxis1.reduce((pre, cur) => {
+        return Number(pre) + Number(cur);
+      });
+      let temp2 = this.yAxis2.reduce((pre, cur) => {
+        return Number(pre) + Number(cur);
+      });
+      let temp3 = this.yAxis3.reduce((pre, cur) => {
+        return Number(pre) + Number(cur);
+      });
+      this.leftData = [temp1, temp2, temp3];
+    },
+
+    initPie(curId) {
       const colorList = [
         "rgba(0,87,248,1)",
         "rgba(255,179,88,1)",
@@ -53,20 +116,27 @@ export default {
           itemGap: 64,
           itemWidth: 22,
           itemHeight: 40,
-          data: [
-            {
-              name: "南京a",
-              icon: "roundRect"
-            },
-            {
-              name: "南京b",
-              icon: "roundRect"
-            },
-            {
-              name: "南京c",
-              icon: "roundRect"
-            }
-          ],
+          data: this.type
+            ? this.type.map((item, index) => {
+                return {
+                  name: item,
+                  icon: "roundRect"
+                };
+              })
+            : [
+                {
+                  name: "南京a",
+                  icon: "roundRect"
+                },
+                {
+                  name: "南京b",
+                  icon: "roundRect"
+                },
+                {
+                  name: "南京c",
+                  icon: "roundRect"
+                }
+              ],
           textStyle: {
             color: "rgba(255, 255, 255, 0.5)",
             fontSize: 48
@@ -122,11 +192,18 @@ export default {
               borderWidth: 3,
               borderColor: "#082b3a"
             },
-            data: [
-              { name: "南京a", value: 100 },
-              { name: "南京b", value: 100 },
-              { name: "南京c", value: 100 }
-            ]
+            data: this.leftData
+              ? this.leftData.map((item, index) => {
+                  return {
+                    name: this.type[index],
+                    value: item
+                  };
+                })
+              : [
+                  { name: "南京a", value: 100 },
+                  { name: "南京b", value: 100 },
+                  { name: "南京c", value: 100 }
+                ]
           }
         ]
       });
@@ -136,7 +213,7 @@ export default {
       });
     },
 
-    initCol(curId, curData) {
+    initCol(curId) {
       var spNum = 5,
         _max = 100;
       var legendData = ["常住人口", "户籍人口", "农村人口", "城镇居民"];
@@ -223,7 +300,7 @@ export default {
         },
         yAxis: [
           {
-            data: y_data,
+            data: this.xAxis ? this.xAxis : y_data,
             axisLabel: {
               fontSize: 56,
               textAlign: "left",
@@ -242,7 +319,7 @@ export default {
           },
           {
             show: false,
-            data: y_data,
+            data: this.xAxis ? this.xAxis : y_data,
             axisLine: {
               show: false
             }
@@ -251,7 +328,7 @@ export default {
         series: [
           {
             type: "bar",
-            name: "常住人口",
+            name: this.type ? this.type[0] : "常住人口",
             stack: "2",
             label: _label,
             legendHoverLink: false,
@@ -264,11 +341,11 @@ export default {
                 color: "rgba(0,87,248,1)"
               }
             },
-            data: _data1
+            data: this.yAxis1 ? this.yAxis1 : _data1
           },
           {
             type: "bar",
-            name: "户籍人口",
+            name: this.type ? this.type[1] : "户籍人口",
             stack: "2",
             legendHoverLink: false,
             barWidth: 40,
@@ -281,12 +358,12 @@ export default {
                 color: "rgba(255,179,88,1)"
               }
             },
-            data: _data2
+            data: this.yAxis2 ? this.yAxis2 : _data2
           },
           {
             type: "bar",
             stack: "2",
-            name: "农村人口",
+            name: this.type ? this.type[2] : "农村人口",
             legendHoverLink: false,
             barWidth: 40,
             label: _label,
@@ -298,7 +375,7 @@ export default {
                 color: "rgba(0,247,255,1)"
               }
             },
-            data: _data3
+            data: this.yAxis3 ? this.yAxis3 : _data3
           }
         ]
       });
@@ -309,10 +386,18 @@ export default {
   },
   watch: {
     chartData: function(newVal) {
+      this.initChartData();
       let curId1 = this.ids[0];
       let curId2 = this.ids[1];
-      this.initPie(curId1.id, this.chartData[curId1.name]);
-      this.initCol(curId2.id, this.chartData[curId2.name]);
+      this.initPie(curId1.id);
+      this.initCol(curId2.id);
+    },
+    currentPro: function(newVal) {
+      this.initChartData();
+      let curId1 = this.ids[0];
+      let curId2 = this.ids[1];
+      this.initPie(curId1.id);
+      this.initCol(curId2.id);
     }
   }
 };
