@@ -27,6 +27,28 @@ export default {
       let positionLeft = 0.4,
         max = 100 + 2 * positionLeft;
       myCharts.setOption({
+        tooltip: {
+          //提示框组件
+          trigger: "axis",
+
+          formatter: "{b1}<br />{a1}: {c1}",
+          axisPointer: {
+            type: "shadow",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          },
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24]
+        },
         grid: [
           {
             left: "5%",
@@ -111,7 +133,7 @@ export default {
             ]
           },
           {
-            name: "条",
+            name: "条数",
             type: "bar",
             stack: "b",
             yAxisIndex: 0,

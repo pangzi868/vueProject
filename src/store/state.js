@@ -16,5 +16,6 @@ export default {
     middleJudge: false,
 
     // 存储一屏数据
-    screenFirstData: {}
+    screenFirstData: {},
+    leftSecAux: {}
 }

@@ -32,5 +32,8 @@ export default {
     // 存储一屏数据
     newScreenFirstData(state, data) {
         state.screenFirstData = data
+    },
+    newLeftSecAux(state, data) {
+        state.leftSecAux = data
     }
 }

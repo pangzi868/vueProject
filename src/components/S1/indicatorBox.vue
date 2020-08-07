@@ -4,7 +4,7 @@
       <span class="indicator-title">{{item.name}}</span>
       <div class="indicator-content">
         <span class="content-num">
-          777
+          {{indData[item.keyV]}}
           <span class="content-unit">个</span>
         </span>
         <span class="hb">环比</span>
@@ -18,13 +18,60 @@
 export default {
   name: "",
   props: ["ids", "chartData"],
-  mounted() {},
-  data() {
-    return {};
+  mounted() {
+    for (let i in this.ids) {
+      this.initData(this.ids[i], this.chartData, i);
+    }
   },
-  computed: {},
-  methods: {},
-  components: {}
+  data() {
+    return {
+      indData: {
+        plan: 0,
+        actual: 0
+      }
+    };
+  },
+  computed: {
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
+    }
+  },
+  methods: {
+    initData(id, chartData, index) {
+      let temp = 0;
+      debugger;
+      if (this.currentPro === "全省") {
+        temp = chartData
+          ? chartData.y[index].data.reduce((pre, cur) => {
+              return Number(pre) + Number(cur);
+            })
+          : 0;
+      } else {
+        let curIndex = chartData.x[0].data.indexOf(this.currentPro);
+        temp = chartData ? chartData.y[index].data[curIndex] : 0;
+      }
+      this.indData[id.keyV] = temp;
+    }
+  },
+  components: {},
+  watch: {
+    currentPro: function() {
+      for (let i in this.ids) {
+        this.initData(this.ids[i], this.chartData, i);
+      }
+    },
+    chartData: function(newVal) {
+      for (let i in this.ids) {
+        this.initData(this.ids[i], newVal, i);
+      }
+    }
+  }
 };
 </script>
 

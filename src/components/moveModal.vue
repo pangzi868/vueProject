@@ -25,17 +25,21 @@
     <el-main>
       <!-- <slot></slot> -->
       <!-- <button @mouseup="testClick($event)" @touchend.prevent="testClick($event)">dkjddjkj</button> -->
-      <!-- <el-table
-        :data="tableData"
+      <el-table
+        :data="currentData"
         height="100%"
         style="width: 100%"
         :row-class-name="tableRowClassName"
+        header-row-class-name="header-row"
+        :header-cell-style="rowClass"
       >
-        <el-table-column prop="date" label="日期" width="600"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="300"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-      </el-table>-->
-      <dv-scroll-board :config="config" style="width:100%;height:100%;font-size: 48px;" />
+        <el-table-column prop="number" label="序号" width="300"></el-table-column>
+        <el-table-column prop="name" label="项目名称" width="1500"></el-table-column>
+        <el-table-column prop="type" label="项目类型" width="600"></el-table-column>
+        <el-table-column prop="status" label="项目状态" width="300"></el-table-column>
+        <el-table-column prop="part" label="实施单位" width="300"></el-table-column>
+        <el-table-column prop="date" label="实施时间"></el-table-column>
+      </el-table>
     </el-main>
     <!-- <el-footer>
       <span class="dialog-footer">
@@ -50,6 +54,7 @@
 export default {
   name: "Window",
   created() {
+    this.initColumn(this.dialogData, this.currentPro, this.leftSecAux);
     // this.dialogJudge ? this.optenDialog() : this.closeDialog();
   },
   props: {
@@ -77,164 +82,7 @@ export default {
         touchstartY: 0
       },
       styleArr: ["singlemove", "rotatemove"],
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
-      config: {
-        header: [
-          "序号",
-          "项目名称",
-          "项目类型",
-          "项目状态",
-          "实施单位",
-          "实施时间"
-        ],
-        data: [
-          // [
-          //   "1",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "2",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "3",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "4",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "5",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "6",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "7",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "8",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "9",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ],
-          // [
-          //   "10",
-          //   "国网白山供电公司",
-          //   "问题类型",
-          //   "45",
-          //   "233",
-          //   "341",
-          //   "75",
-          //   "13.21%",
-          //   "32"
-          // ]
-        ],
-        headerBGC: "rgba(15,67,97,0.4)",
-        oddRowBGC: "rgba(50,218,255,0.1)",
-        evenRowBGC: "rgba(15,67,97,0.4)",
-        headerHeight: 128,
-        columnWidth: [250, 550, 550, 550, 550, 500],
-        carousel: "single",
-        align: [
-          "center",
-          "center",
-          "center",
-          "center",
-          "center",
-          "center"
-        ]
-      }
+      currentData: []
     };
   },
   computed: {
@@ -253,9 +101,47 @@ export default {
       set: function(newVal) {
         this.$store.commit("newDialogData", newVal);
       }
+    },
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
+    },
+    leftSecAux: {
+      get: function() {
+        return this.$store.state.leftSecAux;
+      },
+      set: function(newVal) {
+        this.$store.commit("newLeftSecAux", newVal);
+      }
     }
   },
   methods: {
+    // 初始化数据
+    initColumn(type, pro, leftSecAux) {
+      if (!leftSecAux || leftSecAux == undefined) return;
+      let temp = [];
+      let tempAux = leftSecAux.x;
+      leftSecAux.x[0].data.forEach((item, index) => {
+        if (tempAux[3].data[index] === type && tempAux[4].data[index] === pro) {
+          let tempItem = {
+            number: tempAux[0].data[index],
+            name: tempAux[1].data[index],
+            type: tempAux[2].data[index],
+            status: tempAux[3].data[index],
+            part: tempAux[4].data[index],
+            date: tempAux[5].data[index]
+          };
+          temp.push(tempItem);
+        }
+      });
+      this.currentData = [...temp];
+    },
+
     closeDialog(e) {
       this.dialogVisible = false;
       // alert(this.dialogVisible)
@@ -268,6 +154,12 @@ export default {
         return "odd-row";
       }
       return "";
+    },
+    rowClass() {
+      return "background: rgba(0,0,0,0);color: rgba(255, 255, 255, 0.8);font-weight: 600";
+    },
+    tableHeaderRowClassName() {
+      return "header-row";
     },
     // optenDialog(e) {
     //   this.dialogVisible = true;
@@ -354,6 +246,12 @@ export default {
       this.selectElement.classList.add(
         this.styleArr[parseInt(Math.random() * 10) % this.styleArr.length]
       );
+    },
+    currentPro: function(newVal) {
+      this.initColumn(this.dialogData, newVal, this.leftSecAux);
+    },
+    dialogData: function(newVal) {
+      this.initColumn(newVal, this.currentPro, this.leftSecAux);
     }
   }
 };
@@ -433,9 +331,24 @@ export default {
 <style lang="less">
 .el-table {
   background-color: rgba(0, 0, 0, 0.1);
-  color: #fff;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 54px;
 
+  thead {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .header-row {
+    background-color: rgba(15, 67, 97, 0.4);
+    height: 78px;
+    line-height: 78px;
+    .cell {
+      text-align: center;
+      line-height: 78px;
+    }
+    th.is-leaf {
+      border-bottom: 0;
+    }
+  }
   .odd-row {
     background: rgba(50, 218, 255, 0.1);
   }
@@ -443,11 +356,21 @@ export default {
     background: rgba(15, 67, 97, 0.4);
   }
   .el-table__row {
-    height: 64px;
-    line-height: 64px;
+    height: 78px;
+    line-height: 78px;
     .cell {
-      line-height: 64px;
+      text-align: center;
+      line-height: 78px;
     }
   }
+  td {
+    border-bottom: 0;
+  }
+  &::before {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: rgba(0, 0, 0, 0);
 }
 </style>

@@ -34,7 +34,8 @@ export default {
       yAxis2: null,
       yAxis3: null,
       type: null,
-      leftData: null
+      leftData: null,
+      total: null
     };
   },
   computed: {
@@ -91,6 +92,7 @@ export default {
         return Number(pre) + Number(cur);
       });
       this.leftData = [temp1, temp2, temp3];
+      this.total = temp1 + temp2 + temp3;
     },
 
     initPie(curId) {
@@ -107,7 +109,24 @@ export default {
       let chart = this.$echarts.init(document.getElementById(curId));
       chart.setOption({
         tooltip: {
-          trigger: "item"
+          trigger: "item",
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
+          axisPointer: {
+            type: "shadow",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          },
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          },
+          formatter: "{b}<br />{a}: {c}"
         },
         legend: {
           orient: "horizontal",
@@ -215,7 +234,7 @@ export default {
 
     initCol(curId) {
       var spNum = 5,
-        _max = 100;
+        _max = this.total;
       var legendData = ["常住人口", "户籍人口", "农村人口", "城镇居民"];
       var y_data = ["经济责任", "工程", "财务收支", "营销管理", "人资管理"];
       var _data1 = [10, 15, 10, 13, 15],
@@ -253,12 +272,21 @@ export default {
         },
         tooltip: {
           show: true,
-          backgroundColor: "#fff",
-          borderColor: "#ddd",
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
           borderWidth: 1,
+          padding: [12, 24],
+          axisPointer: {
+            type: "shadow",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          },
           textStyle: {
-            color: "#3c3c3c",
-            fontSize: 16
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
           },
           formatter: function(p) {
             var _arr = p.seriesName.split("/"),

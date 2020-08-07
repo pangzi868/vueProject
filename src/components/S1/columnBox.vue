@@ -38,8 +38,12 @@ export default {
               backgroundColor: "#6a7985"
             }
           },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
           textStyle: {
-            color: "#fff",
+            color: "rgba(255, 255, 255, 0.8)",
             fontStyle: "normal",
             fontFamily: "微软雅黑",
             fontSize: 52

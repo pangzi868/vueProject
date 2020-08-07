@@ -11,7 +11,12 @@
         </div>
         <hover-box class="sidebar-first left-side-bar" :ids="boxIds['left1']">
           <div class="sidebar-content-title">审计项目计划情况执行分析</div>
-          <indicator-box class="indicator-box" :ids="left1Ids" :chartData="left1ChartData" />
+          <indicator-box
+            class="indicator-box"
+            :v-if="dataJudge"
+            :ids="left1Ids"
+            :chartData="left1ChartData"
+          />
           <column-box
             class="left-in-column-box"
             :ids="left1ColumnIds"
@@ -173,10 +178,12 @@ export default {
 
       autoMove: false,
 
+      dataJudge: false,
+
       //审计项目计划情况执行分析
       left1Ids: [
-        { id: "leftIndicator1", name: "项目计划数" },
-        { id: "leftIndicator2", name: "年度实际数" }
+        { id: "leftIndicator1", name: "项目计划数", keyV: "plan" },
+        { id: "leftIndicator2", name: "项目实际数", keyV: "actual" }
       ],
       left1ChartData: null,
       left1ColumnIds: "left1ColumnChart",
@@ -394,15 +401,29 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurrentPro", newVal);
       }
+    },
+
+    leftSecAux: {
+      get: function() {
+        return this.$store.state.leftSecAux;
+      },
+      set: function(newVal) {
+        this.$store.commit("newLeftSecAux", newVal);
+      }
     }
   },
   methods: {
     // 初始化全屏数据
     initData() {
+      this.left1ChartData = this.screenFirstData.leftFirst;
       this.left1ColumnData = this.screenFirstData.leftFirst;
       this.leftSecData = this.screenFirstData.leftSecond;
       this.left2ColumnData = this.screenFirstData.leftThird;
       this.left1LineData = this.screenFirstData.leftForth;
+      this.leftSecAux = this.screenFirstData.leftSecAux
+      this.$nextTick(() => {
+        this.dataJudge = true;
+      });
     },
     controlMove() {
       if (!this.shiJudge) return;
