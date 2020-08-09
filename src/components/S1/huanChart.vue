@@ -9,22 +9,42 @@ export default {
   props: ["ids", "chartData"],
   created() {},
   mounted() {
-    let temp = [
-      { name: "财务", value: 12.66 },
-      { name: "人资", value: 9.23 },
-      { name: "营销", value: 17.41 },
-      { name: "物资", value: 30.34 },
-      { name: "工程", value: 30.34 }
-    ];
-    this.initChart(this.ids, temp);
-    // this.initChart(this.ids, this.chartData);
+    // this.initChart(this.ids, temp);
+    this.initChart(this.ids, this.chartData, this.currentPro);
   },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
+    }
+  },
   methods: {
-    initChart(chartId, chartData) {
+    initChart(chartId, data, cp) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
+      let temp = [
+        { name: "财务", value: 0 },
+        { name: "营销", value: 0 },
+        { name: "工程", value: 0 },
+        { name: "物资", value: 0 },
+        { name: "人资", value: 0 }
+      ];
+      let type = ["财务", "营销", "工程", "物资", "人资"];
+
+      data.x[0].data.forEach((item, index) => {
+        if (item === cp) {
+          let num = type.indexOf(data.x[1].data[index]);
+          temp[num].value = data.y[0].data[index];
+        }
+      });
+
       let myChart = this.$echarts.init(document.getElementById(chartId));
       myChart.setOption({
         color: [
@@ -98,7 +118,7 @@ export default {
                 }
               }
             },
-            data: chartData
+            data: temp
           },
           {
             type: "pie",
@@ -128,7 +148,10 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initChart(this.ids, newVal);
+      this.initChart(this.ids, newVal, this.currentPro);
+    },
+    currentPro: function(newVal) {
+      this.initChart(this.ids, this.chartData, newVal);
     }
   }
 };

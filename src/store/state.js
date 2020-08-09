@@ -17,5 +17,6 @@ export default {
 
     // 存储一屏数据
     screenFirstData: {},
-    leftSecAux: {}
+    leftSecAux: {},
+    projectCondition: {}
 }

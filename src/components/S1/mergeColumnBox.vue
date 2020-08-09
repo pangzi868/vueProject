@@ -7,14 +7,25 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    this.initColumnChart(this.ids, this.chartData);
+    this.initColumnChart(this.ids, this.chartData, this.currentPro);
   },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
+    }
+  },
   methods: {
-    initColumnChart(id, data) {
+    initColumnChart(id, data, currentPro) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
       let myCharts = this.$echarts.init(document.getElementById(id));
       myCharts.setOption({
         tooltip: {
@@ -36,7 +47,7 @@ export default {
           backgroundColor: "rgba(70,130,180,0.8)",
           borderColor: "rgba(47,79,79,1)",
           borderWidth: 1,
-          padding: [12, 24],
+          padding: [12, 24]
         },
         grid: {
           left: "3%",
@@ -55,11 +66,11 @@ export default {
           itemHeight: 44,
           data: [
             {
-              name: "整改数"
+              name: data.y ? data.y[0].name : "整改数"
               //icon:'image://../wwwroot/js/url2.png', //路径
             },
             {
-              name: "未整改数"
+              name: data.y ? data.y[1].name : "未整改数"
             }
           ],
           textStyle: {
@@ -73,19 +84,21 @@ export default {
           {
             type: "category",
             //	boundaryGap: true,//坐标轴两边留白
-            data: [
-              "22:18",
-              "22:23",
-              "22:25",
-              "22:28",
-              "22:30",
-              "22:33",
-              "22:35",
-              "22:40",
-              "22:18",
-              "22:23",
-              "22:25"
-            ],
+            data: data.x
+              ? data.x[0].data
+              : [
+                  "22:18",
+                  "22:23",
+                  "22:25",
+                  "22:28",
+                  "22:30",
+                  "22:33",
+                  "22:35",
+                  "22:40",
+                  "22:18",
+                  "22:23",
+                  "22:25"
+                ],
             axisLabel: {
               //坐标轴刻度标签的相关设置。
               //		interval: 0,//设置为 1，表示『隔一个标签显示一个标签』
@@ -135,7 +148,7 @@ export default {
             splitLine: {
               show: true,
               lineStyle: {
-                color: 'rgba(255,255,255,1)',
+                color: "rgba(255,255,255,1)",
                 opacity: 0.2
               }
             }
@@ -143,10 +156,44 @@ export default {
         ],
         series: [
           {
-            name: "整改数",
+            name: data.y ? data.y[0].name : "整改数",
             stack: "总量",
             type: "bar",
-            data: [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60],
+            data: data.y
+              ? data.y[0].data.map((item, index) => {
+                  if (data.x[0].data[index] === currentPro) {
+                    return {
+                      value: item,
+                      itemStyle: {
+                        normal: {
+                          show: true,
+                          color: "rgba(255,165,0,1)",
+                          // color: new this.$echarts.graphic.LinearGradient(
+                          //   0,
+                          //   0,
+                          //   0,
+                          //   1,
+                          //   [
+                          //     {
+                          //       offset: 0,
+                          //       color: "rgba(255,165,0,1)"
+                          //     },
+                          //     {
+                          //       offset: 1,
+                          //       color: "rgba(255,140,0,1)"
+                          //     }
+                          //   ]
+                          // ),
+                          barBorderRadius: 0,
+                          borderWidth: 0
+                        }
+                      }
+                    };
+                  } else {
+                    return item;
+                  }
+                })
+              : [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60],
             barWidth: 48,
             barGap: 0, //柱间距离
             itemStyle: {
@@ -169,10 +216,44 @@ export default {
             }
           },
           {
-            name: "未整改数",
+            name: data.y ? data.y[1].name : "未整改数",
             stack: "总量",
             type: "bar",
-            data: [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60],
+            data: data.y
+              ? data.y[1].data.map((item, index) => {
+                  if (data.x[0].data[index] === currentPro) {
+                    return {
+                      value: item,
+                      itemStyle: {
+                        normal: {
+                          show: true,
+                          color: "rgba(255,228,181,1)",
+                          // color: new this.$echarts.graphic.LinearGradient(
+                          //   0,
+                          //   0,
+                          //   0,
+                          //   1,
+                          //   [
+                          //     {
+                          //       offset: 0,
+                          //       color: "rgba(255,228,181,1)"
+                          //     },
+                          //     {
+                          //       offset: 1,
+                          //       color: "rgba(255,222,173,1)"
+                          //     }
+                          //   ]
+                          // ),
+                          barBorderRadius: 0,
+                          borderWidth: 0
+                        }
+                      }
+                    };
+                  } else {
+                    return item;
+                  }
+                })
+              : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60],
             barWidth: 48,
             barGap: 0, //柱间距离
             itemStyle: {
@@ -201,7 +282,10 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData);
+      this.initColumnChart(this.ids, newVal, this.currentPro);
+    },
+    currentPro: function(newVal) {
+      this.initColumnChart(this.ids, this.chartData, newVal);
     }
   }
 };

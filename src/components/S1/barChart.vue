@@ -7,14 +7,43 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    this.initBarChart(this.ids, this.chartData);
+    this.initBarChart(this.ids, this.chartData, this.currentPro);
   },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    currentPro: {
+      get: function() {
+        return this.$store.state.currentPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurrentPro", newVal);
+      }
+    }
+  },
   methods: {
-    initBarChart(id, data) {
+    initBarChart(id, data, cp) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
+
+      let type = ["财务", "营销", "工程", "物资", "人资"];
+      let proName = ["", "", "", "", ""];
+      var dataLine = [0, 0, 0, 0, 0];
+      data.x[0].data.forEach((item, index) => {
+        if (item === cp) {
+          let num = type.indexOf(data.x[1].data[index]);
+          proName[num] = data.x[2].data[index];
+          dataLine[num] = Number(data.y[0].data[index]);
+          // dataLine[num] = 100;
+        }
+      });
+      let positionLeft = 0,
+        max = Math.max.apply(null, dataLine),
+        lineMax = max,
+        whiteMax = max,
+        blackMax = max;
+      debugger;
       let myCharts = this.$echarts.init(document.getElementById(id));
       var myColor = [
         "rgba(255,179,88,1)",
@@ -23,9 +52,6 @@ export default {
         "rgba(49,102,237,1)",
         "rgba(0,247,255,1)"
       ];
-      var dataLine = [88, 66, 33, 25, 12];
-      let positionLeft = 0.4,
-        max = 100 + 2 * positionLeft;
       myCharts.setOption({
         tooltip: {
           //提示框组件
@@ -67,7 +93,7 @@ export default {
         ],
         xAxis: [
           {
-            max: max,
+            max: lineMax,
             show: false
           }
         ],
@@ -82,7 +108,7 @@ export default {
                 fontSize: 56
               }
             },
-            data: [
+            data: proName || [
               "财务资产",
               "工程项目",
               "合同管理",
@@ -154,7 +180,7 @@ export default {
             type: "bar",
             yAxisIndex: 1,
             barGap: "-100%",
-            data: [99.8, 99.9, 99.9, 99.9, 99.9],
+            data: [whiteMax, whiteMax, whiteMax, whiteMax, whiteMax],
             barWidth: 51,
             itemStyle: {
               normal: {
@@ -169,7 +195,7 @@ export default {
             type: "bar",
             yAxisIndex: 2,
             barGap: "-100%",
-            data: [100, 100, 100, 100, 100],
+            data: [max, max, max, max, max],
             barWidth: 53,
             label: {
               normal: {
@@ -203,7 +229,10 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initBarChart(this.ids, this.chartData);
+      this.initBarChart(this.ids, newVal, this.currentPro);
+    },
+    currentPro: function(newVal) {
+      this.initBarChart(this.ids, this.chartData, newVal);
     }
   }
 };

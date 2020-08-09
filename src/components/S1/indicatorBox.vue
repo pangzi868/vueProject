@@ -45,7 +45,6 @@ export default {
   methods: {
     initData(id, chartData, index) {
       let temp = 0;
-      debugger;
       if (this.currentPro === "全省") {
         temp = chartData
           ? chartData.y[index].data.reduce((pre, cur) => {

@@ -8,7 +8,9 @@
           <div class="in-bottom-right">
             <div v-for="(items, indexs) in item.inName" :key="indexs" class="single-bottom-right">
               <span class="single-title">{{items}}</span>
-              <span class="single-value">{{item.inNameEng[indexs]}}</span>
+              <span
+                class="single-value"
+              >{{projectCondition&&item.inNameEng[index] ? projectCondition[item.inNameEng[indexs]] : 0}}</span>
             </div>
           </div>
         </div>
@@ -61,7 +63,7 @@ export default {
           id: "putIn",
           name: "审计人员投入情况",
           inName: ["专职人", "兼职人", "其他人"],
-          inNameEng: ["full", "part", "else"]
+          inNameEng: ["54", "82", "97"]
         }
       ],
       rightIn: [
@@ -69,7 +71,7 @@ export default {
           id: "budget",
           name: "审计费用预算分析",
           inName: ["费用发生", "年度预算"],
-          inNameEng: ["cost", "yearly"]
+          inNameEng: ["13", "73"]
         },
         {
           id: "change",
@@ -80,7 +82,17 @@ export default {
       ]
     };
   },
-  computed: {},
+  computed: {
+    // 审计项目
+    projectCondition: {
+      get: function() {
+        return this.$store.state.projectCondition;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectCondition", newVal);
+      }
+    }
+  },
   methods: {
     initChart(id, value) {
       let myEcharts = this.$echarts.init(document.getElementById(id));
@@ -251,7 +263,7 @@ export default {
   width: 44%;
   height: 100%;
   padding: 58px 68px;
-   font-size: 56px;
+  font-size: 56px;
   color: rgba(255, 255, 255, 1);
   .single-indicator {
     width: 50%;

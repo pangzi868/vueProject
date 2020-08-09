@@ -47,6 +47,16 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurrentPro", newVal);
       }
+    },
+
+    // 审计项目
+    projectCondition: {
+      get: function() {
+        return this.$store.state.projectCondition;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectCondition", newVal);
+      }
     }
   },
   methods: {
@@ -93,6 +103,12 @@ export default {
       });
       this.leftData = [temp1, temp2, temp3];
       this.total = temp1 + temp2 + temp3;
+      this.projectCondition = {
+        done: temp2,
+        doing: temp1,
+        beDoing: temp3,
+        total: this.total
+      };
     },
 
     initPie(curId) {

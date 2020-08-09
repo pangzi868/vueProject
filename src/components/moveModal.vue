@@ -123,7 +123,8 @@ export default {
   methods: {
     // 初始化数据
     initColumn(type, pro, leftSecAux) {
-      if (!leftSecAux || leftSecAux == undefined) return;
+      if (!leftSecAux || leftSecAux == undefined || leftSecAux.x == undefined)
+        return;
       let temp = [];
       let tempAux = leftSecAux.x;
       leftSecAux.x[0].data.forEach((item, index) => {

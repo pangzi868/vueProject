@@ -35,5 +35,8 @@ export default {
     },
     newLeftSecAux(state, data) {
         state.leftSecAux = data
+    },
+    newProjectCondition(state, data) {
+        state.projectCondition = data
     }
 }

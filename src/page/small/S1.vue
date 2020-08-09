@@ -67,7 +67,10 @@
         <decorate-1 class="decorate-1" />
         <div class="message-roll">
           <!-- <roll-box /> -->
-          <dv-scroll-board :config="config" style="width:3400px;height:640px;font-size: 48px;" />
+          <dv-scroll-board
+            :config="bottomScrollConfig"
+            style="width:3400px;height:640px;font-size: 48px;"
+          />
         </div>
       </div>
       <div class="analysis-field sidebar-field">
@@ -207,6 +210,38 @@ export default {
       right3BarData: null,
       right4LineIds: "right4LineChart",
       right4LineData: null,
+      bottomScrollData: null,
+      bottomScrollConfig: {
+        header: [
+          "序号",
+          "单位",
+          "问题类型",
+          "疑点工单",
+          "疑点核实",
+          "审计底稿",
+          "问题整改",
+          "整改率",
+          "问题资金（万元）"
+        ],
+        headerBGC: "rgba(15,67,97,0.4)",
+        oddRowBGC: "rgba(50,218,255,0.1)",
+        evenRowBGC: "rgba(15,67,97,0.4)",
+        headerHeight: 128,
+        columnWidth: [250, 550, 350, 350, 350, 350, 350, 350],
+        carousel: "single",
+        align: [
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center",
+          "center"
+        ],
+        data: []
+      },
       config: {
         header: [
           "序号",
@@ -420,7 +455,15 @@ export default {
       this.leftSecData = this.screenFirstData.leftSecond;
       this.left2ColumnData = this.screenFirstData.leftThird;
       this.left1LineData = this.screenFirstData.leftForth;
-      this.leftSecAux = this.screenFirstData.leftSecAux
+      this.leftSecAux = this.screenFirstData.leftSecAux;
+      this.bottomScrollData = this.screenFirstData.bottomScroll;
+      this.right1ColumnData = this.screenFirstData.rightFirst;
+      this.right2HuanData = this.screenFirstData.rightSecond;
+      this.right2LineData = this.screenFirstData.rightSecond;
+      this.right3BarData = this.screenFirstData.rightThird;
+      this.right4LineData = this.screenFirstData.rightForth;
+
+      this.initBottomScroll();
       this.$nextTick(() => {
         this.dataJudge = true;
       });
@@ -442,6 +485,28 @@ export default {
       this.wholeJudge = false;
       this.middleJudge = true;
       this.currentPro = "本部";
+    },
+
+    // 处理底部滚动表格
+    initBottomScroll() {
+      this.bottomScrollConfig.data = [];
+      this.bottomScrollConfig.data = this.bottomScrollData.x[0].data.map(
+        (item, index) => {
+          let company = "";
+          company = item === "直属单位" ? item : item + "公司";
+          return [
+            index + 1,
+            company,
+            this.bottomScrollData.x[1].data[index],
+            this.bottomScrollData.y[0].data[index],
+            this.bottomScrollData.y[1].data[index],
+            this.bottomScrollData.y[2].data[index],
+            this.bottomScrollData.y[3].data[index],
+            (this.bottomScrollData.y[4].data[index] * 100).toFixed(2) + "%",
+            this.bottomScrollData.y[5].data[index]
+          ];
+        }
+      );
     }
   },
   components: {

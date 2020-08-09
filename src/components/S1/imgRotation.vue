@@ -45,7 +45,7 @@ export default {
         { name: "松原", type: "normal", style: {}, nameStyle: {} },
         { name: "白城", type: "normal", style: {}, nameStyle: {} },
         { name: "延边", type: "normal", style: {}, nameStyle: {} },
-        { name: "直属", type: "normal", style: {}, nameStyle: {} }
+        { name: "直属单位", type: "normal", style: {}, nameStyle: {} }
       ],
       companyPic: Company,
       hoverPic: HoverPic,
