@@ -30,7 +30,9 @@
           <div class="in-bottom-right">
             <div v-for="(items, indexs) in item.inName" :key="indexs">
               <span class="single-title">{{items}}</span>
-              <span class="single-value">{{item.inNameEng[indexs]}}</span>
+              <span
+                class="single-value"
+              >{{projectIssue&&item.inNameEng[index] ? projectIssue[item.inNameEng[indexs]] : 0}}</span>
             </div>
           </div>
         </div>
@@ -44,29 +46,7 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    let temp = this.leftIn.concat(this.rightIn);
-    for (var i in temp) {
-      if (temp[i].id === "excutive") {
-        this.initChart(
-          temp[i].id,
-          (
-            (Number(this.projectCondition.doing) /
-              Number(this.projectCondition.total)) *
-            100
-          ).toFixed(2)
-        );
-      } else {
-        this.initChart(temp[i].id, 40);
-      }
-      console.info(
-        (
-          (this.projectCondition.doing / this.projectCondition.total) *
-          100
-        ).toFixed(2) + "%",
-        "11"
-      );
-      // this.initChart(temp[i].id, this.chartData[temp[i].id]);
-    }
+    this.init();
   },
   data() {
     return {
@@ -109,9 +89,45 @@ export default {
       set: function(newVal) {
         this.$store.commit("newProjectCondition", newVal);
       }
+    },
+    // 审计项目
+    projectIssue: {
+      get: function() {
+        return this.$store.state.projectIssue;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectIssue", newVal);
+      }
     }
   },
   methods: {
+    init() {
+      let temp = this.leftIn.concat(this.rightIn);
+      for (var i in temp) {
+        if (temp[i].id === "excutive") {
+          this.initChart(
+            temp[i].id,
+            (
+              (Number(this.projectCondition.doing) /
+                Number(this.projectCondition.total || 1)) *
+              100
+            ).toFixed(2)
+          );
+        } else if (temp[i].id === "change") {
+          this.initChart(
+            temp[i].id,
+            (
+              (Number(this.projectIssue.done) /
+                Number(this.projectIssue.total || 1)) *
+              100
+            ).toFixed(2)
+          );
+        } else {
+          this.initChart(temp[i].id, 40);
+        }
+        // this.initChart(temp[i].id, this.chartData[temp[i].id]);
+      }
+    },
     initChart(id, value) {
       let myEcharts = this.$echarts.init(document.getElementById(id));
       var maxValue = 100;
@@ -235,17 +251,10 @@ export default {
   components: {},
   watch: {
     projectCondition: function(newVal) {
-      let temp = this.leftIn.concat(this.rightIn);
-      for (var i in temp) {
-        if (temp[i].id === "excutive") {
-          this.initChart(
-            temp[i].id,
-            ((Number(newVal.doing) / Number(newVal.total)) * 100).toFixed(2)
-          );
-        } else {
-          this.initChart(temp[i].id, 40);
-        }
-      }
+      this.init();
+    },
+    projectIssue: function(newVal) {
+      this.init();
     }
   }
 };

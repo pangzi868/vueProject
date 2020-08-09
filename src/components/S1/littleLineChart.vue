@@ -16,7 +16,9 @@ export default {
       xAxis: null,
       yAxis1: null,
       yAxis2: null,
-      type: null
+      type: null,
+      leftData: null,
+      total: null
     };
   },
   computed: {
@@ -28,6 +30,15 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurrentPro", newVal);
       }
+    },
+    // 审计项目
+    projectIssue: {
+      get: function() {
+        return this.$store.state.projectIssue;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectIssue", newVal);
+      }
     }
   },
   methods: {
@@ -35,7 +46,7 @@ export default {
     initChartData() {
       if (!this.chartData || JSON.stringify(this.chartData) == '"{}"') return;
       // this.type = Array.from(new Set(this.chartData.x[1].data));
-      this.type = ["人资", "工程", "物资", "营销", "财务"];
+      this.type = ["财务", "营销", "人资", "工程", "物资"];
       this.xAxis = [this.chartData.y[1].name, this.chartData.y[2].name];
       this.yAxis1 = [0, 0, 0, 0, 0];
       this.yAxis2 = [0, 0, 0, 0, 0];
@@ -49,6 +60,21 @@ export default {
             }
           });
         }
+      });
+
+      this.leftData = [];
+      let temp1 = this.yAxis1.reduce((pre, cur) => {
+        return Number(pre) + Number(cur);
+      });
+      let temp2 = this.yAxis2.reduce((pre, cur) => {
+        return Number(pre) + Number(cur);
+      });
+      this.leftData = [temp1, temp2];
+      this.total = temp1 + temp2;
+      this.projectIssue = Object.assign({}, this.projectIssue, {
+        done: temp1,
+        beDoing: temp2,
+        total: this.total
       });
     },
     initColumnChart(id, data, cp) {

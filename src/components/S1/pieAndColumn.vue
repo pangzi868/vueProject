@@ -71,7 +71,10 @@ export default {
       this.yAxis2 = [];
       this.yAxis3 = [];
       this.chartData.x[0].data.map((item, index) => {
-        if (item === this.currentPro) {
+        if (
+          item === this.currentPro ||
+          (this.currentPro === "全省" && item === "合计")
+        ) {
           this.chartData.y.map((items, indexs) => {
             let num = this.type.indexOf(this.chartData.x[1].data[index]);
             switch (num) {
@@ -104,9 +107,9 @@ export default {
       this.leftData = [temp1, temp2, temp3];
       this.total = temp1 + temp2 + temp3;
       this.projectCondition = Object.assign({}, this.projectCondition, {
-        done: temp2,
+        done: temp3,
         doing: temp1,
-        beDoing: temp3,
+        beDoing: temp2,
         total: this.total
       });
     },
@@ -147,7 +150,7 @@ export default {
         legend: {
           orient: "horizontal",
           left: "center",
-          bottom: "10%",
+          bottom: "5%",
           itemGap: 64,
           itemWidth: 22,
           itemHeight: 40,
@@ -180,49 +183,97 @@ export default {
         color: colorList,
         series: [
           {
-            name: "姓名",
+            name: "数量",
             type: "pie",
             radius: [120, 190],
             center: ["45%", "45%"],
-            label: {
-              show: false,
-              formatter: "{b}",
-              position: "center"
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "20",
-                lineHeight: 64,
-                fontWeight: "bold",
-                formatter: function(params) {
-                  return (
-                    "{type| " +
-                    params.name +
-                    "}  " +
-                    "\n" +
-                    "{value|" +
-                    params.value +
-                    "}"
-                  );
-                },
-                rich: {
-                  type: {
-                    fontSize: 64,
-                    color: "rgba(255,255,255,.7)",
-                    padding: [15, 0, 5, 0]
-                  },
-                  value: {
-                    fontSize: 66,
-                    color: "#fff",
-                    padding: [15, 0, 5, 0]
-                  }
+            labelLine: {
+              normal: {
+                length: 15,
+                length2: 80,
+                lineStyle: {
+                  type: "solid",
+                  width: 6
                 }
               }
             },
-            labelLine: {
-              show: false
+            avoidLabelOverlap: true,
+            stillShowZeroSum: true,
+            minShowLabelAngle: 10,
+            label: {
+              alignTo: "edge", // label两端对称布局
+              //  ECharts v4.6.0 版本起，提供了 'labelLine' 与 'edge' 两种新的布局方式
+              margin: 90, // 布局为两端对称时候需要外边距防止图表变形 数值随意不要太大
+              distanceToLabelLine: 0, // label距离引导线距离
+              formatter: params => {
+                return (
+                  "{b| " +
+                  params.name +
+                  "}  " +
+                  "\n" +
+                  "{c|" +
+                  params.value +
+                  "条}"
+                );
+              },
+              borderWidth: 0,
+              borderRadius: 4,
+              padding: [0, -60],
+              height: 160,
+              fontSize: 12,
+              align: "left",
+              color: "#3494BD",
+              rich: {
+                b: {
+                  fontSize: 48,
+                  lineHeight: 44,
+                  color: "rgba(255,255,255,.7)",
+                  padding: [15, 0, 5, 0]
+                },
+                c: {
+                  fontSize: 50,
+                  lineHeight: 44,
+                  color: "#fff",
+                  padding: [15, 0, 25, 0]
+                }
+              }
+              // position: "center"
             },
+            // emphasis: {
+            //   label: {
+            //     show: true,
+            //     fontSize: "20",
+            //     lineHeight: 64,
+            //     fontWeight: "bold",
+            //     position: "center",
+            //     formatter: function(params) {
+            //       return (
+            //         "{type| " +
+            //         params.name +
+            //         "}  " +
+            //         "\n" +
+            //         "{value|" +
+            //         params.value +
+            //         "}"
+            //       );
+            //     },
+            //     rich: {
+            //       type: {
+            //         fontSize: 64,
+            //         color: "rgba(255,255,255,.7)",
+            //         padding: [15, 0, 5, 0]
+            //       },
+            //       value: {
+            //         fontSize: 66,
+            //         color: "#fff",
+            //         padding: [15, 0, 5, 0]
+            //       }
+            //     }
+            //   }
+            // },
+            // labelLine: {
+            //   show: false
+            // },
             itemStyle: {
               borderWidth: 3,
               borderColor: "#082b3a"

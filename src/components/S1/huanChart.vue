@@ -32,11 +32,11 @@ export default {
       let temp = [
         { name: "财务", value: 0 },
         { name: "营销", value: 0 },
+        { name: "人资", value: 0 },
         { name: "工程", value: 0 },
-        { name: "物资", value: 0 },
-        { name: "人资", value: 0 }
+        { name: "物资", value: 0 }
       ];
-      let type = ["财务", "营销", "工程", "物资", "人资"];
+      let type = ["财务", "营销", "人资" ,"工程", "物资"];
 
       data.x[0].data.forEach((item, index) => {
         if (item === cp) {
@@ -80,7 +80,7 @@ export default {
             },
             avoidLabelOverlap: true,
             stillShowZeroSum: true,
-            minShowLabelAngle: 10,
+            minShowLabelAngle: 50,
             label: {
               normal: {
                 alignTo: "edge", // label两端对称布局

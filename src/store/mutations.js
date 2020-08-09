@@ -38,5 +38,8 @@ export default {
     },
     newProjectCondition(state, data) {
         state.projectCondition = Object.assign({}, state.projectCondition, data)
+    },
+    newProjectIssue(state, data) {
+        state.projectIssue = Object.assign({}, state.projectIssue, data)
     }
 }

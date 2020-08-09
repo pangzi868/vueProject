@@ -127,10 +127,12 @@ export default {
         return;
       let temp = [];
       let tempAux = leftSecAux.x;
+      let tempIndex = 1;
       leftSecAux.x[0].data.forEach((item, index) => {
         if (tempAux[3].data[index] === type && tempAux[4].data[index] === pro) {
           let tempItem = {
-            number: tempAux[0].data[index],
+            number: tempIndex,
+            // number: tempAux[0].data[index],
             name: tempAux[1].data[index],
             type: tempAux[2].data[index],
             status: tempAux[3].data[index],
@@ -138,6 +140,19 @@ export default {
             date: tempAux[5].data[index]
           };
           temp.push(tempItem);
+          tempIndex++;
+        } else if (pro === "全省" && tempAux[3].data[index] === type) {
+          let tempItem = {
+            number: tempIndex,
+            // number: tempAux[0].data[index],
+            name: tempAux[1].data[index],
+            type: tempAux[2].data[index],
+            status: tempAux[3].data[index],
+            part: tempAux[4].data[index],
+            date: tempAux[5].data[index]
+          };
+          temp.push(tempItem);
+          tempIndex++;
         }
       });
       this.currentData = [...temp];

@@ -27,14 +27,16 @@ export default {
     initBarChart(id, data, cp) {
       if (!data || JSON.stringify(data) == '"{}"') return;
 
-      let type = ["财务", "营销", "工程", "物资", "人资"];
-      let proName = ["", "", "", "", ""];
+      let type = ["物资", "工程", "人资", "营销", "财务"];
+      let proName = ["暂无", "暂无", "暂无", "暂无", "暂无"];
       var dataLine = [0, 0, 0, 0, 0];
       data.x[0].data.forEach((item, index) => {
         if (item === cp) {
           let num = type.indexOf(data.x[1].data[index]);
-          proName[num] = data.x[2].data[index];
-          dataLine[num] = Number(data.y[0].data[index]);
+          if (dataLine[num] < Number(data.y[0].data[index])) {
+            proName[num] = data.x[2].data[index];
+            dataLine[num] = Number(data.y[0].data[index]);
+          }
           // dataLine[num] = 100;
         }
       });
@@ -195,14 +197,14 @@ export default {
             yAxisIndex: 2,
             barGap: "-100%",
             data: [max, max, max, max, max],
-            barWidth: 53,
+            barWidth: 51,
             label: {
               normal: {
                 show: true,
                 position: "right",
                 distance: 40,
                 formatter: function(data) {
-                  return dataLine[data.dataIndex] + "%";
+                  return dataLine[data.dataIndex] + "条";
                 },
                 textStyle: {
                   color: "#ffffff",

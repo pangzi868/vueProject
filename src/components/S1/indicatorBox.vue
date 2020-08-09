@@ -7,7 +7,7 @@
           {{indData[item.keyV]}}
           <span class="content-unit">个</span>
         </span>
-        <span class="hb">环比</span>
+        <span class="hb">同比</span>
         <span class="sz">46.9%</span>
       </div>
     </div>
@@ -51,9 +51,9 @@ export default {
               return Number(pre) + Number(cur);
             })
           : 0;
-      } else if (this.currentPro === "直属单位") {
-        let curIndex = chartData.x[0].data.indexOf("直属");
-        temp = chartData ? chartData.y[index].data[curIndex] : 0;
+        // } else if (this.currentPro === "直属单位") {
+        //   let curIndex = chartData.x[0].data.indexOf("直属");
+        //   temp = chartData ? chartData.y[index].data[curIndex] : 0;
       } else {
         let curIndex = chartData.x[0].data.indexOf(this.currentPro);
         temp = chartData ? chartData.y[index].data[curIndex] : 0;
