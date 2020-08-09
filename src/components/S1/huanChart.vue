@@ -78,6 +78,9 @@ export default {
                 }
               }
             },
+            avoidLabelOverlap: true,
+            stillShowZeroSum: true,
+            minShowLabelAngle: 10,
             label: {
               normal: {
                 alignTo: "edge", // label两端对称布局

@@ -46,7 +46,25 @@ export default {
   mounted() {
     let temp = this.leftIn.concat(this.rightIn);
     for (var i in temp) {
-      this.initChart(temp[i].id, 40);
+      if (temp[i].id === "excutive") {
+        this.initChart(
+          temp[i].id,
+          (
+            (Number(this.projectCondition.doing) /
+              Number(this.projectCondition.total)) *
+            100
+          ).toFixed(2)
+        );
+      } else {
+        this.initChart(temp[i].id, 40);
+      }
+      console.info(
+        (
+          (this.projectCondition.doing / this.projectCondition.total) *
+          100
+        ).toFixed(2) + "%",
+        "11"
+      );
       // this.initChart(temp[i].id, this.chartData[temp[i].id]);
     }
   },
@@ -204,7 +222,7 @@ export default {
                     }
                   },
                   formatter(params) {
-                    return `{num|${params.value}}`;
+                    return `{num|${params.value + "%"}}`;
                   }
                 }
               }
@@ -214,7 +232,22 @@ export default {
       });
     }
   },
-  components: {}
+  components: {},
+  watch: {
+    projectCondition: function(newVal) {
+      let temp = this.leftIn.concat(this.rightIn);
+      for (var i in temp) {
+        if (temp[i].id === "excutive") {
+          this.initChart(
+            temp[i].id,
+            ((Number(newVal.doing) / Number(newVal.total)) * 100).toFixed(2)
+          );
+        } else {
+          this.initChart(temp[i].id, 40);
+        }
+      }
+    }
+  }
 };
 </script>
 

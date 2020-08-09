@@ -149,6 +149,7 @@ export default {
     let data = null;
     if (window.name) {
       data = JSON.parse(window.name);
+      // data = window.name;
     } else {
       data = JSON.parse(dataJson.S1);
     }
@@ -504,6 +505,8 @@ export default {
             this.bottomScrollData.y[3].data[index],
             (this.bottomScrollData.y[4].data[index] * 100).toFixed(2) + "%",
             this.bottomScrollData.y[5].data[index]
+              ? parseFloat(this.bottomScrollData.y[5].data[index]).toFixed(2)
+              : 0
           ];
         }
       );

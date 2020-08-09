@@ -36,9 +36,7 @@ export default {
       if (!this.chartData || JSON.stringify(this.chartData) == '"{}"') return;
       // this.type = Array.from(new Set(this.chartData.x[1].data));
       this.type = ["人资", "工程", "物资", "营销", "财务"];
-      // this.xAxis = this.chartData.y.map((item, index) => {
-      //   return item.name;
-      // });
+      this.xAxis = [this.chartData.y[1].name, this.chartData.y[2].name];
       this.yAxis1 = [0, 0, 0, 0, 0];
       this.yAxis2 = [0, 0, 0, 0, 0];
       this.chartData.x[0].data.forEach((item, index) => {
@@ -93,8 +91,8 @@ export default {
           itemGap: 64,
           itemWidth: 34,
           itemHeight: 34,
-          data: this.type
-            ? this.type.map((item, index) => {
+          data: this.xAxis
+            ? this.xAxis.map((item, index) => {
                 return {
                   name: item,
                   icon: "rect"
@@ -193,7 +191,7 @@ export default {
         ],
         series: [
           {
-            name: "整改数",
+            name: this.xAxis ? this.xAxis[0] : "整改数",
             type: "line",
             showAllSymbol: true,
             symbol: "circle",
@@ -245,7 +243,7 @@ export default {
               : [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60]
           },
           {
-            name: "实际数",
+            name: this.xAxis ? this.xAxis[1] : "实际数",
             type: "line",
             showAllSymbol: true,
             symbol: "circle",

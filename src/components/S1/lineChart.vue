@@ -16,7 +16,15 @@ export default {
       xAxis: null,
       yAxis1: null,
       yAxis2: null,
-      type: null
+      type: null,
+      yAxis: null
+      /**
+       * xAxis: ['2019', '2020]
+       * yAxis1: [15,15]
+       * yAxis2: [20,20]
+       * yAxis: {'实际数': [15, 15], '计划数': [20, 20]}
+       * type: ['实际数', '计划数']
+       */
     };
   },
   computed: {
@@ -34,28 +42,48 @@ export default {
     // 处理数据
     initChartData() {
       if (!this.chartData || JSON.stringify(this.chartData) == '"{}"') return;
-      this.type = Array.from(new Set(this.chartData.x[1].data));
-      this.xAxis = this.chartData.y.map((item, index) => {
+      this.xAxis = Array.from(new Set(this.chartData.x[1].data));
+      this.type = this.chartData.y.map((item, index) => {
         return item.name;
       });
-      this.yAxis1 = [];
-      this.yAxis2 = [];
-      this.chartData.x[0].data.map((item, index) => {
+      this.yAxis = {};
+      let indexArr = [];
+      this.chartData.x[0].data.forEach((item, index) => {
         if (item === this.currentPro) {
-          this.chartData.y.map((items, indexs) => {
-            let num = this.type.indexOf(this.chartData.x[1].data[index]);
-            num === 0
-              ? this.yAxis1.push(items.data[index])
-              : this.yAxis2.push(items.data[index]);
+          this.chartData.x[1].data.forEach((items, indexs) => {
+            if (indexs === index) {
+              indexArr.push(indexs);
+            }
           });
         }
       });
+
+      this.chartData.y.forEach((item, index) => {
+        indexArr.forEach((items, indexs) => {
+          if (this.yAxis[item.name] === undefined) {
+            this.yAxis[item.name] = [];
+          }
+          this.yAxis[item.name].push(item.data[items]);
+        });
+      });
+      console.log(this.yAxis, "ya");
     },
 
     initColumnChart(id, data, cp) {
       if (!data || JSON.stringify(data) == '"{}"') return;
+      let lineColor = [
+        "rgba(0,129,248,1)",
+        "rgba(0,247,255,1)",
+        "rgba(255,136,0,1)"
+      ];
+      let shadowColor = [
+        ["rgba(0,129,248,0.3)", "rgba(0,129,248,0)", "rgba(108,80,243, 0.9)"],
+        ["rgba(0,247,255,0.3)", "rgba(0,247,255,0)", "rgba(108,80,243, 0.9)"],
+        ["rgba(255,136,0,0.3)", "rgba(255,136,0,0)", "rgba(108,80,243, 0.9)"]
+      ];
+
       let myCharts = this.$echarts.init(document.getElementById(id));
-      myCharts.setOption({
+      let Option = {
         tooltip: {
           //提示框组件
           trigger: "axis",
@@ -75,7 +103,7 @@ export default {
           backgroundColor: "rgba(70,130,180,0.8)",
           borderColor: "rgba(47,79,79,1)",
           borderWidth: 1,
-          padding: [12, 24],
+          padding: [12, 24]
         },
         grid: {
           left: "3%",
@@ -190,110 +218,114 @@ export default {
             }
           }
         ],
-        series: [
-          {
-            name: "计划数",
-            type: "line",
-            showAllSymbol: true,
-            symbol: "circle",
-            symbolSize: 25,
-            lineStyle: {
-              normal: {
-                width: 10,
-                color: "rgba(0,129,248,1)"
-              }
-            },
-            label: {
-              show: true,
-              position: "top",
-              textStyle: {
-                color: "#6c50f3"
-              }
-            },
-            itemStyle: {
-              color: "rgba(0,129,248,1)",
-              borderColor: "#fff",
-              borderWidth: 3
-            },
-            tooltip: {
-              show: true
-            },
-            areaStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(
-                  0,
-                  0,
-                  0,
-                  1,
-                  [
-                    {
-                      offset: 0,
-                      color: "rgba(0,129,248,0.3)"
-                    },
-                    {
-                      offset: 1,
-                      color: "rgba(0,129,248,0)"
-                    }
-                  ],
-                  false
-                ),
-                shadowColor: "rgba(108,80,243, 0.9)",
-                shadowBlur: 20
-              }
-            },
-            data: this.yAxis1
-              ? this.yAxis1
-              : [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60]
+        series: []
+      };
+      // [
+      //   ,
+      //   {
+      //     name: "实际数",
+      //     type: "line",
+      //     showAllSymbol: true,
+      //     symbol: "circle",
+      //     symbolSize: 25,
+      //     lineStyle: {
+      //       normal: {
+      //         width: 10,
+      //         color: "rgba(0,247,255,1)"
+      //       }
+      //     },
+      //     label: {
+      //       show: true,
+      //       position: "top",
+      //       textStyle: {
+      //         color: "#6c50f3"
+      //       }
+      //     },
+      //     itemStyle: {
+      //       color: "rgba(0,247,255,1)",
+      //       borderColor: "#fff",
+      //       borderWidth: 3
+      //     },
+      //     tooltip: {
+      //       show: true
+      //     },
+      //     areaStyle: {
+      //       normal: {
+      //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+      //           {
+      //             offset: 0,
+      //             color: "rgba(0,247,255,0.3)"
+      //           },
+      //           {
+      //             offset: 1,
+      //             color: "rgba(0,247,255,0)"
+      //           }
+      //         ]),
+      //         shadowColor: "rgba(108,80,243, 0.9)",
+      //         shadowBlur: 20
+      //       }
+      //     },
+      //     data: this.yAxis2
+      //       ? this.yAxis2
+      //       : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60]
+      //   }
+      // ];
+      Option.series = Object.keys(this.yAxis).map((item, index) => {
+        return {
+          name: this.type ? this.type[index] : "计划数",
+          type: "line",
+          showAllSymbol: true,
+          symbol: "circle",
+          symbolSize: 25,
+          lineStyle: {
+            normal: {
+              width: 10,
+              color: lineColor[index]
+            }
           },
-          {
-            name: "实际数",
-            type: "line",
-            showAllSymbol: true,
-            symbol: "circle",
-            symbolSize: 25,
-            lineStyle: {
-              normal: {
-                width: 10,
-                color: "rgba(0,247,255,1)"
-              }
-            },
-            label: {
-              show: true,
-              position: "top",
-              textStyle: {
-                color: "#6c50f3"
-              }
-            },
-            itemStyle: {
-              color: "rgba(0,247,255,1)",
-              borderColor: "#fff",
-              borderWidth: 3
-            },
-            tooltip: {
-              show: true
-            },
-            areaStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          label: {
+            show: true,
+            position: "top",
+            textStyle: {
+              color: "#6c50f3"
+            }
+          },
+          itemStyle: {
+            color: lineColor[index],
+            borderColor: "#fff",
+            borderWidth: 3
+          },
+          tooltip: {
+            show: true
+          },
+          areaStyle: {
+            normal: {
+              color: new this.$echarts.graphic.LinearGradient(
+                0,
+                0,
+                0,
+                1,
+                [
                   {
                     offset: 0,
-                    color: "rgba(0,247,255,0.3)"
+                    color: shadowColor[index][0]
                   },
                   {
                     offset: 1,
-                    color: "rgba(0,247,255,0)"
+                    color: shadowColor[index][1]
                   }
-                ]),
-                shadowColor: "rgba(108,80,243, 0.9)",
-                shadowBlur: 20
-              }
-            },
-            data: this.yAxis2
-              ? this.yAxis2
-              : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60]
-          }
-        ]
+                ],
+                false
+              ),
+              shadowColor: shadowColor[index][2],
+              shadowBlur: 20
+            }
+          },
+          data: this.yAxis[item] ? this.yAxis[item] : [0, 0, 0]
+        };
       });
+
+      myCharts.setOption(Option);
     }
   },
   components: {},

@@ -103,12 +103,12 @@ export default {
       });
       this.leftData = [temp1, temp2, temp3];
       this.total = temp1 + temp2 + temp3;
-      this.projectCondition = {
+      this.projectCondition = Object.assign({}, this.projectCondition, {
         done: temp2,
         doing: temp1,
         beDoing: temp3,
         total: this.total
-      };
+      });
     },
 
     initPie(curId) {

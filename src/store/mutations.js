@@ -37,6 +37,6 @@ export default {
         state.leftSecAux = data
     },
     newProjectCondition(state, data) {
-        state.projectCondition = data
+        state.projectCondition = Object.assign({}, state.projectCondition, data)
     }
 }

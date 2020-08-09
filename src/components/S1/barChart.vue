@@ -43,7 +43,6 @@ export default {
         lineMax = max,
         whiteMax = max,
         blackMax = max;
-      debugger;
       let myCharts = this.$echarts.init(document.getElementById(id));
       var myColor = [
         "rgba(255,179,88,1)",

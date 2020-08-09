@@ -85,7 +85,13 @@ export default {
             type: "category",
             //	boundaryGap: true,//坐标轴两边留白
             data: data.x
-              ? data.x[0].data
+              ? data.x[0].data.map(item => {
+                  if (item === "直属单位") {
+                    return "直属";
+                  } else {
+                    return item;
+                  }
+                })
               : [
                   "22:18",
                   "22:23",
@@ -160,7 +166,7 @@ export default {
             type: "bar",
             data: data.y
               ? data.y[0].data.map((item, index) => {
-                  if (data.x[0].data[index] === currentPro) {
+                  if (data.x[0].data[index] === currentPro || data.x[0].data[index] === '直属' && currentPro === '直属单位') {
                     return {
                       value: item,
                       itemStyle: {
@@ -217,7 +223,7 @@ export default {
             type: "bar",
             data: data.y
               ? data.y[1].data.map((item, index) => {
-                  if (data.x[0].data[index] === currentPro) {
+                  if (data.x[0].data[index] === currentPro || data.x[0].data[index] === '直属' && currentPro === '直属单位') {
                     return {
                       value: item,
                       itemStyle: {
