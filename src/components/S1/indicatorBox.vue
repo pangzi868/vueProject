@@ -8,19 +8,23 @@
           <span class="content-unit">个</span>
         </span>
         <span class="hb">同比</span>
-        <span class="sz">46.9%</span>
+        <span class="sz">{{indicatorYear[item.keyV]}}</span>
+        <img class="hb-img" :src="imgYear[item.keyV]" alt />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import UPImg from "@/assets/images/first/Frame-26@4x.png";
+import DOWNImg from "@/assets/images/first/Frame-25@4x.png";
 export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
     for (let i in this.ids) {
       this.initData(this.ids[i], this.chartData, i);
+      this.initIndicator(this.ids[i], this.leftIndicator, i);
     }
   },
   data() {
@@ -28,6 +32,14 @@ export default {
       indData: {
         plan: 0,
         actual: 0
+      },
+      indicatorYear: {
+        plan: 0,
+        actual: 0
+      },
+      imgYear: {
+        plan: null,
+        actual: null
       }
     };
   },
@@ -39,6 +51,14 @@ export default {
       },
       set: function(newVal) {
         this.$store.commit("newCurrentPro", newVal);
+      }
+    },
+    leftIndicator: {
+      get: function() {
+        return this.$store.state.leftIndicator;
+      },
+      set: function(newVal) {
+        this.$store.commit("newLeftIndicator", newVal);
       }
     }
   },
@@ -59,6 +79,26 @@ export default {
         temp = chartData ? chartData.y[index].data[curIndex] : 0;
       }
       this.indData[id.keyV] = temp;
+    },
+
+    // 初始化指标
+    initIndicator(id, data, index) {
+      if (!data.x) return;
+      let tempIncrement = 0,
+        tempReduce = 0,
+        tempPro = this.currentPro;
+      if (this.currentPro === "全省") {
+        tempPro = "合计";
+      }
+      let tempIndex = data.x[0].data.indexOf(tempPro);
+      tempIncrement = data.y[0].data[tempIndex];
+      tempReduce = data.y[1].data[tempIndex];
+      this.indicatorYear["plan"] =
+        (parseFloat(tempIncrement) * 100).toFixed(1) + "%";
+      this.indicatorYear["actual"] =
+        (parseFloat(tempReduce) * 100).toFixed(1) + "%";
+      this.imgYear["plan"] = tempIncrement > 0 ? UPImg : DOWNImg;
+      this.imgYear["actual"] = tempReduce > 0 ? UPImg : DOWNImg;
     }
   },
   components: {},
@@ -66,11 +106,19 @@ export default {
     currentPro: function() {
       for (let i in this.ids) {
         this.initData(this.ids[i], this.chartData, i);
+        this.initIndicator(this.ids[i], this.leftIndicator, i);
       }
     },
     chartData: function(newVal) {
       for (let i in this.ids) {
         this.initData(this.ids[i], newVal, i);
+        this.initIndicator(this.ids[i], this.leftIndicator, i);
+      }
+    },
+    leftIndicator: function(newVal) {
+      for (let i in this.ids) {
+        this.initData(this.ids[i], this.chartData, i);
+        this.initIndicator(this.ids[i], newVal, i);
       }
     }
   }
@@ -132,6 +180,12 @@ export default {
       right: 100px;
       width: 160px;
       top: 90px;
+      font-size: 56px;
+    }
+    .hb-img {
+      position: absolute;
+      right: -2px;
+      top: 98px;
       font-size: 56px;
     }
   }

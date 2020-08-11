@@ -40,6 +40,10 @@
         <el-table-column prop="part" label="实施单位" width="300"></el-table-column>
         <el-table-column prop="date" label="实施时间"></el-table-column>
       </el-table>
+      <!-- <dv-scroll-board
+        :config="bottomScrollConfig"
+        style="width:100%; height:100%; font-size: 48px;"
+      />-->
     </el-main>
     <!-- <el-footer>
       <span class="dialog-footer">
@@ -82,7 +86,25 @@ export default {
         touchstartY: 0
       },
       styleArr: ["singlemove", "rotatemove"],
-      currentData: []
+      currentData: [],
+      bottomScrollConfig: {
+        header: [
+          "序号",
+          "项目名称",
+          "项目类型",
+          "项目状态",
+          "实施单位",
+          "实施时间"
+        ],
+        headerBGC: "rgba(15,67,97,0.4)",
+        oddRowBGC: "rgba(50,218,255,0.1)",
+        evenRowBGC: "rgba(15,67,97,0.4)",
+        headerHeight: 128,
+        columnWidth: [300, 1500, 600, 300, 300],
+        carousel: "single",
+        align: ["center", "center", "center", "center", "center", "center"],
+        data: []
+      }
     };
   },
   computed: {
@@ -132,19 +154,33 @@ export default {
         if (tempAux[3].data[index] === type && tempAux[4].data[index] === pro) {
           let tempItem = {
             number: tempIndex,
-            // number: tempAux[0].data[index],
             name: tempAux[1].data[index],
             type: tempAux[2].data[index],
             status: tempAux[3].data[index],
             part: tempAux[4].data[index],
             date: tempAux[5].data[index]
           };
+          // let tempItem = [
+          //   tempIndex,
+          //   tempAux[1].data[index],
+          //   tempAux[2].data[index],
+          //   tempAux[3].data[index],
+          //   tempAux[4].data[index],
+          //   tempAux[5].data[index]
+          // ];
           temp.push(tempItem);
           tempIndex++;
         } else if (pro === "全省" && tempAux[3].data[index] === type) {
+          // let tempItem = [
+          //   tempIndex,
+          //   tempAux[1].data[index],
+          //   tempAux[2].data[index],
+          //   tempAux[3].data[index],
+          //   tempAux[4].data[index],
+          //   tempAux[5].data[index]
+          // ];
           let tempItem = {
             number: tempIndex,
-            // number: tempAux[0].data[index],
             name: tempAux[1].data[index],
             type: tempAux[2].data[index],
             status: tempAux[3].data[index],
@@ -155,6 +191,10 @@ export default {
           tempIndex++;
         }
       });
+      // this.bottomScrollConfig.data = [...temp];
+      // this.bottomScrollConfig = JSON.parse(
+      //   JSON.stringify(this.bottomScrollConfig)
+      // );
       this.currentData = [...temp];
     },
 
@@ -388,5 +428,15 @@ export default {
 }
 .el-table--enable-row-hover .el-table__body tr:hover > td {
   background-color: rgba(0, 0, 0, 0);
+}
+.dv-scroll-board {
+  .header {
+    font-size: 48px;
+  }
+  .rows {
+    .row-item {
+      font-size: 56px;
+    }
+  }
 }
 </style>

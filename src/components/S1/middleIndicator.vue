@@ -8,9 +8,11 @@
           <div class="in-bottom-right">
             <div v-for="(items, indexs) in item.inName" :key="indexs" class="single-bottom-right">
               <span class="single-title">{{items}}</span>
-              <span
-                class="single-value"
-              >{{projectCondition&&item.inNameEng[index] ? projectCondition[item.inNameEng[indexs]] : 0}}</span>
+              <span class="single-value">
+                {{ item.id === 'excutive' ?
+                projectCondition&&item.inNameEng[index] ? projectCondition[item.inNameEng[indexs]] : 0
+                : projectPerson&&item.inNameEng[index] ? projectPerson[item.inNameEng[indexs]] : 0}}
+              </span>
             </div>
           </div>
         </div>
@@ -18,9 +20,9 @@
     </div>
     <div class="middle-span">
       <div class="middle-title">增收节支金额</div>
-      <div class="middle-value middle-interval">1209万元</div>
+      <div class="middle-value middle-interval">{{projectMiddle['increment'] || '1209万元'}}</div>
       <div class="middle-title">减少损失浪费</div>
-      <div class="middle-value">19万元</div>
+      <div class="middle-value">{{projectMiddle['reduce'] || '19万元'}}</div>
     </div>
     <div class="indicator-right indicator-div">
       <div v-for="(item ,index) in rightIn" :key="index" class="single-indicator">
@@ -28,7 +30,7 @@
         <div class="in-bottom">
           <div :id="item.id" class="in-chart"></div>
           <div class="in-bottom-right">
-            <div v-for="(items, indexs) in item.inName" :key="indexs">
+            <div v-for="(items, indexs) in item.inName" :key="indexs" class="single-bottom-right">
               <span class="single-title">{{items}}</span>
               <span
                 class="single-value"
@@ -61,7 +63,7 @@ export default {
           id: "putIn",
           name: "审计人员投入情况",
           inName: ["专职人", "兼职人", "其他人"],
-          inNameEng: ["54", "82", "97"]
+          inNameEng: ["all", "part", "else"]
         }
       ],
       rightIn: [
@@ -69,7 +71,7 @@ export default {
           id: "budget",
           name: "审计费用预算分析",
           inName: ["费用发生", "年度预算"],
-          inNameEng: ["13", "73"]
+          inNameEng: ["happen", "budget"]
         },
         {
           id: "change",
@@ -90,13 +92,31 @@ export default {
         this.$store.commit("newProjectCondition", newVal);
       }
     },
-    // 审计项目
+    // 审计问题
     projectIssue: {
       get: function() {
         return this.$store.state.projectIssue;
       },
       set: function(newVal) {
         this.$store.commit("newProjectIssue", newVal);
+      }
+    },
+    // 审计人员
+    projectPerson: {
+      get: function() {
+        return this.$store.state.projectPerson;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectPerson", newVal);
+      }
+    },
+    // 增收减少
+    projectMiddle: {
+      get: function() {
+        return this.$store.state.projectMiddle;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectMiddle", newVal);
       }
     }
   },
@@ -111,7 +131,7 @@ export default {
               (Number(this.projectCondition.doing) /
                 Number(this.projectCondition.total || 1)) *
               100
-            ).toFixed(2)
+            ).toFixed(0)
           );
         } else if (temp[i].id === "change") {
           this.initChart(
@@ -120,7 +140,16 @@ export default {
               (Number(this.projectIssue.done) /
                 Number(this.projectIssue.total || 1)) *
               100
-            ).toFixed(2)
+            ).toFixed(0)
+          );
+        } else if (temp[i].id === "putIn") {
+          this.initChart(
+            temp[i].id,
+            (
+              (Number(this.projectPerson.all) /
+                Number(this.projectPerson.total || 1)) *
+              100
+            ).toFixed(0)
           );
         } else {
           this.initChart(temp[i].id, 40);
@@ -308,8 +337,9 @@ export default {
   font-size: 56px;
   color: rgba(255, 255, 255, 1);
   .single-indicator {
-    width: 50%;
+    width: 46%;
     height: 100%;
+    padding-left: 1%;
     .in-bottom {
       display: flex;
     }
@@ -326,6 +356,7 @@ export default {
       justify-content: space-around;
       .single-bottom-right {
         width: 430px;
+        text-align: center;
         .single-title {
           display: inline-block;
         }

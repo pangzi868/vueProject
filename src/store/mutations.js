@@ -41,5 +41,14 @@ export default {
     },
     newProjectIssue(state, data) {
         state.projectIssue = Object.assign({}, state.projectIssue, data)
+    },
+    newProjectPerson(state, data) {
+        state.projectPerson = Object.assign({}, state.projectPerson, data)
+    },
+    newProjectMiddle(state, data) {
+        state.projectMiddle = Object.assign({}, state.projectMiddle, data)
+    },
+    newLeftIndicator(state, data) {
+        state.leftIndicator = Object.assign({}, state.leftIndicator, data)
     }
 }

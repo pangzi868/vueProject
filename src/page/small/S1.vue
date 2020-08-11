@@ -212,6 +212,8 @@ export default {
       right4LineIds: "right4LineChart",
       right4LineData: null,
       bottomScrollData: null,
+      indicatorPersonData: null,
+      indicatorMiddleData: null,
       bottomScrollConfig: {
         header: [
           "序号",
@@ -258,105 +260,6 @@ export default {
         data: [
           [
             "1",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "2",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "3",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "4",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "5",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "6",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "7",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "8",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "9",
-            "国网白山供电公司",
-            "问题类型",
-            "45",
-            "233",
-            "341",
-            "75",
-            "13.21%",
-            "32"
-          ],
-          [
-            "10",
             "国网白山供电公司",
             "问题类型",
             "45",
@@ -446,6 +349,35 @@ export default {
       set: function(newVal) {
         this.$store.commit("newLeftSecAux", newVal);
       }
+    },
+
+    // 审计人员
+    projectPerson: {
+      get: function() {
+        return this.$store.state.projectPerson;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectPerson", newVal);
+      }
+    },
+    // 增收减少
+    projectMiddle: {
+      get: function() {
+        return this.$store.state.projectMiddle;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectMiddle", newVal);
+      }
+    },
+
+    // 左上指标
+    leftIndicator: {
+      get: function() {
+        return this.$store.state.leftIndicator;
+      },
+      set: function(newVal) {
+        this.$store.commit("newLeftIndicator", newVal);
+      }
     }
   },
   methods: {
@@ -463,8 +395,12 @@ export default {
       this.right2LineData = this.screenFirstData.rightSecond;
       this.right3BarData = this.screenFirstData.rightThird;
       this.right4LineData = this.screenFirstData.rightForth;
+      this.indicatorPersonData = this.screenFirstData.indicatorPerson;
+      this.indicatorMiddleData = this.screenFirstData.indicatorMiddle;
+      this.leftIndicator = this.screenFirstData.leftIndicator;
 
       this.initBottomScroll();
+      this.initIndicator();
       this.$nextTick(() => {
         this.dataJudge = true;
       });
@@ -510,6 +446,42 @@ export default {
           ];
         }
       );
+    },
+    // 处理底部指标
+    initIndicator() {
+      if (!this.indicatorPersonData || !this.indicatorMiddleData) return;
+      this.indicatorPersonData.x &&
+        this.indicatorPersonData.x[0].data.forEach((item, index) => {
+          if (
+            item === this.currentPro ||
+            (this.currentPro === "全省" && item === "合计")
+          ) {
+            let allTemp = this.indicatorPersonData.y[0].data[index],
+              partTemp = this.indicatorPersonData.y[1].data[index],
+              elseTemp = this.indicatorPersonData.y[2].data[index];
+            this.projectPerson = {
+              all: allTemp || 0,
+              part: partTemp || 0,
+              else: elseTemp || 0,
+              total: Number(allTemp) + Number(partTemp) + Number(elseTemp)
+            };
+          }
+        });
+      this.indicatorMiddleData.x &&
+        this.indicatorMiddleData.x[0].data.forEach((item, index) => {
+          if (
+            item === this.currentPro ||
+            (this.currentPro === "全省" && item === "合计")
+          ) {
+            let incrementTemp = this.indicatorPersonData.y[0].data[index],
+              reduceTemp = this.indicatorPersonData.y[1].data[index];
+            this.projectMiddle = {
+              increment: this.indicatorMiddleData.y[0].data[index],
+              reduce: this.indicatorMiddleData.y[1].data[index],
+              total: Number(incrementTemp) + Number(reduceTemp)
+            };
+          }
+        });
     }
   },
   components: {

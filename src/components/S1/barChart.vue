@@ -204,11 +204,12 @@ export default {
                 position: "right",
                 distance: 40,
                 formatter: function(data) {
-                  return dataLine[data.dataIndex] + "条";
+                  return dataLine[data.dataIndex];
                 },
                 textStyle: {
                   color: "#ffffff",
-                  fontSize: 56
+                  fontSize: 56,
+                  padding: [0, 0, 0, 46]
                 }
               }
             },

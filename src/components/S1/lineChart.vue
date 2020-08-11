@@ -62,18 +62,21 @@ export default {
               indexArr.push(indexs);
             }
           });
+        } else {
+          indexArr = [];
         }
       });
       // console.log(this.xAxis, "a");
-
-      this.chartData.y.forEach((item, index) => {
-        indexArr.forEach((items, indexs) => {
-          if (this.yAxis[item.name] === undefined) {
-            this.yAxis[item.name] = [];
-          }
-          this.yAxis[item.name].push(item.data[items] || "0");
+      if (indexArr.length !== 0) {
+        this.chartData.y.forEach((item, index) => {
+          indexArr.forEach((items, indexs) => {
+            if (this.yAxis[item.name] === undefined) {
+              this.yAxis[item.name] = [];
+            }
+            this.yAxis[item.name].push(item.data[items] || "0");
+          });
         });
-      });
+      }
     },
 
     initColumnChart(id, data, cp) {
@@ -270,7 +273,9 @@ export default {
       //       : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60]
       //   }
       // ];
-      console.log(this.yAxis, "ty");
+      if (Object.keys(this.yAxis).length === 0) {
+        Option.series = [];
+      }
       Option.series = Object.keys(this.yAxis).map((item, index) => {
         return {
           name: this.type
@@ -330,7 +335,7 @@ export default {
         };
       });
 
-      myCharts.setOption(Option);
+      myCharts.setOption(Option, {notMerge: true});
     }
   },
   components: {},
