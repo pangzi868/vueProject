@@ -135,7 +135,7 @@ export default {
   // width: 7680px;
   // height: 4320px;
   color: #fff;
-  background: url("../../assets/images/background.png") no-repeat;
+  // background: url("../../assets/images/background.png") no-repeat;
   background-size: 100% 100%;
   overflow-x: hidden;
   overflow-y: hidden;

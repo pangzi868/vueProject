@@ -8,6 +8,7 @@ import mainView from '../page/trans-bank/mainView.vue'
 const ManageAnalysis = () => import('../page/manage-analysis')
 const multiple = () => import('../page/small/multipleShow.vue')
 const S1 = () => import('../page/small/S1.vue')
+const S2 = () => import('../page/small/S2.vue')
 const test = () => import('../page/small/test.vue')
 Vue.use(Router)
 
@@ -31,6 +32,9 @@ export default new Router({
       }, {
         path: 'S1',
         component: loadable(S1)
+      }, {
+        path: 'S2',
+        component: loadable(S2)
       }, {
         path: 'test',
         component: loadable(test)

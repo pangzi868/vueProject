@@ -18,6 +18,11 @@ const menuList = [
             title: 'S1',
             key: '/manage/S1',
             icon: 'bars'
+          },
+          {
+            title: 'S2',
+            key: '/manage/S2',
+            icon: 'bars'
           }
         ]
       },

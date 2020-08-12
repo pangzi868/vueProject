@@ -897,6 +897,8 @@ export default {
   width: 7680px;
   height: 4320px;
   z-index: 18;
+  background: url("../../assets/images/masking.png") no-repeat;
+  background-size: 100% 100%;
   background-color: rgba(0, 0, 0, 0.6);
 }
 </style>
