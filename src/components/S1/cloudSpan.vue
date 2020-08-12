@@ -78,6 +78,9 @@ export default {
   .top-box {
     width: 35%;
     text-align: center;
+    font-family: Comic Sans MS;
+    word-break: keep-all;
+    text-shadow: 10px 10px 7px rgba(255, 255, 255, 0.6);
     &:last-child {
       position: relative;
       left: 50px;
@@ -92,6 +95,9 @@ export default {
   .bottom-box {
     width: 30%;
     text-align: center;
+    font-family: Comic Sans MS;
+    word-break: keep-all;
+    text-shadow: 10px 10px 7px rgba(255, 255, 255, 0.6);
   }
 }
 </style>

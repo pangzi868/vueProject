@@ -20,9 +20,11 @@
     </div>
     <div class="middle-span">
       <div class="middle-title">增收节支金额</div>
-      <div class="middle-value middle-interval">{{projectMiddle['increment'] || '1209万元'}}</div>
+      <div
+        class="middle-value middle-interval"
+      >{{projectMiddle['increment'] ? projectMiddle['increment'] + '万元' : '0万元'}}</div>
       <div class="middle-title">减少损失浪费</div>
-      <div class="middle-value">{{projectMiddle['reduce'] || '19万元'}}</div>
+      <div class="middle-value">{{projectMiddle['reduce'] ? projectMiddle['reduce'] + '万元' : '0万元'}}</div>
     </div>
     <div class="indicator-right indicator-div">
       <div v-for="(item ,index) in rightIn" :key="index" class="single-indicator">
@@ -284,6 +286,9 @@ export default {
     },
     projectIssue: function(newVal) {
       this.init();
+    },
+    projectPerson: function(newVal) {
+      this.init();
     }
   }
 };
@@ -345,7 +350,7 @@ export default {
     }
     .in-chart {
       display: inline-block;
-      width: 290px;
+      width: 300px;
       height: 270px;
     }
     .in-bottom-right {

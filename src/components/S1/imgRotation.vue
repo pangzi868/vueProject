@@ -16,7 +16,9 @@
         class="pro-img"
         :style="item.style"
       />
-      <span v-html="item.name" :style="item.style" class="pro-name"></span>
+      <span :style="item.style" class="pro-name">
+        <span v-html="item.name" class="pro-true-name"></span>
+      </span>
     </div>
   </div>
 </template>
@@ -252,7 +254,7 @@ export default {
       let that = this;
       this.setAnimate = setInterval(
         (func, that) => {
-          that.speed = that.speed <= 360 ? that.speed + that.AUTOSPEED : 2;
+          that.speed = that.speed <= 360 ? that.speed - that.AUTOSPEED : 2;
           func(that.speed);
         },
         100,
@@ -290,11 +292,22 @@ export default {
   }
   .pro-name {
     position: absolute;
-    width: 65px;
-    height: 28px;
+    // width: 65px;
+    // height: 28px;
     font-size: 56px;
     white-space: nowrap;
     color: #fff;
+    .pro-true-name {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -70px;
+      text-align: center;
+      display: block;
+      font-family: Comic Sans MS;
+      word-break: keep-all;
+      text-shadow: 10px 10px 7px rgba(255, 255, 255, 0.6);
+    }
   }
   .control-div {
     position: absolute;

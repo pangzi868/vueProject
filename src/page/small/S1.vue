@@ -500,6 +500,11 @@ export default {
     LittleLineChart,
     "decorate-1": Decorate1,
     "move-modal": MoveModal
+  },
+  watch: {
+    currentPro: function(newVal) {
+      this.initIndicator();
+    }
   }
 };
 </script>
@@ -579,21 +584,30 @@ export default {
         height: 2500px;
         .whole-par {
           position: absolute;
-          left: 1174px;
-          top: 1000px;
+          left: 914px;
+          top: 390px;
           display: block;
           font-size: 100px;
-          color: rgba(255, 224, 114, 1);
-          transform: skew(0deg, -25deg);
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: bold;
+          font-family: Comic Sans MS;
+          word-break: keep-all;
+          text-shadow: 10px 10px 7px rgba(255, 255, 255, 0.6);
+          // transform: skew(0deg, -25deg);
         }
         .current-par {
           position: absolute;
-          left: 1134px;
-          top: 1580px;
+          left: 914px;
+          top: 1200px;
           display: block;
           font-size: 80px;
-          color: rgba(255, 224, 114, 1);
-          transform: skew(0deg, -25deg);
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: bold;
+          font-family: Comic Sans MS;
+          word-break: keep-all;
+          text-shadow: 10px 10px 7px rgba(255, 255, 255, 0.6);
+          // color: rgba(255, 224, 114, 1);
+          // transform: skew(0deg, -25deg);
         }
         .cloud-img {
           position: absolute;
@@ -606,12 +620,19 @@ export default {
           position: absolute;
           left: 2583px;
           top: 920px;
-          color: rgba(0, 73, 136, 1);
-          font-family: PingFang SC;
           font-size: 96px;
-          line-height: normal;
-          letter-spacing: 0px;
-          text-align: left;
+          color: rgb(0, 96, 151);
+          // color: #fafafa;
+          letter-spacing: 0;
+          text-shadow: 0px 2px 0px rgb(220, 220, 220),
+            0px 4px 0px rgb(220, 220, 220), 0px 6px 0px rgb(220, 220, 220),
+            0px 8px 0px rgb(220, 220, 220), 0px 10px 0px rgb(220, 220, 220),
+            0px 12px 0px rgb(220, 220, 220), 0px 14px 0px rgb(220, 220, 220),
+            0px 16px 14px rgb(220, 220, 220);
+          // font-family: PingFang SC;
+          // line-height: normal;
+          // letter-spacing: 0px;
+          // text-align: left;
         }
         .cloud-span {
           position: absolute;

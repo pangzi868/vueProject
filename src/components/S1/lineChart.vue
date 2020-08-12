@@ -62,21 +62,26 @@ export default {
               indexArr.push(indexs);
             }
           });
-        } else {
-          indexArr = [];
         }
       });
+      /**
+       * xAxis: ['2019', '2020]
+       * yAxis1: [15,15]
+       * yAxis2: [20,20]
+       * yAxis: {'实际数': [15, 15], '计划数': [20, 20]}
+       * type: ['实际数', '计划数']
+       */
       // console.log(this.xAxis, "a");
-      if (indexArr.length !== 0) {
-        this.chartData.y.forEach((item, index) => {
-          indexArr.forEach((items, indexs) => {
-            if (this.yAxis[item.name] === undefined) {
-              this.yAxis[item.name] = [];
-            }
-            this.yAxis[item.name].push(item.data[items] || "0");
-          });
+      // if (indexArr.length !== 0) {
+      this.chartData.y.forEach((item, index) => {
+        indexArr.forEach((items, indexs) => {
+          if (this.yAxis[item.name] === undefined) {
+            this.yAxis[item.name] = [];
+          }
+          this.yAxis[item.name].push(item.data[items] || "0");
         });
-      }
+      });
+      // }
     },
 
     initColumnChart(id, data, cp) {
@@ -223,59 +228,7 @@ export default {
         ],
         series: []
       };
-      // [
-      //   ,
-      //   {
-      //     name: "实际数",
-      //     type: "line",
-      //     showAllSymbol: true,
-      //     symbol: "circle",
-      //     symbolSize: 25,
-      //     lineStyle: {
-      //       normal: {
-      //         width: 10,
-      //         color: "rgba(0,247,255,1)"
-      //       }
-      //     },
-      //     label: {
-      //       show: true,
-      //       position: "top",
-      //       textStyle: {
-      //         color: "#6c50f3"
-      //       }
-      //     },
-      //     itemStyle: {
-      //       color: "rgba(0,247,255,1)",
-      //       borderColor: "#fff",
-      //       borderWidth: 3
-      //     },
-      //     tooltip: {
-      //       show: true
-      //     },
-      //     areaStyle: {
-      //       normal: {
-      //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-      //           {
-      //             offset: 0,
-      //             color: "rgba(0,247,255,0.3)"
-      //           },
-      //           {
-      //             offset: 1,
-      //             color: "rgba(0,247,255,0)"
-      //           }
-      //         ]),
-      //         shadowColor: "rgba(108,80,243, 0.9)",
-      //         shadowBlur: 20
-      //       }
-      //     },
-      //     data: this.yAxis2
-      //       ? this.yAxis2
-      //       : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60]
-      //   }
-      // ];
-      if (Object.keys(this.yAxis).length === 0) {
-        Option.series = [];
-      }
+      console.info(this.yAxis, "ya");
       Option.series = Object.keys(this.yAxis).map((item, index) => {
         return {
           name: this.type
@@ -334,8 +287,10 @@ export default {
           data: this.yAxis[item] ? this.yAxis[item] : [0, 0, 0]
         };
       });
-
-      myCharts.setOption(Option, {notMerge: true});
+      console.info(Option.series, "2");
+      // myCharts.setOption(Option, { notMerge: true });
+      myCharts.clear();
+      myCharts.setOption(Option);
     }
   },
   components: {},
