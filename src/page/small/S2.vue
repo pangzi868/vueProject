@@ -47,28 +47,42 @@
           :ids="boxIds['middle1']"
           theme="middle"
         >
-          <div class="sidebar-content-title">可控费用年度执行情况预警主题</div>
+          <div class="sidebar-content-title">业扩报装关键时长预警主题</div>
+          <top-indicator />
+          <sand-clock-chart ids="sandClock" />
         </hover-box>
         <hover-box
           class="middle-theme middle-second single-area bg-2"
           :ids="boxIds['middle2']"
           theme="middle"
         >
-          <div class="sidebar-content-title">成本项目计划执行进度预警主题</div>
+          <div class="sidebar-content-title">销户用户电费余额预警主题</div>
+          <left-indicator />
+          <middle-line-chart
+            class="middle-line-chart"
+            :ids="middleLineIds"
+            :chartData="middleLineData"
+          />
         </hover-box>
         <hover-box
           class="middle-theme middle-third single-area bg-3"
           :ids="boxIds['middle3']"
           theme="middle"
         >
-          <div class="sidebar-content-title">应收票据到期分布预警主题</div>
+          <div class="sidebar-content-title">电费突增预警主题</div>
+          <middle-bubble-chart
+            class="middle-bubble-chart"
+            :ids="middleBubbleIds"
+            :chartData="middleBubbleData"
+          />
         </hover-box>
         <hover-box
           class="middle-theme middle-forth single-area bg-2"
           :ids="boxIds['middle4']"
           theme="middle"
         >
-          <div class="sidebar-content-title">增值税进项税额抵扣率预警主题</div>
+          <div class="sidebar-content-title">档案与电价用电类别不符预警主题</div>
+          <middle-bar-chart class="middle-bar-box" :ids="middleBarIds" :chartData="middleBarData" />
         </hover-box>
       </div>
       <div class="project-field single-theme">
@@ -81,6 +95,16 @@
           theme="right"
         >
           <div class="sidebar-content-title">技改工程转资及时性预警主题</div>
+          <right-bubble-chart
+            class="right-bubble-chart"
+            :ids="rightBubbleIds"
+            :chartData="rightBubbleData"
+          />
+          <right-form-chart
+            class="right-form-chart"
+            :ids="rightFormIds"
+            :chartData="rightFormData"
+          />
         </hover-box>
         <hover-box
           class="right-theme sidebar-second single-area bg-2"
@@ -88,6 +112,16 @@
           theme="right"
         >
           <div class="sidebar-content-title">物资采购合同履约情况预警主题</div>
+          <right-water-chart
+            class="right-water-chart"
+            :ids="rightWaterIds"
+            :chartData="rightWaterData"
+          />
+          <right-huan-chart
+            class="right-huan-chart"
+            :ids="rightHuanIds"
+            :chartData="rightHuanData"
+          />
         </hover-box>
         <hover-box
           class="right-theme sidebar-third single-area bg-2"
@@ -110,6 +144,16 @@
 
 <script>
 import HoverBox from "@/components/S2/hoverBox.vue";
+import TopIndicator from "@/components/S2/topIndicator.vue";
+import LeftIndicator from "@/components/S2/leftIndicator.vue";
+import SandClockChart from "@/components/S2/sandClockChart.vue";
+import MiddleLineChart from "@/components/S2/middleLineChart.vue";
+import MiddleBubbleChart from "@/components/S2/middleBubbleChart.vue";
+import MiddleBarChart from "@/components/S2/middleBarChart.vue";
+import RightBubbleChart from "@/components/S2/rightBubbleChart.vue";
+import RightFormChart from "@/components/S2/rightFormChart.vue";
+import RightWaterChart from "@/components/S2/rightWaterChart.vue";
+import RightHuanChart from "@/components/S2/rightHuanChart.vue";
 
 import Title from "@/assets/images/second/title-3.png";
 import FinanceTitle from "@/assets/images/second/title-1.png";
@@ -148,7 +192,21 @@ export default {
         right2: "right2",
         right3: "right3",
         right4: "right4"
-      }
+      },
+      middleLineIds: "middleLineChart",
+      middleLineData: null,
+      middleBubbleIds: "middleBubbleChart",
+      middleBubbleData: null,
+      middleBarIds: "middleBarChart",
+      middleBarData: null,
+      rightBubbleIds: "rightBubbleChart",
+      rightBubbleData: null,
+      rightFormIds: "rightFormChart",
+      rightFormData: null,
+      rightWaterIds: "rightWaterChart",
+      rightWaterData: null,
+      rightHuanIds: "rightHuanChart",
+      rightHuanData: null
     };
   },
   computed: {},
@@ -156,7 +214,17 @@ export default {
     initData() {}
   },
   components: {
-    HoverBox
+    HoverBox,
+    TopIndicator,
+    LeftIndicator,
+    SandClockChart,
+    MiddleLineChart,
+    MiddleBubbleChart,
+    MiddleBarChart,
+    RightBubbleChart,
+    RightFormChart,
+    RightWaterChart,
+    RightHuanChart,
   },
   watch: {}
 };
@@ -227,7 +295,6 @@ export default {
         position: absolute;
         left: 0;
         width: 100%;
-        box-shadow: rgba(0, 0, 0, 0.3) -30px -30px 10px;
         transition: all 0.3s;
         z-index: 10;
       }
@@ -242,6 +309,15 @@ export default {
       .bg-3 {
         background: url("../../assets/images/second/Frame-748@4x.png") no-repeat;
         background-size: 100% 100%;
+      }
+      .left-theme {
+        box-shadow: rgba(0, 0, 0, 0.3) -30px -30px 10px;
+      }
+      .middle-theme {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px -30px 10px;
+      }
+      .right-theme {
+        box-shadow: rgba(0, 0, 0, 0.3) 30px -30px 10px;
       }
       .sidebar-first {
         top: 224px;
@@ -286,6 +362,55 @@ export default {
         padding-left: 60px;
         font-family: "ShiShangZhongHeiJianTi";
         color: rgba(255, 255, 255, 0.7);
+      }
+      .middle-line-chart {
+        position: absolute;
+        left: 950px;
+        top: 200px;
+        width: 1632px;
+        height: 70%;
+      }
+      .middle-bubble-chart {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 95%;
+        height: 70%;
+      }
+      .middle-bar-box {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 95%;
+        height: 70%;
+      }
+      .right-bubble-chart {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 50%;
+        height: 75%;
+      }
+      .right-form-chart {
+        position: absolute;
+        left: 50%;
+        top: 240px;
+        width: 45%;
+        height: 70%;
+      }
+      .right-water-chart {
+        position: absolute;
+        left: 56px;
+        top: 240px;
+        width: 45%;
+        height: 70%;
+      }
+      .right-huan-chart {
+        position: absolute;
+        left: 50%;
+        top: 240px;
+        width: 45%;
+        height: 70%;
       }
     }
     .finance-field {

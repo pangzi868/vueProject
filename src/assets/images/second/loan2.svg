@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="231px" height="231px" viewBox="0 0 231 231" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>1-js</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" id="radialGradient-1">
+            <stop stop-color="#FF523C" offset="0%"></stop>
+            <stop stop-color="#FF523C" stop-opacity="0.863144668" offset="16.247142%"></stop>
+            <stop stop-color="#FF523C" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" id="radialGradient-2">
+            <stop stop-color="#76E6FF" offset="0%"></stop>
+            <stop stop-color="#41C8FD" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#FFA04D" offset="0%"></stop>
+            <stop stop-color="#FF5640" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-4" cx="116.756637" cy="116.756637" r="74.843998"></circle>
+        <mask id="mask-5" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-3.024" y="-3.024" width="155.735996" height="155.735996">
+            <rect x="38.8886389" y="38.8886389" width="155.735996" height="155.735996" fill="white"></rect>
+            <use xlink:href="#path-4" fill="black"></use>
+        </mask>
+        <circle id="path-6" cx="116.756637" cy="116.756637" r="69.552"></circle>
+        <filter x="-12.9%" y="-12.9%" width="125.9%" height="125.9%" filterUnits="objectBoundingBox" id="filter-7">
+            <feGaussianBlur stdDeviation="14.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="7" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.992156863   0 0 0 0 0.414700312   0 0 0 0 0.22745098  0 0 0 0.6 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="屏2" transform="translate(-3612.000000, -344.000000)" fill-rule="nonzero">
+            <g id="编组-16备份-2" transform="translate(3612.000000, 344.000000)">
+                <g id="1-js">
+                    <circle id="Oval" fill-opacity="0.8" fill="url(#radialGradient-1)" opacity="0.64" cx="115.259757" cy="115.259757" r="115.259757"></circle>
+                    <use id="Oval-Copy-4" stroke="url(#linearGradient-3)" mask="url(#mask-5)" stroke-width="6.048" fill-opacity="0.1" fill="url(#radialGradient-2)" stroke-dasharray="42.33600311279297,9.071999359130858" xlink:href="#path-4"></use>
+                    <g id="Oval-Copy-8" fill="black" fill-opacity="1">
+                        <use filter="url(#filter-7)" xlink:href="#path-6"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
