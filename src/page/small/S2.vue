@@ -129,6 +129,16 @@
           theme="right"
         >
           <div class="sidebar-content-title">工程建设周期合理性预警主题</div>
+          <right-column-chart
+            class="right-column-chart"
+            :ids="rightColumnIds"
+            :chartData="rightColumnData"
+          />
+          <right-radar-chart
+            class="right-radar-chart"
+            :ids="rightRadarIds"
+            :chartData="rightRadarData"
+          />
         </hover-box>
         <hover-box
           class="right-theme sidebar-forth single-area bg-2"
@@ -136,6 +146,7 @@
           theme="right"
         >
           <div class="sidebar-content-title">物资库龄风险预警主题</div>
+          <right-bar-chart class="right-bar-chart" :ids="rightBarIds" :chartData="rightBarData" />
         </hover-box>
       </div>
     </div>
@@ -154,6 +165,9 @@ import RightBubbleChart from "@/components/S2/rightBubbleChart.vue";
 import RightFormChart from "@/components/S2/rightFormChart.vue";
 import RightWaterChart from "@/components/S2/rightWaterChart.vue";
 import RightHuanChart from "@/components/S2/rightHuanChart.vue";
+import RightColumnChart from "@/components/S2/rightColumnChart.vue";
+import RightRadarChart from "@/components/S2/rightRadarChart.vue";
+import RightBarChart from "@/components/S2/rightBarChart.vue";
 
 import Title from "@/assets/images/second/title-3.png";
 import FinanceTitle from "@/assets/images/second/title-1.png";
@@ -206,7 +220,13 @@ export default {
       rightWaterIds: "rightWaterChart",
       rightWaterData: null,
       rightHuanIds: "rightHuanChart",
-      rightHuanData: null
+      rightHuanData: null,
+      rightColumnIds: "rightColumnChart",
+      rightColumnData: null,
+      rightRadarIds: "rightRadarChart",
+      rightRadarData: null,
+      rightBarIds: "rightBarChart",
+      rightBarData: null
     };
   },
   computed: {},
@@ -225,6 +245,9 @@ export default {
     RightFormChart,
     RightWaterChart,
     RightHuanChart,
+    RightColumnChart,
+    RightRadarChart,
+    RightBarChart
   },
   watch: {}
 };
@@ -410,6 +433,27 @@ export default {
         left: 50%;
         top: 240px;
         width: 45%;
+        height: 70%;
+      }
+      .right-column-chart {
+        position: absolute;
+        left: 56px;
+        top: 240px;
+        width: 45%;
+        height: 70%;
+      }
+      .right-radar-chart {
+        position: absolute;
+        left: 50%;
+        top: 240px;
+        width: 45%;
+        height: 70%;
+      }
+      .right-bar-chart {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 95%;
         height: 70%;
       }
     }
