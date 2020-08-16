@@ -27,11 +27,12 @@ export default {
     initColumnChart(id, data, currentPro) {
       if (!data || JSON.stringify(data) == '"{}"') return;
       let myCharts = this.$echarts.init(document.getElementById(id));
+      let lineColor = ["rgba(9,117,217,1)", "rgba(120,231,255,1)"];
       myCharts.setOption({
         tooltip: {
           //提示框组件
           trigger: "axis",
-          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
+          // formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
           axisPointer: {
             type: "shadow",
             label: {
@@ -47,7 +48,20 @@ export default {
           backgroundColor: "rgba(70,130,180,0.8)",
           borderColor: "rgba(47,79,79,1)",
           borderWidth: 1,
-          padding: [12, 24]
+          padding: [12, 24],
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
+                lineColor[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                item.value
+              );
+            });
+            return params[0].name + tempStr.join(" ");
+          }
         },
         grid: {
           left: "3%",

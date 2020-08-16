@@ -36,7 +36,7 @@ export default {
         { name: "工程", value: 0 },
         { name: "物资", value: 0 }
       ];
-      let type = ["财务", "营销", "人资" ,"工程", "物资"];
+      let type = ["财务", "营销", "人资", "工程", "物资"];
 
       data.x[0].data.forEach((item, index) => {
         if (item === cp) {
@@ -55,8 +55,27 @@ export default {
           "#48B188",
           "#4A5D73"
         ],
+        tooltip: {
+          trigger: "item",
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
+          formatter: function(params) {
+            return (
+              params.seriesName + "</br>" + params.name + "：" + params.value
+            );
+          }
+        },
         series: [
           {
+            name: "问题数",
             color: [
               "#5B4CFF",
               "#00F7FF",

@@ -71,7 +71,6 @@ export default {
        * yAxis: {'实际数': [15, 15], '计划数': [20, 20]}
        * type: ['实际数', '计划数']
        */
-      // console.log(this.xAxis, "a");
       // if (indexArr.length !== 0) {
       this.chartData.y.forEach((item, index) => {
         indexArr.forEach((items, indexs) => {
@@ -96,7 +95,6 @@ export default {
         ["rgba(0,247,255,0.3)", "rgba(0,247,255,0)", "rgba(108,80,243, 0.9)"],
         ["rgba(255,136,0,0.3)", "rgba(255,136,0,0)", "rgba(108,80,243, 0.9)"]
       ];
-
       let myCharts = this.$echarts.init(document.getElementById(id));
       let Option = {
         tooltip: {
@@ -118,7 +116,20 @@ export default {
           backgroundColor: "rgba(70,130,180,0.8)",
           borderColor: "rgba(47,79,79,1)",
           borderWidth: 1,
-          padding: [12, 24]
+          padding: [12, 24],
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
+                lineColor[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                item.data
+              );
+            });
+            return params[0].name + tempStr.join(" ");
+          }
         },
         grid: {
           left: "3%",
@@ -228,7 +239,6 @@ export default {
         ],
         series: []
       };
-      console.info(this.yAxis, "ya");
       Option.series = Object.keys(this.yAxis).map((item, index) => {
         return {
           name: this.type
@@ -287,7 +297,6 @@ export default {
           data: this.yAxis[item] ? this.yAxis[item] : [0, 0, 0]
         };
       });
-      console.info(Option.series, "2");
       // myCharts.setOption(Option, { notMerge: true });
       myCharts.clear();
       myCharts.setOption(Option);

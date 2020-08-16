@@ -10,8 +10,8 @@
               <span class="single-title">{{items}}</span>
               <span class="single-value">
                 {{ item.id === 'excutive' ?
-                projectCondition&&item.inNameEng[index] ? projectCondition[item.inNameEng[indexs]] : 0
-                : projectPerson&&item.inNameEng[index] ? projectPerson[item.inNameEng[indexs]] : 0}}
+                projectCondition && item.inNameEng[index] ? projectCondition[item.inNameEng[indexs]] : 0
+                : projectPerson && item.inNameEng[index] ? projectPerson[item.inNameEng[indexs]] : 0}}
               </span>
             </div>
           </div>
@@ -34,9 +34,11 @@
           <div class="in-bottom-right">
             <div v-for="(items, indexs) in item.inName" :key="indexs" class="single-bottom-right">
               <span class="single-title">{{items}}</span>
-              <span
-                class="single-value"
-              >{{projectIssue&&item.inNameEng[index] ? projectIssue[item.inNameEng[indexs]] : 0}}</span>
+              <span class="single-value">
+                {{ item.id === 'budget' ?
+                projectBudget && item.inNameEng[index] ? projectBudget[item.inNameEng[indexs]] : 0
+                : projectIssue && item.inNameEng[index] ? projectIssue[item.inNameEng[indexs]] : 0}}
+              </span>
             </div>
           </div>
         </div>
@@ -112,6 +114,15 @@ export default {
         this.$store.commit("newProjectPerson", newVal);
       }
     },
+    // 审计人员
+    projectBudget: {
+      get: function() {
+        return this.$store.state.projectBudget;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectBudget", newVal);
+      }
+    },
     // 增收减少
     projectMiddle: {
       get: function() {
@@ -150,6 +161,15 @@ export default {
             (
               (Number(this.projectPerson.all) /
                 Number(this.projectPerson.total || 1)) *
+              100
+            ).toFixed(0)
+          );
+        } else if (temp[i].id === "budget") {
+          this.initChart(
+            temp[i].id,
+            (
+              (Number(this.projectBudget.happen) /
+                Number(this.projectBudget.budget || 1)) *
               100
             ).toFixed(0)
           );
@@ -288,6 +308,9 @@ export default {
       this.init();
     },
     projectPerson: function(newVal) {
+      this.init();
+    },
+    projectBudget: function(newVal) {
       this.init();
     }
   }

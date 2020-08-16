@@ -10,7 +10,7 @@
           <img :src="manageTitle" alt class="sidebar-title-img" />
         </div>
         <hover-box class="sidebar-first left-side-bar" :ids="boxIds['left1']">
-          <div class="sidebar-content-title">审计项目计划情况执行分析</div>
+          <div class="sidebar-content-title">审计项目计划执行分析</div>
           <indicator-box
             class="indicator-box"
             :v-if="dataJudge"
@@ -184,7 +184,7 @@ export default {
 
       dataJudge: false,
 
-      //审计项目计划情况执行分析
+      //审计项目计划执行分析
       left1Ids: [
         { id: "leftIndicator1", name: "项目计划数", keyV: "plan" },
         { id: "leftIndicator2", name: "项目实际数", keyV: "actual" }
@@ -360,6 +360,15 @@ export default {
         this.$store.commit("newProjectPerson", newVal);
       }
     },
+    // 审计人员
+    projectBudget: {
+      get: function() {
+        return this.$store.state.projectBudget;
+      },
+      set: function(newVal) {
+        this.$store.commit("newProjectBudget", newVal);
+      }
+    },
     // 增收减少
     projectMiddle: {
       get: function() {
@@ -473,12 +482,38 @@ export default {
             item === this.currentPro ||
             (this.currentPro === "全省" && item === "合计")
           ) {
-            let incrementTemp = this.indicatorPersonData.y[0].data[index],
-              reduceTemp = this.indicatorPersonData.y[1].data[index];
+            let incrementTemp = this.indicatorMiddleData.y[0].data[index],
+              reduceTemp = this.indicatorMiddleData.y[1].data[index];
             this.projectMiddle = {
               increment: this.indicatorMiddleData.y[0].data[index],
               reduce: this.indicatorMiddleData.y[1].data[index],
               total: Number(incrementTemp) + Number(reduceTemp)
+            };
+          }
+        });
+      this.left2ColumnData.x &&
+        this.left2ColumnData.x[0].data.forEach((item, index) => {
+          if (item === this.currentPro) {
+            let budget = this.left2ColumnData.y[0].data[index],
+              happen = this.left2ColumnData.y[1].data[index];
+            this.projectBudget = {
+              budget: this.left2ColumnData.y[0].data[index],
+              happen: this.left2ColumnData.y[1].data[index]
+            };
+          } else if (this.currentPro === "全省") {
+            let totalBudget = this.left2ColumnData.y[0].data.reduce(
+              (pre, cur) => {
+                return Number(pre) + (cur ? Number(cur) : 0);
+              }
+            );
+            let totalHappen = this.left2ColumnData.y[1].data.reduce(
+              (pre, cur) => {
+                return Number(pre) + (cur ? Number(cur) : 0);
+              }
+            );
+            this.projectBudget = {
+              budget: totalBudget,
+              happen: totalHappen
             };
           }
         });

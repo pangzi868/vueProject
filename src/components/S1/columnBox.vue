@@ -27,11 +27,12 @@ export default {
     initColumnChart(id, data, currentPro) {
       if (!data || JSON.stringify(data) == '"{}"') return;
       let myCharts = this.$echarts.init(document.getElementById(id));
+      let colorArr = ["rgba(13,139,255,1)", "rgba(21,255,255,1)"];
       myCharts.setOption({
         tooltip: {
           //提示框组件
           trigger: "axis",
-          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
+          // formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
           axisPointer: {
             type: "shadow",
             label: {
@@ -47,6 +48,19 @@ export default {
             fontStyle: "normal",
             fontFamily: "微软雅黑",
             fontSize: 52
+          },
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
+                colorArr[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                (item.data ? parseFloat(item.data).toFixed(2) : "0")
+              );
+            });
+            return params[0].name + tempStr.join(" ");
           }
         },
         grid: {
@@ -166,7 +180,11 @@ export default {
             type: "bar",
             data: data.y
               ? data.y[0].data.map((item, index) => {
-                  if (data.x[0].data[index] === currentPro || data.x[0].data[index] === '直属' && currentPro === '直属单位') {
+                  if (
+                    data.x[0].data[index] === currentPro ||
+                    (data.x[0].data[index] === "直属" &&
+                      currentPro === "直属单位")
+                  ) {
                     return {
                       value: item,
                       itemStyle: {
@@ -223,7 +241,11 @@ export default {
             type: "bar",
             data: data.y
               ? data.y[1].data.map((item, index) => {
-                  if (data.x[0].data[index] === currentPro || data.x[0].data[index] === '直属' && currentPro === '直属单位') {
+                  if (
+                    data.x[0].data[index] === currentPro ||
+                    (data.x[0].data[index] === "直属" &&
+                      currentPro === "直属单位")
+                  ) {
                     return {
                       value: item,
                       itemStyle: {

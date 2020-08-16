@@ -45,6 +45,9 @@ export default {
     newProjectPerson(state, data) {
         state.projectPerson = Object.assign({}, state.projectPerson, data)
     },
+    newProjectBudget(state, data) {
+        state.projectBudget = Object.assign({}, state.projectBudget, data)
+    },
     newProjectMiddle(state, data) {
         state.projectMiddle = Object.assign({}, state.projectMiddle, data)
     },

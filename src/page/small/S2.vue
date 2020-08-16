@@ -15,6 +15,17 @@
           theme="left"
         >
           <div class="sidebar-content-title">可控费用年度执行情况预警主题</div>
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            text-color="rgba(255,255,255,0.7)"
+            active-text-color="rgba(255,255,255,1)"
+          >
+            <el-menu-item index="1">处理中心</el-menu-item>
+          </el-menu>
+          <left-line class="line-chart" :ids="lineIds" :chartData="lineData" />
         </hover-box>
         <hover-box
           class="left-theme sidebar-second single-area bg-2"
@@ -22,6 +33,12 @@
           theme="left"
         >
           <div class="sidebar-content-title">成本项目计划执行进度预警主题</div>
+          <second-indicator class="second-indicator" />
+          <line-and-column
+            class="little-left-line-chart"
+            :ids="littleLineAndColumnIds"
+            :chartData="littleLineAndColumnData"
+          />
         </hover-box>
         <hover-box
           class="left-theme sidebar-third single-area bg-2"
@@ -29,6 +46,15 @@
           theme="left"
         >
           <div class="sidebar-content-title">应收票据到期分布预警主题</div>
+          <el-select v-model="selectValue" size="medium" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <left-bar class="left-bar-chart" :ids="leftBarIds" :chartData="leftBarData" />
         </hover-box>
         <hover-box
           class="left-theme sidebar-forth single-area bg-2"
@@ -36,6 +62,11 @@
           theme="left"
         >
           <div class="sidebar-content-title">增值税进项税额抵扣率预警主题</div>
+          <line-and-column
+            class="left-line-chart"
+            :ids="leftLineAndColumnIds"
+            :chartData="leftLineAndColumnData"
+          />
         </hover-box>
       </div>
       <div class="marketing-field single-theme">
@@ -155,12 +186,18 @@
 
 <script>
 import HoverBox from "@/components/S2/hoverBox.vue";
+import LeftLine from "@/components/S2/leftLineChart.vue";
+import LineAndColumn from "@/components/S2/leftLineAndColumnChart.vue";
+import LeftBar from "@/components/S2/leftBarChart.vue";
+import SecondIndicator from "@/components/S2/secondIndicator.vue";
+
 import TopIndicator from "@/components/S2/topIndicator.vue";
 import LeftIndicator from "@/components/S2/leftIndicator.vue";
 import SandClockChart from "@/components/S2/sandClockChart.vue";
 import MiddleLineChart from "@/components/S2/middleLineChart.vue";
 import MiddleBubbleChart from "@/components/S2/middleBubbleChart.vue";
 import MiddleBarChart from "@/components/S2/middleBarChart.vue";
+
 import RightBubbleChart from "@/components/S2/rightBubbleChart.vue";
 import RightFormChart from "@/components/S2/rightFormChart.vue";
 import RightWaterChart from "@/components/S2/rightWaterChart.vue";
@@ -189,6 +226,7 @@ export default {
   },
   data() {
     return {
+      activeIndex: "1",
       title: Title,
       financeTitle: FinanceTitle,
       marketingTitle: MarketingTitle,
@@ -207,6 +245,37 @@ export default {
         right3: "right3",
         right4: "right4"
       },
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕"
+        },
+        {
+          value: "选项2",
+          label: "双皮奶"
+        },
+        {
+          value: "选项3",
+          label: "蚵仔煎"
+        },
+        {
+          value: "选项4",
+          label: "龙须面"
+        },
+        {
+          value: "选项5",
+          label: "北京烤鸭"
+        }
+      ],
+      selectValue: "",
+      lineIds: "lineChart",
+      lineData: null,
+      littleLineAndColumnIds: "littleLineAndColumnChart",
+      littleLineAndColumnData: null,
+      leftBarIds: "leftBarChart",
+      leftBarData: null,
+      leftLineAndColumnIds: "leftLineAndColumnChart",
+      leftLineAndColumnData: null,
       middleLineIds: "middleLineChart",
       middleLineData: null,
       middleBubbleIds: "middleBubbleChart",
@@ -231,16 +300,25 @@ export default {
   },
   computed: {},
   methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
     initData() {}
   },
   components: {
     HoverBox,
+    LineAndColumn,
+    LeftLine,
+    LeftBar,
+    SecondIndicator,
+
     TopIndicator,
     LeftIndicator,
     SandClockChart,
     MiddleLineChart,
     MiddleBubbleChart,
     MiddleBarChart,
+
     RightBubbleChart,
     RightFormChart,
     RightWaterChart,
@@ -386,6 +464,41 @@ export default {
         font-family: "ShiShangZhongHeiJianTi";
         color: rgba(255, 255, 255, 0.7);
       }
+      .second-indicator {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 540px;
+        height: 686px;
+      }
+      .line-chart {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 95%;
+        height: 75%;
+      }
+      .little-left-line-chart {
+        position: absolute;
+        left: 600px;
+        top: 200px;
+        width: 1632px;
+        height: 75%;
+      }
+      .left-bar-chart {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 95%;
+        height: 75%;
+      }
+      .left-line-chart {
+        position: absolute;
+        left: 56px;
+        top: 200px;
+        width: 95%;
+        height: 70%;
+      }
       .middle-line-chart {
         position: absolute;
         left: 950px;
@@ -497,4 +610,50 @@ export default {
 </style>
 
 <style lang="less">
+// 下拉框
+.el-select {
+  display: inline-block;
+  position: absolute;
+  right: 4%;
+  top: 3%;
+
+  .el-input--medium {
+    font-size: 48px;
+    .el-input__inner {
+      background-color: rgba(0, 104, 226, 0.25);
+      border: 2px solid rgba(131, 188, 255, 0.32);
+      color: rgba(255, 255, 255, 0.7);
+      height: 110px;
+      line-height: 110px;
+    }
+    .el-input__icon {
+      line-height: 110px;
+    }
+    .el-input__suffix {
+      right: 25px;
+    }
+  }
+}
+.el-select-dropdown {
+  background-color: rgba(8, 45, 60, 0.9);
+  border: 2px solid rgba(131, 188, 255, 0.32);
+  color: rgba(255, 255, 255, 0.7);
+}
+.el-select-dropdown__wrap {
+  max-height: unset;
+}
+.el-select-dropdown__item {
+  height: 110px;
+  line-height: 110px;
+  color: rgba(255, 255, 255, 0.7);
+  &.hover {
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+// 导航栏
+.el-menu.el-menu--horizontal {
+  background: linear-gradient(0deg,rgba(0, 172, 226, 0) 0%,rgba(56, 145, 250, 1) 100%);
+  border-bottom: 0px;
+}
 </style>
