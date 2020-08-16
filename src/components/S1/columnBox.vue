@@ -57,7 +57,12 @@ export default {
                 "'></span>" +
                 item.seriesName +
                 "：" +
-                (item.data ? parseFloat(item.data).toFixed(2) : "0")
+                (item.value
+                  ? item.seriesName.indexOf("数") !== -1 ||
+                    item.value.indexOf(".") === -1
+                    ? item.value
+                    : parseFloat(item.value).toFixed(2)
+                  : "0")
               );
             });
             return params[0].name + tempStr.join(" ");

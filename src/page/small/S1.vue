@@ -458,7 +458,12 @@ export default {
     },
     // 处理底部指标
     initIndicator() {
-      if (!this.indicatorPersonData || !this.indicatorMiddleData) return;
+      if (
+        !this.indicatorPersonData ||
+        !this.indicatorMiddleData ||
+        !this.left2ColumnData
+      )
+        return;
       this.indicatorPersonData.x &&
         this.indicatorPersonData.x[0].data.forEach((item, index) => {
           if (
@@ -497,8 +502,18 @@ export default {
             let budget = this.left2ColumnData.y[0].data[index],
               happen = this.left2ColumnData.y[1].data[index];
             this.projectBudget = {
-              budget: this.left2ColumnData.y[0].data[index],
-              happen: this.left2ColumnData.y[1].data[index]
+              budget:
+                (budget &&
+                  (budget.indexOf(".") === -1
+                    ? budget
+                    : parseFloat(budget).toFixed(2))) ||
+                0,
+              happen:
+                (happen &&
+                  (happen.indexOf(".") === -1
+                    ? happen
+                    : parseFloat(happen).toFixed(2))) ||
+                0
             };
           } else if (this.currentPro === "全省") {
             let totalBudget = this.left2ColumnData.y[0].data.reduce(
@@ -512,8 +527,14 @@ export default {
               }
             );
             this.projectBudget = {
-              budget: totalBudget,
-              happen: totalHappen
+              budget:
+                (totalBudget + "").indexOf(".") === -1
+                  ? totalBudget
+                  : parseFloat(totalBudget).toFixed(2),
+              happen:
+                (totalHappen + "").indexOf(".") === -1
+                  ? totalHappen
+                  : parseFloat(totalHappen).toFixed(2)
             };
           }
         });

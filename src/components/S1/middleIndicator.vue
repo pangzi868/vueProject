@@ -141,7 +141,7 @@ export default {
           this.initChart(
             temp[i].id,
             (
-              (Number(this.projectCondition.doing) /
+              (Number(this.projectCondition.done) /
                 Number(this.projectCondition.total || 1)) *
               100
             ).toFixed(0)
