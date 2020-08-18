@@ -40,7 +40,8 @@ export default {
         if (this.curPro === data.x[0].data[index]) {
           let temp = [...this.indicator];
           temp[0].value = data.y[0].data[index];
-          temp[1].value = data.y[1].data[index];
+          temp[1].value =
+            (Number(data.y[1].data[index]) / 10000).toFixed(2) + "万";
           this.indicator = [...temp];
         }
       }

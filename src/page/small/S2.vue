@@ -188,7 +188,17 @@
         </hover-box>
       </div>
     </div>
-    <vue-fab mainBtnColor="rgba(150,211,255,0.58)" :globalOptions="globalOptions">
+    <vue-fab
+      mainBtnColor="rgba(150,211,255,0.58)"
+      :globalOptions="globalOptions"
+      @mousedown.native.prevent="down($event)"
+      @touchstart.native.prevent="down($event)"
+      @mousemove.native.prevent="move($event)"
+      @touchmove.native.prevent="move($event)"
+      @mouseup.native.prevent="end($event)"
+      @touchend.native.prevent="end($event)"
+      id="fab"
+    >
       <!-- <img
         :src="operationImg"
         style="width: 80%;height: 70%;top: 180px;left: 20px;position: absolute;"
@@ -203,8 +213,15 @@
         <img :src="companyImg" style="width: 100%;height: 70%;top: 20px;position: absolute;" />
       </fab-item>
     </vue-fab>
-    <move-modal />
-    <div class="cover-div" v-if="modalVisibility"></div>
+    <move-modal
+      v-for="item in modalData"
+      :key="item.keys"
+      :visible="item.visible"
+      :type="item.type"
+      :data="item.data"
+      :keys="item.keys"
+    />
+    <!-- <move-modal /> -->
   </div>
 </template>
 
@@ -247,7 +264,7 @@ export default {
     let data = null;
     if (window.name) {
       data = JSON.parse(window.name);
-      data = window.name;
+      // data = window.name;
     } else {
       data = JSON.parse(dataJson.S2);
     }
@@ -256,6 +273,24 @@ export default {
   },
   data() {
     return {
+      selectElement: "",
+      id: "fab",
+      dragging: false,
+      downDrag: false,
+      dragObj: {
+        moveX: 0,
+        moveY: 0,
+        dragTime: 0,
+        startTime: 0,
+        endTime: 0,
+        distanceX: 0,
+        distanceY: 0,
+        touchmoveX: 0,
+        touchmoveY: 0,
+        touchstartX: 0,
+        touchstartY: 0
+      },
+
       draw: false,
       activeIndex: "1",
       title: Title,
@@ -365,6 +400,14 @@ export default {
       }
     },
 
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
+    },
     modalVisibility: {
       get: function() {
         return this.$store.state.modalVisibility;
@@ -392,6 +435,67 @@ export default {
         return items.ids === item.idx;
       });
       this.curPro = tempCur[0].name;
+    },
+    down(e) {
+      e.prevent;
+      this.downDrag = true;
+      let mouseType = e.type.indexOf("mouse") !== -1 ? true : false;
+      let clientX = mouseType ? e.clientX : e.touches[0].clientX;
+      let clientY = mouseType ? e.clientY : e.touches[0].clientY;
+      if (!mouseType) {
+        this.dragObj.touchstartX = clientX;
+        this.dragObj.touchstartY = clientY;
+      }
+      this.selectElement = document.getElementById(this.id);
+      this.selectElement.style.cursor = "move";
+      this.distanceX = clientX - this.selectElement.offsetLeft;
+      this.distanceY = clientY - this.selectElement.offsetTop;
+      this.dragObj.startTime = e.timeStamp;
+    },
+    move(e) {
+      if (!this.downDrag) return;
+      let mouseType = e.type.indexOf("mouse") !== -1 ? true : false;
+      let clientX = mouseType ? e.clientX : e.touches[0].clientX;
+      let clientY = mouseType ? e.clientY : e.touches[0].clientY;
+      this.selectElement.style.left = clientX - this.distanceX + "px";
+      this.selectElement.style.top = clientY - this.distanceY + "px";
+      this.dragObj.moveX += e.movementX;
+      this.dragObj.moveY += e.movementY;
+      if (!mouseType) {
+        this.dragObj.moveX = clientX - this.dragObj.touchstartX;
+        this.dragObj.moveY = clientY - this.dragObj.touchstartY;
+      }
+      // 这里的数据越小，越精确
+      if (Math.abs(this.dragObj.moveX) + Math.abs(this.dragObj.moveY) > 5) {
+        this.dragging = true;
+      }
+    },
+    end(e) {
+      let dragDis = 0;
+      this.downDrag = false;
+      this.dragObj.endTime = e.timeStamp;
+      this.dragObj.dragTime =
+        parseInt(this.dragObj.endTime) - parseInt(this.dragObj.startTime);
+      dragDis = Math.abs(this.dragObj.moveX) + Math.abs(this.dragObj.moveY);
+      // 如果（拖动距离）大于5且小于200 且（拖动时长）小于200ms
+      if (dragDis > 5 && dragDis < 1000 && this.dragObj.dragTime < 200) {
+        // this.closeDialog();
+      }
+      this.dragging = false;
+      this.dragObj = {
+        moveX: 0,
+        moveY: 0,
+        dragTime: 0,
+        startTime: 0,
+        endTime: 0,
+        distanceX: 0,
+        distanceY: 0,
+        touchmoveX: 0,
+        touchmoveY: 0,
+        touchstartX: 0,
+        touchstartY: 0
+      };
+      this.selectElement.style.cursor = "default";
     }
   },
   components: {
@@ -417,7 +521,9 @@ export default {
     RightRadarChart,
     RightBarChart
   },
-  watch: {}
+  watch: {
+    modalData: function() {}
+  }
 };
 </script>
 
@@ -797,6 +903,7 @@ export default {
       right: 200px;
       padding: 30px 50px;
       border-radius: 25px;
+      font-size: 56px;
     }
   }
 }

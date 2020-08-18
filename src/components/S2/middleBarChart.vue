@@ -25,6 +25,14 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurrentPro", newVal);
       }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
     }
   },
   methods: {
@@ -79,14 +87,14 @@ export default {
           {
             left: "5%",
             top: "2%",
-            right: "12%",
+            right: "16%",
             bottom: "2%",
             containLabel: true
           },
           {
             left: "5%",
             top: "2%",
-            right: "12%",
+            right: "16%",
             bottom: "2%",
             containLabel: true
           }
@@ -225,6 +233,38 @@ export default {
           }
         ]
       });
+      myCharts.on("click", params => {
+        let data = this.$store.state.screenSecondData.middle4Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === this.curPro) {
+            let tempY = [];
+            data.x.forEach(items => {
+              tempY.push(items.data[index]);
+            });
+            yAxis.push(tempY);
+          }
+        });
+
+        this.modalData = {
+          middle4Modal: {
+            type: "type1",
+            visible: true,
+            keys: "middle4Modal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis,
+              align: align
+            }
+          }
+        };
+      });
     },
     initRightBarChart(id, data, cp) {
       if (!data || JSON.stringify(data) == '"{}"') return;
@@ -232,7 +272,7 @@ export default {
       let proName = [];
       var dataLine = [];
       data.x[0].data.forEach((item, index) => {
-        if (index > 4) {
+        if (index > 4 && index < 9) {
           proName.push(item);
           dataLine.push(data.y[0].data[index]);
         }
@@ -277,14 +317,14 @@ export default {
           {
             left: "5%",
             top: "2%",
-            right: "12%",
+            right: "16%",
             bottom: "2%",
             containLabel: true
           },
           {
             left: "5%",
             top: "2%",
-            right: "12%",
+            right: "16%",
             bottom: "2%",
             containLabel: true
           }
@@ -310,8 +350,7 @@ export default {
               "财务资产",
               "工程项目",
               "合同管理",
-              "物资招投标管理",
-              "人资管理"
+              "物资招投标管理"
             ]
           },
           {
@@ -324,7 +363,7 @@ export default {
                 fontSize: 56
               }
             },
-            data: [1, 1, 1, 1, 1]
+            data: [1, 1, 1, 1]
           },
           {
             axisLine: {
@@ -348,13 +387,7 @@ export default {
               }
             },
 
-            data: [
-              positionLeft,
-              positionLeft,
-              positionLeft,
-              positionLeft,
-              positionLeft
-            ]
+            data: [positionLeft, positionLeft, positionLeft, positionLeft]
           },
           {
             name: "条数",
@@ -378,7 +411,7 @@ export default {
             type: "bar",
             yAxisIndex: 1,
             barGap: "-100%",
-            data: [whiteMax, whiteMax, whiteMax, whiteMax, whiteMax],
+            data: [whiteMax, whiteMax, whiteMax, whiteMax],
             barWidth: 51,
             itemStyle: {
               normal: {
@@ -393,7 +426,7 @@ export default {
             type: "bar",
             yAxisIndex: 2,
             barGap: "-100%",
-            data: [max, max, max, max, max],
+            data: [max, max, max, max],
             barWidth: 51,
             label: {
               normal: {
@@ -422,6 +455,35 @@ export default {
             z: 0
           }
         ]
+      });
+      myCharts.on("click", params => {
+        let data = this.$store.state.screenSecondData.middle4Aux;
+        let xAxis = data.x.map(item => {
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === this.curPro) {
+            let tempY = [];
+            data.y.forEach(items => {
+              tempY.push(items.data[index]);
+            });
+            yAxis.push(tempY);
+          }
+        });
+
+        this.modalData = {
+          middle4RightModal: {
+            type: "type1",
+            visible: true,
+            keys: "middle4RightModal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis
+            }
+          }
+        };
       });
     }
   },

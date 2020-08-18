@@ -24,6 +24,14 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurPro", newVal);
       }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
     }
   },
   methods: {
@@ -208,6 +216,38 @@ export default {
             })(this.bubbleData || tempChartData) //载入数据并设置图形尺寸
           }
         ]
+      });
+      myCharts.on("click", params => {
+        let data = this.$store.state.screenSecondData.middle3Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === this.curPro) {
+            let tempY = [];
+            data.x.forEach(items => {
+              tempY.push(items.data[index]);
+            });
+            yAxis.push(tempY);
+          }
+        });
+
+        this.modalData = {
+          middle3Modal: {
+            type: "type1",
+            visible: true,
+            keys: "middle3Modal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis,
+              align: align
+            }
+          }
+        };
       });
     }
   },

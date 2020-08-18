@@ -296,12 +296,12 @@ export default {
       this.selectElement = document.getElementById(this.id);
       this.selectElement.style.left = "24%";
       this.selectElement.style.top = "20%";
-      if (this.selectElement.classList.length > 1) {
-        this.selectElement.classList.remove;
-      }
-      this.selectElement.classList.add(
-        this.styleArr[parseInt(Math.random() * 10) % this.styleArr.length]
-      );
+      // if (this.selectElement.classList.length > 1) {
+      //   this.selectElement.classList.remove;
+      // }
+      // this.selectElement.classList.add(
+      //   this.styleArr[parseInt(Math.random() * 10) % this.styleArr.length]
+      // );
     },
     currentPro: function(newVal) {
       this.initColumn(this.dialogData, newVal, this.leftSecAux);
@@ -338,18 +338,18 @@ export default {
   border-radius: 34px;
   box-shadow: rgba(0, 0, 0, 1) 0px -30px 10px;
 }
-.singlemove {
-  -webkit-transition: width 0.8s ease-out, height 0.8s ease-out,
-    opacity 0.4s ease-in, visibility 0.4s ease-in;
-  -moz-transition: width 0.8s ease-out, height 0.8s ease-out,
-    opacity 0.4s ease-in, visibility 0.4s ease-in;
-  -ms-transition: width 0.8s ease-out, height 0.8s ease-out,
-    opacity 0.4s ease-in, visibility 0.4s ease-in;
-  -o-transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
-    visibility 0.4s ease-in;
-  transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
-    visibility 0.4s ease-in;
-}
+// .singlemove {
+//   -webkit-transition: width 0.8s ease-out, height 0.8s ease-out,
+//     opacity 0.4s ease-in, visibility 0.4s ease-in;
+//   -moz-transition: width 0.8s ease-out, height 0.8s ease-out,
+//     opacity 0.4s ease-in, visibility 0.4s ease-in;
+//   -ms-transition: width 0.8s ease-out, height 0.8s ease-out,
+//     opacity 0.4s ease-in, visibility 0.4s ease-in;
+//   -o-transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
+//     visibility 0.4s ease-in;
+//   transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
+//     visibility 0.4s ease-in;
+// }
 .trans {
   opacity: 1;
   visibility: 1;

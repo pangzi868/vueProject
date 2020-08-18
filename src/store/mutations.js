@@ -65,4 +65,7 @@ export default {
     newCurPro(state, pro) {
         state.curPro = pro
     },
+    newModalData(state, data) {
+        state.modalData = Object.assign({}, state.modalData, data)
+    },
 }

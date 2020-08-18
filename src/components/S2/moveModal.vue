@@ -1,33 +1,47 @@
 <template>
-  <el-container
-    :class="(modalVisibility ? 'trans' : '')"
-    v-bind:id="id"
-    @mousedown.native.prevent="down($event)"
-    @touchstart.native.prevent="down($event)"
-    @mousemove.native.prevent="move($event)"
-    @touchmove.native.prevent="move($event)"
-    @mouseup.native.prevent="end($event)"
-    @touchend.native.prevent="end($event)"
-  >
-    <el-main></el-main>
-  </el-container>
+  <div>
+    <el-container
+      :class="(visibility ? 'trans' : '')"
+      v-bind:id="id"
+      @mousedown.native.prevent="down($event)"
+      @touchstart.native.prevent="down($event)"
+      @mousemove.native.prevent="move($event)"
+      @touchmove.native.prevent="move($event)"
+      @mouseup.native.prevent="end($event)"
+      @touchend.native.prevent="end($event)"
+    >
+      <el-main>
+        <dv-scroll-board
+          :config="bottomScrollConfig"
+          style="width:100%; height:100%; font-size: 48px;"
+        />
+      </el-main>
+    </el-container>
+    <div class="cover-div" v-if="visibility"></div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "Window",
   created() {
+    this.initTable();
     // this.initColumn(this.dialogData, this.currentPro, this.leftSecAux);
   },
   props: {
-    titlex: String
+    titlex: String,
+    visible: Boolean,
+    type: String,
+    data: Object,
+    keys: String
     // id: [String, Number]
   },
   data() {
     return {
       title: this.titlex,
+      visibility: this.visible,
       selectElement: "",
-      id: "moveableBox",
+      id: this.keys,
       dragging: false,
       downDrag: false,
       dragObj: {
@@ -46,21 +60,13 @@ export default {
       styleArr: ["singlemove", "rotatemove"],
       currentData: [],
       bottomScrollConfig: {
-        header: [
-          "序号",
-          "项目名称",
-          "项目类型",
-          "项目状态",
-          "实施单位",
-          "实施时间"
-        ],
+        header: [],
         headerBGC: "rgba(15,67,97,0.4)",
         oddRowBGC: "rgba(50,218,255,0.1)",
         evenRowBGC: "rgba(15,67,97,0.4)",
         headerHeight: 128,
-        columnWidth: [300, 1500, 600, 300, 300],
         carousel: "single",
-        align: ["center", "center", "center", "center", "center", "center"],
+        align: [],
         data: []
       }
     };
@@ -72,6 +78,14 @@ export default {
       },
       set: function(newValue) {
         this.$store.commit("newModalVisibility", newValue);
+      }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
       }
     }
   },
@@ -146,20 +160,28 @@ export default {
     },
 
     closeDialog(e) {
-      this.modalVisibility = false;
+      this.keys;
+      let temp = {};
+      temp[this.keys] = Object.assign({}, this.modalData[this.keys], {
+        visible: false
+      });
+      this.modalData = temp;
+    },
+    initTable() {
+      this.bottomScrollConfig.header = this.data.xAxis;
+      this.bottomScrollConfig.data = this.data.yAxis;
+      this.bottomScrollConfig.align = this.data.align;
     }
   },
   watch: {
-    modalVisibility: function(newValue) {
+    modalData: function(newValue) {
       this.selectElement = document.getElementById(this.id);
       this.selectElement.style.left = "24%";
       this.selectElement.style.top = "20%";
-      if (this.selectElement.classList.length > 1) {
-        this.selectElement.classList.remove;
+      this.visibility = newValue[this.keys].visible;
+      if (this.visibility) {
+        thsi.initTable();
       }
-      this.selectElement.classList.add(
-        this.styleArr[parseInt(Math.random() * 10) % this.styleArr.length]
-      );
     }
   }
 };
@@ -168,8 +190,6 @@ export default {
 <style lang="less" scoped>
 .el-container {
   position: absolute;
-  // height: 500px;
-  // width: 500px;
   height: 0;
   width: 0;
   border: 1px;
@@ -178,8 +198,6 @@ export default {
   left: 24%;
   border-radius: 2px;
 
-  // transition: all 0.4s ease-in-out;
-  visibility: 0;
   opacity: 0;
   transform: rotate(0.5turn);
   -webkit-transition: all 0.8s ease-in-out, left 0s, top 0s;
@@ -190,21 +208,20 @@ export default {
   border-radius: 34px;
   box-shadow: rgba(0, 0, 0, 1) 0px -30px 10px;
 }
-.singlemove {
-  -webkit-transition: width 0.8s ease-out, height 0.8s ease-out,
-    opacity 0.4s ease-in, visibility 0.4s ease-in;
-  -moz-transition: width 0.8s ease-out, height 0.8s ease-out,
-    opacity 0.4s ease-in, visibility 0.4s ease-in;
-  -ms-transition: width 0.8s ease-out, height 0.8s ease-out,
-    opacity 0.4s ease-in, visibility 0.4s ease-in;
-  -o-transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
-    visibility 0.4s ease-in;
-  transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
-    visibility 0.4s ease-in;
-}
+// .singlemove {
+//   -webkit-transition: width 0.8s ease-out, height 0.8s ease-out,
+//     opacity 0.4s ease-in, visibility 0.4s ease-in;
+//   -moz-transition: width 0.8s ease-out, height 0.8s ease-out,
+//     opacity 0.4s ease-in, visibility 0.4s ease-in;
+//   -ms-transition: width 0.8s ease-out, height 0.8s ease-out,
+//     opacity 0.4s ease-in, visibility 0.4s ease-in;
+//   -o-transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
+//     visibility 0.4s ease-in;
+//   transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
+//     visibility 0.4s ease-in;
+// }
 .trans {
   opacity: 1;
-  visibility: 1;
   height: 2500px;
   width: 3900px;
   transform: rotate(0);
@@ -290,5 +307,16 @@ export default {
       font-size: 56px;
     }
   }
+}
+.cover-div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7680px;
+  height: 4320px;
+  z-index: 18;
+  background: url("../../assets/images/masking.png") no-repeat;
+  background-size: 100% 100%;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 </style>

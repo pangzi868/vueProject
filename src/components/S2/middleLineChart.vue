@@ -27,6 +27,14 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurPro", newVal);
       }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
     }
   },
   methods: {
@@ -295,7 +303,37 @@ export default {
       myCharts.setOption(Option);
 
       myCharts.on("click", params => {
-        this.$store.commit("newModalVisibility", true);
+        let data = this.$store.state.screenSecondData.middle2Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === this.curPro) {
+            let tempY = [];
+            let align = [];
+            data.x.forEach(items => {
+              tempY.push(items.data[index]);
+            });
+            yAxis.push(tempY);
+          }
+        });
+
+        this.modalData = {
+          middle2Modal: {
+            type: "type1",
+            visible: true,
+            keys: "middle2Modal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis,
+              align: align
+            }
+          }
+        };
       });
     }
   },
