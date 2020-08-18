@@ -37,8 +37,8 @@ Vue.use(DataV);
 Vue.use(ElementUI) //使用elementUI
 Vue.use(VueFab, {
   // opitons 可选iconfont图标或MaterialIcons
-  iconType: 'MaterialDesign'
-  // iconType: 'iconfont'
+  // iconType: 'MaterialDesign'
+  iconType: 'iconfont'
 })
 
 Object.keys(filters).forEach(key => {

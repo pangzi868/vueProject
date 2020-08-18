@@ -7,13 +7,37 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    this.initColumnChart(this.ids, this.chartData);
+    this.initChartData();
+    this.initColumnChart(this.ids, this.chartData, this.curPro);
   },
   data() {
-    return {};
+    return {
+      bubbleData: []
+    };
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    curPro: {
+      get: function() {
+        return this.$store.state.curPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurPro", newVal);
+      }
+    }
+  },
   methods: {
+    // 处理数据
+    initChartData() {
+      if (!this.chartData || JSON.stringify(this.chartData) == '"{}"') return;
+      this.bubbleData = [];
+      this.bubbleData = this.chartData.x[0].data.map((item, index) => {
+        return {
+          name: item,
+          value: this.chartData.y[0].data[index]
+        };
+      });
+    },
     initColumnChart(id, data) {
       let myCharts = this.$echarts.init(document.getElementById(id));
       var tempChartData = [
@@ -27,24 +51,35 @@ export default {
       ];
       myCharts.setOption({
         tooltip: {
-          show: true,
-          trigger: "axis", //axis , item
-          backgroundColor: "rgba(0,15,78,0.6)",
-          borderColor: "#00afff",
-          borderWidth: 1,
-          borderRadius: 0,
-          textStyle: {
-            color: "#fff",
-            fontSize: 36,
-            align: "left"
-          },
+          //提示框组件
+          trigger: "axis",
+          // formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
           axisPointer: {
-            type: "line", //'line' | 'cross' | 'shadow' | 'none
-            lineStyle: {
-              width: 1,
-              type: "dotted",
-              color: "rgba(46,149,230,.9)"
+            type: "shadow",
+            label: {
+              backgroundColor: "#6a7985"
             }
+          },
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:rgba(108,146,255,1)'></span>" +
+                item.seriesName +
+                "：" +
+                item.value
+              );
+            });
+            return params[0].name + tempStr.join(" ");
           }
         },
         grid: {
@@ -78,16 +113,16 @@ export default {
               arr.push(items.name); //name
             });
             return arr;
-          })(tempChartData) //载入横坐标数据
+          })(this.bubbleData || tempChartData) //载入横坐标数据
         },
         yAxis: {
           type: "value",
-          name: "（次）",
+          name: "（单位/次）",
           nameTextStyle: {
             color: "rgba(255, 255, 255, 0.7)",
             fontSize: 40,
             align: "right",
-            padding: 25
+            padding: [0, 0, 25, 0]
           },
           axisLabel: {
             show: true,
@@ -99,7 +134,7 @@ export default {
             margin: 10
             //formatter: '{value}'
           },
-          splitNumber: 5, //y轴刻度设置(值越大刻度越小)
+          splitNumber: 3, //y轴刻度设置(值越大刻度越小)
           axisLine: {
             //y轴线
             show: false
@@ -141,11 +176,11 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: 'rgba(108,146,255,1)'
+                      color: "rgba(108,146,255,1)"
                     },
                     {
                       offset: 1,
-                      color: 'rgba(58,236,253,1)'
+                      color: "rgba(58,236,253,1)"
                     }
                   ],
                   false
@@ -153,15 +188,16 @@ export default {
               }
             },
             symbol: "circle", //circle, rect, roundRect, triangle,  pin, diamond, arrow
-            symbolPosition: "end",
+            symbolPosition: "start",
             symbolSize: 30,
-            symbolOffset: [0, "-120%"],
+            symbolOffset: [0, "0%"],
             data: (function(data) {
               var arr = [];
               data.forEach(function(items) {
                 var itemName = items.name,
                   itemValue = items.value,
-                  itemStyle = itemValue / 900; //console.log(itemStyle)
+                  // itemStyle = itemValue / 900; //console.log(itemStyle)
+                  itemStyle = 80; //console.log(itemStyle)
                 arr.push({
                   name: itemName,
                   value: itemValue,
@@ -169,7 +205,7 @@ export default {
                 });
               });
               return arr;
-            })(tempChartData) //载入数据并设置图形尺寸
+            })(this.bubbleData || tempChartData) //载入数据并设置图形尺寸
           }
         ]
       });
@@ -178,7 +214,12 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData);
+      this.initChartData();
+      this.initColumnChart(this.ids, newVal, this.curPro);
+    },
+    curPro: function(newVal) {
+      this.initChartData();
+      this.initColumnChart(this.ids, this.chartData, newVal);
     }
   }
 };

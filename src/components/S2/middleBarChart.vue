@@ -29,21 +29,16 @@ export default {
   },
   methods: {
     initBarChart(id, data, cp) {
-      //   if (!data || JSON.stringify(data) == '"{}"') return;
+      if (!data || JSON.stringify(data) == '"{}"') return;
 
-      let type = ["物资", "工程", "人资", "营销", "财务"];
-      let proName = ["暂无", "暂无", "暂无", "暂无", "暂无"];
-      var dataLine = [0, 0, 0, 0, 0];
-      //   data.x[0].data.forEach((item, index) => {
-      //     if (item === cp) {
-      //       let num = type.indexOf(data.x[1].data[index]);
-      //       if (dataLine[num] < Number(data.y[0].data[index])) {
-      //         proName[num] = data.x[2].data[index];
-      //         dataLine[num] = Number(data.y[0].data[index]);
-      //       }
-      //       // dataLine[num] = 100;
-      //     }
-      //   });
+      let proName = [];
+      var dataLine = [];
+      data.x[0].data.forEach((item, index) => {
+        if (index <= 4) {
+          proName.push(item);
+          dataLine.push(data.y[0].data[index]);
+        }
+      });
       let positionLeft = 0,
         max = Math.max.apply(null, dataLine),
         lineMax = max,
@@ -232,21 +227,16 @@ export default {
       });
     },
     initRightBarChart(id, data, cp) {
-      //   if (!data || JSON.stringify(data) == '"{}"') return;
+      if (!data || JSON.stringify(data) == '"{}"') return;
 
-      let type = ["物资", "工程", "人资", "营销", "财务"];
-      let proName = ["暂无", "暂无", "暂无", "暂无", "暂无"];
-      var dataLine = [0, 0, 0, 0, 0];
-      //   data.x[0].data.forEach((item, index) => {
-      //     if (item === cp) {
-      //       let num = type.indexOf(data.x[1].data[index]);
-      //       if (dataLine[num] < Number(data.y[0].data[index])) {
-      //         proName[num] = data.x[2].data[index];
-      //         dataLine[num] = Number(data.y[0].data[index]);
-      //       }
-      //       // dataLine[num] = 100;
-      //     }
-      //   });
+      let proName = [];
+      var dataLine = [];
+      data.x[0].data.forEach((item, index) => {
+        if (index > 4) {
+          proName.push(item);
+          dataLine.push(data.y[0].data[index]);
+        }
+      });
       let positionLeft = 0,
         max = Math.max.apply(null, dataLine),
         lineMax = max,

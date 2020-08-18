@@ -75,12 +75,16 @@ export default {
     initColumnChart(id, data, cp) {
       if (!data || JSON.stringify(data) == '"{}"') return;
       let lineColor = [
-        "rgba(0,129,248,1)",
+        "rgba(222,159,100,1)",
         "rgba(0,247,255,1)",
         "rgba(255,136,0,1)"
       ];
       let shadowColor = [
-        ["rgba(0,129,248,0.3)", "rgba(0,129,248,0)", "rgba(108,80,243, 0.9)"],
+        [
+          "rgba(222,159,100,0.3)",
+          "rgba(222,159,100,0)",
+          "rgba(222,159,100,0.7)"
+        ],
         ["rgba(0,247,255,0.3)", "rgba(0,247,255,0)", "rgba(108,80,243, 0.9)"],
         ["rgba(255,136,0,0.3)", "rgba(255,136,0,0)", "rgba(108,80,243, 0.9)"]
       ];
@@ -106,7 +110,20 @@ export default {
           backgroundColor: "rgba(70,130,180,0.8)",
           borderColor: "rgba(47,79,79,1)",
           borderWidth: 1,
-          padding: [12, 24]
+          padding: [12, 24],
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
+                lineColor[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                item.data
+              );
+            });
+            return params[0].name + tempStr.join(" ");
+          }
         },
         grid: {
           left: "3%",
@@ -190,7 +207,7 @@ export default {
         yAxis: [
           {
             type: "value",
-            splitNumber: 5,
+            splitNumber: 3,
             axisLabel: {
               textStyle: {
                 color: "#a8aab0",
@@ -234,7 +251,7 @@ export default {
             }
           },
           label: {
-            show: true,
+            show: false,
             position: "top",
             textStyle: {
               color: "#6c50f3"
@@ -276,6 +293,10 @@ export default {
       });
       myCharts.clear();
       myCharts.setOption(Option);
+
+      myCharts.on("click", params => {
+        this.$store.commit("newModalVisibility", true);
+      });
     }
   },
   components: {},

@@ -5,6 +5,9 @@ export default {
     newDialogVisible(state, judge) {
         state.dialogVisible = judge
     },
+    newModalVisibility(state, judge) {
+        state.modalVisibility = judge
+    },
     newDialogData(state, data) {
         state.dialogData = data
     },

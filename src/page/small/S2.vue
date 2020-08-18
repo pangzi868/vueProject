@@ -88,11 +88,12 @@
           theme="middle"
         >
           <div class="sidebar-content-title">销户用户电费余额预警主题</div>
-          <left-indicator />
+          <left-indicator :chartData="middleLeftIndi" v-if="draw" />
           <middle-line-chart
             class="middle-line-chart"
             :ids="middleLineIds"
             :chartData="middleLineData"
+            v-if="draw"
           />
         </hover-box>
         <hover-box
@@ -105,6 +106,7 @@
             class="middle-bubble-chart"
             :ids="middleBubbleIds"
             :chartData="middleBubbleData"
+            v-if="draw"
           />
         </hover-box>
         <hover-box
@@ -113,7 +115,12 @@
           theme="middle"
         >
           <div class="sidebar-content-title">档案与电价用电类别不符预警主题</div>
-          <middle-bar-chart class="middle-bar-box" :ids="middleBarIds" :chartData="middleBarData" />
+          <middle-bar-chart
+            class="middle-bar-box"
+            :ids="middleBarIds"
+            :chartData="middleBarData"
+            v-if="draw"
+          />
         </hover-box>
       </div>
       <div class="project-field single-theme">
@@ -181,20 +188,29 @@
         </hover-box>
       </div>
     </div>
-    <vue-fab mainBtnColor="#3599DB" :globalOptions="globalOptions">
+    <vue-fab mainBtnColor="rgba(150,211,255,0.58)" :globalOptions="globalOptions">
+      <!-- <img
+        :src="operationImg"
+        style="width: 80%;height: 70%;top: 180px;left: 20px;position: absolute;"
+      />-->
       <fab-item
         v-for="item in fabItem"
         :key="item.ids"
         @clickItem="clickItem"
         :idx="item.ids"
         :title="item.name"
-        :icon="item.icon"
-      />
+      >
+        <img :src="companyImg" style="width: 100%;height: 70%;top: 20px;position: absolute;" />
+      </fab-item>
     </vue-fab>
+    <move-modal />
+    <div class="cover-div" v-if="modalVisibility"></div>
   </div>
 </template>
 
 <script>
+import MoveModal from "@/components/S2/moveModal.vue";
+
 import HoverBox from "@/components/S2/hoverBox.vue";
 import LeftLine from "@/components/S2/leftLineChart.vue";
 import LineAndColumn from "@/components/S2/leftLineAndColumnChart.vue";
@@ -221,6 +237,7 @@ import FinanceTitle from "@/assets/images/second/title-1.png";
 import MarketingTitle from "@/assets/images/second/title-4.png";
 import ProjectTitle from "@/assets/images/second/title-2.png";
 import Company from "@/assets/images/second/company.svg";
+import Operation from "@/assets/images/second/Frame@4x.png";
 
 import * as dataJson from "@/assets/dataJson.js";
 export default {
@@ -239,6 +256,7 @@ export default {
   },
   data() {
     return {
+      draw: false,
       activeIndex: "1",
       title: Title,
       financeTitle: FinanceTitle,
@@ -289,6 +307,7 @@ export default {
       leftBarData: null,
       leftLineAndColumnIds: "leftLineAndColumnChart",
       leftLineAndColumnData: null,
+      middleLeftIndi: null,
       middleLineIds: "middleLineChart",
       middleLineData: null,
       middleBubbleIds: "middleBubbleChart",
@@ -310,19 +329,22 @@ export default {
       rightBarIds: "rightBarChart",
       rightBarData: null,
       fabItem: [
-        { name: "本部", ids: 10, icon: "house" },
-        { name: "长春", ids: 9, icon: "house" },
-        { name: "吉林", ids: 8, icon: "house" },
-        { name: "四平", ids: 7, icon: "house" },
-        { name: "通化", ids: 6, icon: "house" },
-        { name: "延边", ids: 5, icon: "house" },
-        { name: "白城", ids: 4, icon: "house" },
-        { name: "辽源", ids: 3, icon: "house" },
-        { name: "白山", ids: 2, icon: "house" },
-        { name: "松原", ids: 1, icon: "house" },
-        { name: "直属", ids: 0, icon: "house" }
+        { name: "全省", ids: 11 },
+        { name: "本部", ids: 10 },
+        { name: "长春", ids: 9 },
+        { name: "吉林", ids: 8 },
+        { name: "四平", ids: 7 },
+        { name: "通化", ids: 6 },
+        { name: "延边", ids: 5 },
+        { name: "白城", ids: 4 },
+        { name: "辽源", ids: 3 },
+        { name: "白山", ids: 2 },
+        { name: "松原", ids: 1 },
+        { name: "直属", ids: 0 }
       ],
-      globalOptions: { spacing: 200, delay: 0.05 }
+      globalOptions: { spacing: 200, delay: 0.05 },
+      companyImg: Company,
+      operationImg: Operation
     };
   },
   computed: {
@@ -341,6 +363,15 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurPro", newVal);
       }
+    },
+
+    modalVisibility: {
+      get: function() {
+        return this.$store.state.modalVisibility;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalVisibility", newValue);
+      }
     }
   },
   methods: {
@@ -348,9 +379,13 @@ export default {
       console.log(key, keyPath);
     },
     initData() {
-      middleLineData = this.screenSecondData.middleSecond;
-      middleBubbleData = this.screenSecondData.middleThird;
-      middleBarData = this.screenSecondData.middleForth;
+      this.middleLineData = this.screenSecondData.middle2;
+      this.middleLeftIndi = this.screenSecondData.middle2Indicator;
+      this.middleBubbleData = this.screenSecondData.middle3;
+      this.middleBarData = this.screenSecondData.middle4;
+      this.$nextTick(() => {
+        this.draw = true;
+      });
     },
     clickItem(item) {
       let tempCur = this.fabItem.filter((items, index) => {
@@ -360,6 +395,7 @@ export default {
     }
   },
   components: {
+    MoveModal,
     HoverBox,
     LineAndColumn,
     LeftLine,
@@ -726,6 +762,9 @@ export default {
   .fab-size-normal {
     height: 200px !important;
     width: 200px !important;
+  }
+  .fab {
+    border: 20px solid rgba(255, 255, 255, 0.24);
   }
   .fab-item-container {
     top: -150px !important;

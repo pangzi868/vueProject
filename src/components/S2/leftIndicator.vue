@@ -2,7 +2,7 @@
   <div class="left-indicator" :id="ids">
     <div v-for="item in indicator" :key="item.name" class="single-in">
       <div class="name">{{item.name}}</div>
-      <div class="value">{{item.value}}</div>
+      <div class="value">{{item.value || 0}}</div>
     </div>
   </div>
 </template>
@@ -12,21 +12,40 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    // this.initColumnChart(this.ids, this.chartData);
+    this.initColumnChart(this.ids, this.chartData, this.curPro);
   },
   data() {
     return {
       indicator: [
-        { name: "销户总户数", value: "666" },
-        { name: "预收总余额", value: "888" }
+        { name: "销户总户数", value: "" },
+        { name: "预收总余额", value: "" }
       ]
     };
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    curPro: {
+      get: function() {
+        return this.$store.state.curPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurPro", newVal);
+      }
+    }
+  },
   methods: {
     initColumnChart(id, data) {
-      let myCharts = this.$echarts.init(document.getElementById(id));
-      myCharts.setOption({});
+      if (!data) return;
+      for (var index in data.x[0].data) {
+        if (this.curPro === data.x[0].data[index]) {
+          let temp = [...this.indicator];
+          temp[0].value = data.y[0].data[index];
+          temp[1].value = data.y[1].data[index];
+          this.indicator = [...temp];
+        }
+      }
+      // let myCharts = this.$echarts.init(document.getElementById(id));
+      // myCharts.setOption({});
     }
   },
   components: {},
@@ -34,6 +53,9 @@ export default {
     // chartData: function(newVal) {
     //   this.initColumnChart(this.ids, this.chartData);
     // }
+    curPro: function(newVal) {
+      this.initColumnChart(this.ids, this.chartData, newVal);
+    }
   }
 };
 </script>
