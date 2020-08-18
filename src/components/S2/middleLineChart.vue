@@ -8,7 +8,7 @@ export default {
   props: ["ids", "chartData"],
   mounted() {
     this.initChartData();
-    this.initColumnChart(this.ids, this.chartData, this.currentPro);
+    this.initColumnChart(this.ids, this.chartData, this.curPro);
   },
   data() {
     return {
@@ -16,23 +16,16 @@ export default {
       xAxis: null,
       type: null,
       yAxis: null
-      /**
-       * xAxis: ['2019', '2020]
-       * yAxis1: [15,15]
-       * yAxis2: [20,20]
-       * yAxis: {'实际数': [15, 15], '计划数': [20, 20]}
-       * type: ['实际数', '计划数']
-       */
     };
   },
   computed: {
     // 切换部门
-    currentPro: {
+    curPro: {
       get: function() {
-        return this.$store.state.currentPro;
+        return this.$store.state.curPro;
       },
       set: function(newVal) {
-        this.$store.commit("newCurrentPro", newVal);
+        this.$store.commit("newCurPro", newVal);
       }
     }
   },
@@ -48,10 +41,7 @@ export default {
       this.yAxis = {};
       let indexArr = [];
       this.chartData.x[0].data.forEach((item, index) => {
-        if (
-          item === this.currentPro ||
-          (this.currentPro === "全省" && item === "合计")
-        ) {
+        if (item === this.curPro) {
           this.chartData.x[1].data.forEach((items, indexs) => {
             if (indexs === index) {
               if (this.xAxis.indexOf(this.chartData.x[1].data[indexs]) === -1) {
@@ -292,9 +282,9 @@ export default {
   watch: {
     chartData: function(newVal) {
       this.initChartData();
-      this.initColumnChart(this.ids, newVal, this.currentPro);
+      this.initColumnChart(this.ids, newVal, this.curPro);
     },
-    currentPro: function(newVal) {
+    curPro: function(newVal) {
       this.initChartData();
       this.initColumnChart(this.ids, this.chartData, newVal);
     }

@@ -25,6 +25,9 @@ export default {
     projectMiddle: {},
     leftIndicator: {},
 
+    //存储二屏数据
+    screenSecondData: {},
+    curPro: '全省',
     // 排序
     S1Sort: ['本部', '长春', '吉林', '四平', '通化', '延边', '白城', '辽源', '白山', '松原', '直属']
 }

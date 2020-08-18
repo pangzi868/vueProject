@@ -181,6 +181,16 @@
         </hover-box>
       </div>
     </div>
+    <vue-fab mainBtnColor="#3599DB" :globalOptions="globalOptions">
+      <fab-item
+        v-for="item in fabItem"
+        :key="item.ids"
+        @clickItem="clickItem"
+        :idx="item.ids"
+        :title="item.name"
+        :icon="item.icon"
+      />
+    </vue-fab>
   </div>
 </template>
 
@@ -210,6 +220,9 @@ import Title from "@/assets/images/second/title-3.png";
 import FinanceTitle from "@/assets/images/second/title-1.png";
 import MarketingTitle from "@/assets/images/second/title-4.png";
 import ProjectTitle from "@/assets/images/second/title-2.png";
+import Company from "@/assets/images/second/company.svg";
+
+import * as dataJson from "@/assets/dataJson.js";
 export default {
   name: "",
   props: [],
@@ -217,9 +230,9 @@ export default {
     let data = null;
     if (window.name) {
       data = JSON.parse(window.name);
-      // data = window.name;
+      data = window.name;
     } else {
-      // data = JSON.parse(dataJson.S2);
+      data = JSON.parse(dataJson.S2);
     }
     this.screenSecondData = data;
     this.initData();
@@ -295,15 +308,56 @@ export default {
       rightRadarIds: "rightRadarChart",
       rightRadarData: null,
       rightBarIds: "rightBarChart",
-      rightBarData: null
+      rightBarData: null,
+      fabItem: [
+        { name: "本部", ids: 10, icon: "house" },
+        { name: "长春", ids: 9, icon: "house" },
+        { name: "吉林", ids: 8, icon: "house" },
+        { name: "四平", ids: 7, icon: "house" },
+        { name: "通化", ids: 6, icon: "house" },
+        { name: "延边", ids: 5, icon: "house" },
+        { name: "白城", ids: 4, icon: "house" },
+        { name: "辽源", ids: 3, icon: "house" },
+        { name: "白山", ids: 2, icon: "house" },
+        { name: "松原", ids: 1, icon: "house" },
+        { name: "直属", ids: 0, icon: "house" }
+      ],
+      globalOptions: { spacing: 200, delay: 0.05 }
     };
   },
-  computed: {},
+  computed: {
+    screenSecondData: {
+      get: function() {
+        return this.$store.state.screenSecondData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newScreenSecondData", newValue);
+      }
+    },
+    curPro: {
+      get: function() {
+        return this.$store.state.curPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurPro", newVal);
+      }
+    }
+  },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
-    initData() {}
+    initData() {
+      middleLineData = this.screenSecondData.middleSecond;
+      middleBubbleData = this.screenSecondData.middleThird;
+      middleBarData = this.screenSecondData.middleForth;
+    },
+    clickItem(item) {
+      let tempCur = this.fabItem.filter((items, index) => {
+        return items.ids === item.idx;
+      });
+      this.curPro = tempCur[0].name;
+    }
   },
   components: {
     HoverBox,
@@ -643,6 +697,7 @@ export default {
   max-height: unset;
 }
 .el-select-dropdown__item {
+  font-size: 46px;
   height: 110px;
   line-height: 110px;
   color: rgba(255, 255, 255, 0.7);
@@ -650,10 +705,60 @@ export default {
     color: rgba(0, 0, 0, 0.8);
   }
 }
+.el-select .el-input .el-select__caret {
+  font-size: 46px;
+}
 
 // 导航栏
 .el-menu.el-menu--horizontal {
-  background: linear-gradient(0deg,rgba(0, 172, 226, 0) 0%,rgba(56, 145, 250, 1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 172, 226, 0) 0%,
+    rgba(56, 145, 250, 1) 100%
+  );
   border-bottom: 0px;
+}
+
+// 切换菜单栏
+.fab-main-container {
+  height: 200px;
+  width: 200px;
+  .fab-size-normal {
+    height: 200px !important;
+    width: 200px !important;
+  }
+  .fab-item-container {
+    top: -150px !important;
+  }
+  .fab-shadow {
+    .vue-fab-material-icons {
+      height: 160px !important;
+      width: 160px !important;
+    }
+  }
+  .fab-cantainer {
+    height: 200px;
+    width: 200px;
+    .fabMask {
+      height: 200px;
+      width: 200px;
+    }
+    .vue-fab-material-icons {
+      height: 200px;
+      width: 200px;
+    }
+    .material-icons {
+      font-size: 100px;
+    }
+    .fab-item-image {
+      height: 200px;
+      width: 200px;
+    }
+    .fab-item-title {
+      right: 200px;
+      padding: 30px 50px;
+      border-radius: 25px;
+    }
+  }
 }
 </style>

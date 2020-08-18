@@ -28,6 +28,7 @@
     "uuid": "^3.3.2",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
+    "vue-float-action-button": "^0.6.6",
     "vue-router": "^3.0.3",
     "vue-seamless-scroll": "^1.1.21",
     "vuex": "^3.1.2"

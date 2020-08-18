@@ -53,5 +53,13 @@ export default {
     },
     newLeftIndicator(state, data) {
         state.leftIndicator = Object.assign({}, state.leftIndicator, data)
-    }
+    },
+
+    // 存储二屏数据
+    newScreenSecondData(state, data) {
+        state.screenSecondData = data
+    },
+    newCurPro(state, pro) {
+        state.curPro = pro
+    },
 }

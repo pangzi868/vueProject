@@ -20,6 +20,8 @@ import store from '@/store/index'
 import ElementUI from 'element-ui' //element-ui的全部组件
 import 'element-ui/lib/theme-chalk/index.css'//element-ui的css
 
+import VueFab from 'vue-float-action-button'
+
 moment.locale('zh-cn');
 
 
@@ -33,6 +35,11 @@ Vue.use(VueAxios, axios);
 Vue.use(Antd);
 Vue.use(DataV);
 Vue.use(ElementUI) //使用elementUI
+Vue.use(VueFab, {
+  // opitons 可选iconfont图标或MaterialIcons
+  iconType: 'MaterialDesign'
+  // iconType: 'iconfont'
+})
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
@@ -43,7 +50,7 @@ router.beforeEach((to, from, next) => {
     //do something => getUserInfo
     next()
   } else {
-      
+
   }
 })
 
