@@ -28,7 +28,13 @@ export default {
   },
   methods: {
     initChart(chartId, data, cp) {
-      // if (!data || JSON.stringify(data) == '"{}"') return;
+      if (!data || JSON.stringify(data) == '"{}"') return;
+      let tempData = data.x[0].data.map((item, index) => {
+        return {
+          name: item,
+          value: data.y[0].data[index]
+        }
+      })
       let temp = [
         { name: "大于80", value: 2 },
         { name: "80%～120%", value: 3 },
@@ -119,7 +125,7 @@ export default {
                 }
               }
             },
-            data: temp
+            data: tempData || temp
           },
           {
             type: "pie",

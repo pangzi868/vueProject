@@ -23,7 +23,7 @@ export default {
             item === this.curPro
               ? `image://${require("@/assets/images/second/loan2.svg")}`
               : `image://${require("@/assets/images/second/loan1.svg")}`,
-          draggable: true
+          draggable: false
         };
       });
       let myChart = this.$echarts.init(document.getElementById(id));

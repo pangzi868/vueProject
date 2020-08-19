@@ -156,11 +156,13 @@
             class="right-water-chart"
             :ids="rightWaterIds"
             :chartData="rightWaterData"
+            v-if="draw"
           />
           <right-huan-chart
             class="right-huan-chart"
             :ids="rightHuanIds"
             :chartData="rightHuanData"
+            v-if="draw"
           />
         </hover-box>
         <hover-box
@@ -173,11 +175,13 @@
             class="right-column-chart"
             :ids="rightColumnIds"
             :chartData="rightColumnData"
+            v-if="draw"
           />
           <right-radar-chart
             class="right-radar-chart"
             :ids="rightRadarIds"
             :chartData="rightRadarData"
+            v-if="draw"
           />
         </hover-box>
         <hover-box
@@ -186,7 +190,12 @@
           theme="right"
         >
           <div class="sidebar-content-title">物资库龄风险预警主题</div>
-          <right-bar-chart class="right-bar-chart" :ids="rightBarIds" :chartData="rightBarData" />
+          <right-bar-chart
+            class="right-bar-chart"
+            :ids="rightBarIds"
+            :chartData="rightBarData"
+            v-if="draw"
+          />
         </hover-box>
       </div>
     </div>
@@ -430,8 +439,13 @@ export default {
       this.middleBarData = this.screenSecondData.middle4;
       this.rightBubbleData = this.screenSecondData.right1;
       this.rightFormData = this.screenSecondData.right1;
-      this.rightWaterData = this.screenSecondData.right2Water || 0;
-      // this.rightHuanData = this.screenSecondData.right2;
+      this.rightWaterData = this.screenSecondData.right4
+        ? this.screenSecondData.right4.y[0].data[0]
+        : 0;
+      this.rightHuanData = this.screenSecondData.right2Huan;
+      this.rightColumnData = this.screenSecondData.right3;
+      this.rightRadarData = this.screenSecondData.right3;
+      this.rightBarData = this.screenSecondData.right2;
       this.$nextTick(() => {
         this.draw = true;
       });
@@ -627,12 +641,12 @@ export default {
         height: 940px;
       }
       .sidebar-second {
-        top: 1220px;
-        height: 920px;
-      }
-      .sidebar-third {
         top: 2196px;
         height: 860px;
+      }
+      .sidebar-third {
+        top: 1220px;
+        height: 920px;
       }
       .sidebar-forth {
         top: 3112px;

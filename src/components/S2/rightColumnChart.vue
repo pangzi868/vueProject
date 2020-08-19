@@ -7,14 +7,66 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    this.initColumnChart(this.ids, this.chartData);
+    this.initColumnChart(this.ids, this.chartData, this.curPro);
   },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    // 切换部门
+    curPro: {
+      get: function() {
+        return this.$store.state.curPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurPro", newVal);
+      }
+    }
+  },
   methods: {
-    initColumnChart(id, data) {
+    initColumnChart(id, data, cp) {
+      // console.info(data, "data");
+      if (!data || JSON.stringify(data) == '"{}"') return;
+      let xAxis = [],
+        yAxis = [],
+        colorList = [
+          "rgba(255,179,88,1)",
+          "rgba(0,247,255,1)",
+          "rgba(30,147,255,1)",
+          "rgba(255,179,88,1)",
+          "rgba(0,247,255,1)",
+          "rgba(30,147,255,1)"
+        ];
+      data.x[0].data.forEach((item, index) => {
+        if (item === cp) {
+          xAxis.push(data.x[1].data[index]);
+          yAxis.push({
+            value: data.y[0].data[index],
+            itemStyle: {
+              normal: {
+                color: new this.$echarts.graphic.LinearGradient(
+                  0,
+                  1,
+                  0,
+                  0,
+                  [
+                    {
+                      offset: 0,
+                      color: colorList[index] // 0% 处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: colorList[index] // 100% 处的颜色
+                    }
+                  ],
+                  false
+                )
+              }
+            }
+          });
+        }
+      });
+      let max = Math.max.apply(null, yAxis);
       let myCharts = this.$echarts.init(document.getElementById(id));
       myCharts.setOption({
         grid: {
@@ -51,7 +103,7 @@ export default {
                 fontSize: "64"
               }
             },
-            data: ["10月", "11月", "12月"],
+            data: xAxis || ["10月", "11月", "12月"],
             inverse: true
           },
           {
@@ -60,7 +112,7 @@ export default {
             splitLine: "none",
             axisTick: "none",
             axisLine: "none",
-            data: [555, 444, 333],
+            data: yAxis || [555, 444, 333],
             inverse: true,
             axisLabel: {
               show: true,
@@ -97,7 +149,7 @@ export default {
             type: "bar",
             xAxisIndex: 0, //使用的 x 轴的 index，在单个图表实例中存在多个 x 轴的时候有用。
             yAxisIndex: 0, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
-            data: [555, 444, 333],
+            data: yAxis || [555, 444, 333],
             barWidth: 25,
             itemStyle: {
               normal: {
@@ -109,11 +161,11 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "#49bdff" // 0% 处的颜色
+                      color: "rgba(255,179,88,1)" // 0% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: "#54ffd5" // 100% 处的颜色
+                      color: "rgba(255,179,88,1)" // 100% 处的颜色
                     }
                   ],
                   false
@@ -129,7 +181,11 @@ export default {
             xAxisIndex: 0, //使用的 x 轴的 index，在单个图表实例中存在多个 x 轴的时候有用。
             yAxisIndex: 2, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
             barGap: "-100%",
-            data: [1000, 1000, 1000],
+            data: yAxis
+              ? yAxis.map(item => {
+                  return max;
+                })
+              : [1000, 1000, 1000],
             barWidth: 25,
             itemStyle: {
               normal: {
@@ -146,7 +202,10 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData);
+      this.initColumnChart(this.ids, newVal, this.curPro);
+    },
+    curPro: function(newVal) {
+      this.initColumnChart(this.ids, this.chartData, newVal);
     }
   }
 };
