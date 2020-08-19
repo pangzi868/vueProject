@@ -205,7 +205,7 @@ export default {
           }
         ]
       });
-      myChart.on("click", params => {
+      myCharts.on("click", params => {
         let data = this.$store.state.screenSecondData.right3Aux;
         let align = [];
         let xAxis = data.x.map(item => {

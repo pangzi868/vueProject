@@ -23,7 +23,11 @@
             text-color="rgba(255,255,255,0.7)"
             active-text-color="rgba(255,255,255,1)"
           >
-            <el-menu-item index="1">处理中心</el-menu-item>
+            <el-menu-item
+              v-for="item in left1Menu"
+              :key="item.key"
+              :index="item.index"
+            >{{item.name}}</el-menu-item>
           </el-menu>
           <left-line class="line-chart" :ids="lineIds" :chartData="lineData" />
         </hover-box>
@@ -342,6 +346,48 @@ export default {
         {
           value: "选项5",
           label: "北京烤鸭"
+        }
+      ],
+      left1Menu: [
+        {
+          index: "1",
+          key: "menu1",
+          name: "总览"
+        },
+        {
+          index: "2",
+          key: "menu2",
+          name: "办公费"
+        },
+        {
+          index: "3",
+          key: "menu3",
+          name: "差旅费"
+        },
+        {
+          index: "4",
+          key: "menu4",
+          name: "会议费"
+        },
+        {
+          index: "5",
+          key: "menu5",
+          name: "公务用车"
+        },
+        {
+          index: "6",
+          key: "menu6",
+          name: "生产用车"
+        },
+        {
+          index: "7",
+          key: "menu7",
+          name: "安全费"
+        },
+        {
+          index: "8",
+          key: "menu8",
+          name: "党建工作"
         }
       ],
       selectValue: "",
@@ -692,7 +738,7 @@ export default {
         left: 56px;
         top: 200px;
         width: 95%;
-        height: 75%;
+        height: 65%;
       }
       .little-left-line-chart {
         position: absolute;
@@ -873,13 +919,39 @@ export default {
 
 // 导航栏
 .el-menu.el-menu--horizontal {
+  position: absolute;
+  width: 100%;
+  height: 8%;
+  left: 0;
+  bottom: 0;
   background: linear-gradient(
     0deg,
     rgba(0, 172, 226, 0) 0%,
     rgba(56, 145, 250, 1) 100%
   );
   border-bottom: 0px;
+  .el-menu-item {
+    width: 12.5%;
+    height: 100%;
+    line-height: 150%;
+    text-align: center;
+    cursor: pointer;
+    &:not(.is-disabled) {
+      &:focus,
+      &:hover {
+        background-color: unset;
+      }
+    }
+  }
 }
+.el-menu--horizontal > .el-menu-item:not(.is-disabled):focus,
+.el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
+.el-menu--horizontal > .el-submenu .el-submenu__title:hover {
+  background-color: unset;
+}
+// .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+// .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+// }
 
 // 切换菜单栏
 .fab-main-container {
