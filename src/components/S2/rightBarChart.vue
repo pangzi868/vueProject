@@ -21,6 +21,14 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurPro", newVal);
       }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
     }
   },
   methods: {
@@ -61,11 +69,55 @@ export default {
             break;
         }
       });
+      let colorArr = [
+        "rgba(21,177,255,1)",
+        "rgba(21,255,255,1)",
+        "rgba(255,188,87,1)"
+      ];
 
       let myCharts = this.$echarts.init(document.getElementById(id));
       myCharts.setOption({
         color: ["RGB(1,255,152)", "RGB(244,191,70)", "pink"],
         animation: false,
+        tooltip: {
+          //提示框组件
+          trigger: "axis",
+          // formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
+          axisPointer: {
+            type: "shadow",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          },
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
+                colorArr[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                (item.value
+                  ? item.seriesName.indexOf("数") !== -1 ||
+                    item.value.indexOf(".") === -1
+                    ? item.value
+                    : parseFloat(item.value).toFixed(2)
+                  : "0")
+              );
+            });
+            return params[0].name + tempStr.join(" ");
+          }
+        },
         grid: {
           top: "18%",
           left: "3%",
@@ -288,6 +340,39 @@ export default {
             ]
           }
         ]
+      });
+      myCharts.on("click", params => {
+        console.log(params, "p");
+        let data = this.$store.state.screenSecondData.right4Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === params.name) {
+            let tempY = [];
+            data.x.forEach(items => {
+              tempY.push(items.data[index]);
+            });
+            yAxis.push(tempY);
+          }
+        });
+
+        this.modalData = {
+          right4Modal: {
+            type: "type1",
+            visible: true,
+            keys: "right4Modal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis,
+              align: align
+            }
+          }
+        };
       });
     }
   },

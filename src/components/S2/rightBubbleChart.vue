@@ -61,7 +61,25 @@ export default {
           // bottom: 0,
           containLabel: false
         },
-        tooltip: {},
+        // tooltip: {},
+        tooltip: {
+          trigger: "item",
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
+          formatter: function(params) {
+            return (
+              params.seriesName + "</br>" + params.name + "：" + params.value
+            );
+          }
+        },
         // animationDurationUpdate: function(idx) {
         //   // 越往后的数据延迟越大
         //   return idx * 100;
@@ -70,6 +88,7 @@ export default {
         color: ["#fff"],
         series: [
           {
+            name: '转资量',
             type: "graph",
             layout: "force",
             force: {
@@ -130,6 +149,38 @@ export default {
           }
         ]
       });
+      myChart.on("click", params => {
+        let data = this.$store.state.screenSecondData.right1Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === this.curPro) {
+            let tempY = [];
+            data.x.forEach(items => {
+              tempY.push(items.data[index]);
+            });
+            yAxis.push(tempY);
+          }
+        });
+
+        this.modalData = {
+          right1Modal: {
+            type: "type1",
+            visible: true,
+            keys: "right1Modal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis,
+              align: align
+            }
+          }
+        };
+      });
     }
   },
   computed: {
@@ -140,6 +191,14 @@ export default {
       },
       set: function(newVal) {
         this.$store.commit("newCurPro", newVal);
+      }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
       }
     }
   },

@@ -24,6 +24,14 @@ export default {
       set: function(newVal) {
         this.$store.commit("newCurrentPro", newVal);
       }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
     }
   },
   methods: {
@@ -33,8 +41,8 @@ export default {
         return {
           name: item,
           value: data.y[0].data[index]
-        }
-      })
+        };
+      });
       let temp = [
         { name: "大于80", value: 2 },
         { name: "80%～120%", value: 3 },
@@ -59,8 +67,27 @@ export default {
           "#48B188",
           "#4A5D73"
         ],
+        tooltip: {
+          trigger: "item",
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
+          formatter: function(params) {
+            return (
+              params.seriesName + "</br>" + params.name + "：" + params.value
+            );
+          }
+        },
         series: [
           {
+            name: "采购情况",
             color: [
               "#5B4CFF",
               "#00F7FF",
@@ -149,6 +176,38 @@ export default {
             }
           }
         ]
+      });
+      myChart.on("click", params => {
+        let data = this.$store.state.screenSecondData.right2Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === this.curPro) {
+            let tempY = [];
+            data.x.forEach(items => {
+              tempY.push(items.data[index]);
+            });
+            yAxis.push(tempY);
+          }
+        });
+
+        this.modalData = {
+          right3Modal: {
+            type: "type1",
+            visible: true,
+            keys: "right3Modal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis,
+              align: align
+            }
+          }
+        };
       });
     }
   },
