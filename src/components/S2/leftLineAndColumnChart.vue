@@ -160,6 +160,7 @@ export default {
               show: true,
               lineStyle: {
                 color: "rgba(255,255,255,1)",
+                width: 4,
                 opacity: 0.2
               }
             }
@@ -190,6 +191,7 @@ export default {
               show: false,
               lineStyle: {
                 type: "dashed",
+                width: 4,
                 color: "rgba(255,255,255,0.2)"
               }
             }

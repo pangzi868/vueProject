@@ -151,7 +151,7 @@
           />
         </hover-box>
         <hover-box
-          class="right-theme sidebar-second single-area bg-2"
+          class="right-theme sidebar-third single-area bg-2"
           :ids="boxIds['right2']"
           theme="right"
         >
@@ -170,7 +170,7 @@
           />
         </hover-box>
         <hover-box
-          class="right-theme sidebar-third single-area bg-2"
+          class="right-theme sidebar-second single-area bg-2"
           :ids="boxIds['right3']"
           theme="right"
         >
@@ -687,12 +687,12 @@ export default {
         height: 940px;
       }
       .sidebar-second {
-        top: 2196px;
-        height: 860px;
-      }
-      .sidebar-third {
         top: 1220px;
         height: 920px;
+      }
+      .sidebar-third {
+        top: 2196px;
+        height: 860px;
       }
       .sidebar-forth {
         top: 3112px;

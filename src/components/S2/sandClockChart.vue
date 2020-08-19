@@ -66,7 +66,7 @@ export default {
         },
         yAxis: [
           {
-            splitNumber: 2,
+            splitNumber: 4,
             axisTick: {
               show: false
             },
@@ -90,7 +90,7 @@ export default {
             splitLine: {
               show: true,
               lineStyle: {
-                color: "rgba(255, 129, 109, 0.1)",
+                color: "rgba(255, 255, 255, 0.4)",
                 width: 4,
                 type: "dashed"
               }

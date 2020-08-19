@@ -183,6 +183,7 @@ export default {
             splitLine: {
               lineStyle: {
                 type: "dashed",
+                width: 4,
                 color: "RGB(47,68,114)"
               }
             },

@@ -161,7 +161,8 @@ export default {
               show: true,
               lineStyle: {
                 type: "dashed",
-                color: "rgba(255,255,255,0.2)"
+                width: 4,
+                color: "rgba(255,255,255,0.4)"
               }
             }
           }

@@ -234,6 +234,7 @@ export default {
               show: true,
               lineStyle: {
                 color: "rgba(255,255,255,1)",
+                width: 4,
                 opacity: 0.2
               }
             }

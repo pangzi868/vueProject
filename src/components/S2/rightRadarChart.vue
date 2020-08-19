@@ -101,7 +101,8 @@ export default {
             },
             splitLine: {
               lineStyle: {
-                color: "#37a9ff"
+                color: "#37a9ff",
+                width: 4,
               }
             },
             splitArea: {
