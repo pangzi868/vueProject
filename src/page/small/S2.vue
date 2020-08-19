@@ -137,11 +137,13 @@
             class="right-bubble-chart"
             :ids="rightBubbleIds"
             :chartData="rightBubbleData"
+            v-if="draw"
           />
           <right-form-chart
             class="right-form-chart"
             :ids="rightFormIds"
             :chartData="rightFormData"
+            v-if="draw"
           />
         </hover-box>
         <hover-box
@@ -426,6 +428,10 @@ export default {
       this.middleLeftIndi = this.screenSecondData.middle2Indicator;
       this.middleBubbleData = this.screenSecondData.middle3;
       this.middleBarData = this.screenSecondData.middle4;
+      this.rightBubbleData = this.screenSecondData.right1;
+      this.rightFormData = this.screenSecondData.right1;
+      this.rightWaterData = this.screenSecondData.right2Water || 0;
+      // this.rightHuanData = this.screenSecondData.right2;
       this.$nextTick(() => {
         this.draw = true;
       });

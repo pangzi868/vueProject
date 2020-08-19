@@ -180,7 +180,7 @@ export default {
       this.selectElement.style.top = "20%";
       this.visibility = newValue[this.keys].visible;
       if (this.visibility) {
-        thsi.initTable();
+        this.initTable();
       }
     }
   }

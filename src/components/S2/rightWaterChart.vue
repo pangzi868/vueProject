@@ -39,16 +39,14 @@ export default {
           {
             type: "group",
             left: "center",
-            top: "30%",
+            top: "25%",
             children: [
               {
                 type: "text",
-                z: 100,
-                left: "10",
-                top: "middle",
+                z: 80,
                 style: {
                   fill: "#FFF",
-                  text: "流量统计",
+                  text: "协议库存\n履约总数",
                   font: "56px Microsoft YaHei"
                 }
               }
@@ -119,8 +117,10 @@ export default {
             label: {
               normal: {
                 fontSize: 92,
-                color: "rgba(255,221,101,1)"
-                // formatter: ""
+                color: "rgba(255,221,101,1)",
+                formatter: function() {
+                  return data;
+                }
               }
             },
             itemStyle: {

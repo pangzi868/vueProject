@@ -1,19 +1,32 @@
 <template>
-  <div class="loan-chart" id="loanChart"></div>
+  <div class="loan-chart" :id="ids"></div>
 </template>
 
 <script>
 export default {
-  props: ["chartData"],
+  props: ["ids", "chartData"],
   data() {
     return {};
   },
   mounted() {
-    this.drawChart(this.chartData);
+    this.drawChart(this.ids, this.chartData);
   },
   methods: {
-    drawChart(data) {
-      let myChart = this.$echarts.init(document.getElementById("loanChart"));
+    drawChart(id, data) {
+      if (!data) return;
+      let tempData = data.x[0].data.map((item, index) => {
+        return {
+          name: item,
+          value: data.y[0].data[index],
+          symbolSize: 243,
+          symbol:
+            item === this.curPro
+              ? `image://${require("@/assets/images/second/loan2.svg")}`
+              : `image://${require("@/assets/images/second/loan1.svg")}`,
+          draggable: true
+        };
+      });
+      let myChart = this.$echarts.init(document.getElementById(id));
       // 绘制图表
       myChart.setOption({
         title: {
@@ -54,7 +67,7 @@ export default {
         //   return idx * 100;
         // },
         // animationEasingUpdate: "bounceIn",
-        color: ["#fff", "#fff", "#fff"],
+        color: ["#fff"],
         series: [
           {
             type: "graph",
@@ -77,7 +90,7 @@ export default {
                 }
               }
             },
-            data: data || [
+            data: tempData || [
               {
                 name: "刘雨昕长发",
                 value: 205,
@@ -119,10 +132,21 @@ export default {
       });
     }
   },
+  computed: {
+    // 切换部门
+    curPro: {
+      get: function() {
+        return this.$store.state.curPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurPro", newVal);
+      }
+    }
+  },
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.drawChart(newVal);
+      this.drawChart(this.ids, newVal);
     }
   }
 };

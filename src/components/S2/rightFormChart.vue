@@ -17,25 +17,37 @@
 <script>
 export default {
   name: "",
-  props: ["ids", "chartData", "tableTitle"],
-  mounted() {},
+  props: ["ids", "chartData"],
+  mounted() {
+    this.init(this.chartData);
+  },
   data() {
     return {
-      ranking: [
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 },
-        { name: "长春", value: 132 }
-      ]
+      // ranking: [
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 },
+      //   { name: "长春", value: 132 }
+      // ]
+      ranking: []
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    init(chartData) {
+      this.ranking = chartData.x[0].data.map((item, index) => {
+        return {
+          name: item,
+          value: chartData.y[0].data[index]
+        };
+      });
+    }
+  },
   components: {}
 };
 </script>
