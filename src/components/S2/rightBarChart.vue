@@ -212,11 +212,11 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "rgba(21,177,255,1)" // 0% 处的颜色
+                      color: "rgba(43,40,219,1)" // 100% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: "rgba(43,40,219,1)" // 100% 处的颜色
+                      color: "rgba(21,177,255,1)" // 0% 处的颜色
                     }
                   ],
                   false
@@ -260,7 +260,7 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "rgba(21,255,255,1)" // 0% 处的颜色
+                      color: "rgba(0,79,255,1)" // 0% 处的颜色
                     },
                     {
                       offset: 1,
@@ -308,11 +308,11 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "rgba(255,188,87,1)" // 0% 处的颜色
+                      color: "rgba(111,92,0,1)" // 100% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: "rgba(111,92,0,1)" // 100% 处的颜色
+                      color: "rgba(255,188,87,1)" // 0% 处的颜色
                     }
                   ],
                   false

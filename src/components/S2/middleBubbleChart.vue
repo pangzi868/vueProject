@@ -161,14 +161,15 @@ export default {
         series: [
           {
             name: "检查",
-            type: "scatter",
+            type: "effectScatter",
             stack: "总量",
             label: {
               normal: {
                 show: true,
-                position: "bottom",
+                position: "middle",
+                padding: [25, 20],
                 textStyle: {
-                  color: "#9bc8ff",
+                  color: "#FFF",
                   fontSize: 40
                 },
                 formatter: "{c}" //图形上显示数字

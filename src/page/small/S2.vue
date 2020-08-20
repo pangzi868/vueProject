@@ -955,6 +955,7 @@ export default {
 
 // 切换菜单栏
 .fab-main-container {
+  -webkit-tap-highlight-color: transparent;
   height: 200px;
   width: 200px;
   .fab-size-normal {
@@ -979,6 +980,9 @@ export default {
     .fabMask {
       height: 200px;
       width: 200px;
+    }
+    .touchStyle {
+      opacity: 0 !important;
     }
     .vue-fab-material-icons {
       height: 200px;
