@@ -11,10 +11,10 @@ export default {
     };
   },
   mounted() {
-    this.drawChart(this.ids, this.chartData);
+    this.drawChart(this.ids, this.chartData, this.curPro);
   },
   methods: {
-    drawChart(id, data) {
+    drawChart(id, data, cp) {
       if (!data) return;
       let tempData = data.x[0].data.map((item, index) => {
         return {
@@ -23,7 +23,7 @@ export default {
           symbolSize: 243,
           symbol:
             item === this.curPro
-              ? `image://${require("@/assets/images/second/loan2.svg")}`
+              ? `image://${require("@/assets/images/second/loan4.svg")}`
               : `image://${require("@/assets/images/second/loan1.svg")}`,
           draggable: false
         };
@@ -170,7 +170,7 @@ export default {
           if (item === temp) {
             let tempY = [];
             for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
-              if (singleItem === '总投资') {
+              if (singleItem === "总投资") {
                 tempY.push(parseFloat(singleItem.data[i - 1]).toFixed(2));
               } else {
                 tempY.push(singleItem.data[i - 1]);
@@ -228,7 +228,10 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.drawChart(this.ids, newVal);
+      this.drawChart(this.ids, newVal, this.curPro);
+    },
+    curPro: function(newVal) {
+      this.drawChart(this.ids, this.chartData, newVal);
     }
   }
 };
