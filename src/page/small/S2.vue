@@ -432,7 +432,7 @@ export default {
         { name: "辽源", ids: 3 },
         { name: "白山", ids: 2 },
         { name: "松原", ids: 1 },
-        { name: "直属", ids: 0 }
+        { name: "直属单位", ids: 0 }
       ],
       globalOptions: { spacing: 200, delay: 0.05 },
       companyImg: Company,
@@ -932,6 +932,7 @@ export default {
   border-bottom: 0px;
   .el-menu-item {
     width: 12.5%;
+    font-size: 50px;
     height: 100%;
     line-height: 150%;
     text-align: center;

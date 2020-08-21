@@ -34,7 +34,7 @@ export default {
   methods: {
     initColumnChart(id, data, cp) {
       if (!data || JSON.stringify(data) == '"{}"') return;
-      console.info(data, "s");
+      // console.info(data, "s");
       let xAxis1 = [],
         xAxis2 = [],
         yAxis1 = [],
@@ -103,16 +103,17 @@ export default {
             let tempStr = params.map((item, index) => {
               return (
                 "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
-                colorArr[index] +
-                "'></span>" +
-                item.seriesName +
-                "：" +
-                (item.value
-                  ? item.seriesName.indexOf("数") !== -1 ||
-                    item.value.indexOf(".") === -1
-                    ? item.value
-                    : parseFloat(item.value).toFixed(2)
-                  : "0")
+                  colorArr[index] ||
+                "rgba(21,177,255,1)" +
+                  "'></span>" +
+                  item.seriesName +
+                  "：" +
+                  (item.value
+                    ? item.seriesName.indexOf("数") !== -1 ||
+                      item.value.indexOf(".") === -1
+                      ? item.value
+                      : parseFloat(item.value).toFixed(2)
+                    : "0")
               );
             });
             return params[0].name + tempStr.join(" ");
@@ -343,7 +344,7 @@ export default {
         ]
       });
       myCharts.on("click", params => {
-        console.log(params, "p");
+        let temp = params.name;
         let data = this.$store.state.screenSecondData.right4Aux;
         let align = [];
         let xAxis = data.x.map(item => {
@@ -352,7 +353,7 @@ export default {
         });
         let yAxis = [];
         data.x[0].data.forEach((item, index) => {
-          if (item === params.name) {
+          if (item === temp) {
             let tempY = [];
             data.x.forEach(items => {
               tempY.push(items.data[index]);

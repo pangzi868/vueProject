@@ -116,6 +116,7 @@ export default {
             },
             label: {
               normal: {
+                padding: [90, 0, 0, 0],
                 fontSize: 92,
                 color: "rgba(255,221,101,1)",
                 formatter: function() {

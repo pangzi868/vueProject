@@ -91,10 +91,10 @@ export default {
           }
         },
         grid: {
-          top: "15%",
+          top: "19%",
           right: "3%",
           bottom: "10%",
-          left: "8%"
+          left: "10%"
         },
         xAxis: {
           type: "category",
@@ -102,8 +102,8 @@ export default {
             show: true,
             interval: 0, //类目间隔 设置为 1，表示『隔一个标签显示一个标签』
             textStyle: {
-              color: "#fff",
-              fontSize: 36
+              color: "rgba(255, 255, 255, 0.7)",
+              fontSize: 46
             },
             formatter: "{value}"
           },
@@ -128,7 +128,7 @@ export default {
           name: "（单位/次）",
           nameTextStyle: {
             color: "rgba(255, 255, 255, 0.7)",
-            fontSize: 40,
+            fontSize: 48,
             align: "right",
             padding: [0, 0, 25, 0]
           },
@@ -136,7 +136,7 @@ export default {
             show: true,
             textStyle: {
               color: "rgba(255, 255, 255, 0.7)",
-              fontSize: 40
+              fontSize: 48
             },
             interval: 0, //类目间隔 设置为 1，表示『隔一个标签显示一个标签』
             margin: 10
@@ -166,11 +166,10 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: "middle",
-                padding: [25, 20],
+                align: "center",
                 textStyle: {
                   color: "#FFF",
-                  fontSize: 40
+                  fontSize: 48
                 },
                 formatter: "{c}" //图形上显示数字
               }
@@ -219,6 +218,7 @@ export default {
         ]
       });
       myCharts.on("click", params => {
+        let temp = params.name;
         let data = this.$store.state.screenSecondData.middle3Aux;
         let align = [];
         let xAxis = data.x.map(item => {
@@ -227,7 +227,7 @@ export default {
         });
         let yAxis = [];
         data.x[0].data.forEach((item, index) => {
-          if (item === this.curPro) {
+          if (item === temp) {
             let tempY = [];
             data.x.forEach(items => {
               tempY.push(items.data[index]);

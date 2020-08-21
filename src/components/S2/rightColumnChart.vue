@@ -45,6 +45,7 @@ export default {
           "rgba(0,247,255,1)",
           "rgba(30,147,255,1)"
         ];
+      let tempIndex = 0;
       data.x[0].data.forEach((item, index) => {
         if (item === cp) {
           xAxis.push(data.x[1].data[index]);
@@ -60,11 +61,11 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: colorList[index] // 0% 处的颜色
+                      color: colorList[tempIndex] || "rgba(255,179,88,1)" // 0% 处的颜色
                     },
                     {
                       offset: 1,
-                      color: colorList[index] // 100% 处的颜色
+                      color: colorList[tempIndex] || "rgba(255,179,88,1)" // 100% 处的颜色
                     }
                   ],
                   false
@@ -72,6 +73,7 @@ export default {
               }
             }
           });
+          tempIndex++;
         }
       });
       let max = Math.max.apply(null, yAxis);
@@ -206,6 +208,7 @@ export default {
         ]
       });
       myCharts.on("click", params => {
+        let temp = params.name;
         let data = this.$store.state.screenSecondData.right3Aux;
         let align = [];
         let xAxis = data.x.map(item => {
@@ -213,15 +216,41 @@ export default {
           return item.name;
         });
         let yAxis = [];
-        data.x[0].data.forEach((item, index) => {
+        let tempData = data.x;
+        for (let i = 0, item; (item = tempData[0].data[i++]); ) {
           if (item === this.curPro) {
-            let tempY = [];
-            data.x.forEach(items => {
-              tempY.push(items.data[index]);
-            });
-            yAxis.push(tempY);
+            // for (let j = 0, items; (items = tempData[1].data[j++]); ) {
+            if (tempData[1].data[i - 1] === temp) {
+              let tempY = [];
+              for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
+                tempY.push(singleItem.data[i - 1]);
+              }
+              yAxis.push(tempY);
+            }
+            // if (items === temp) {
+            //   let tempY = [];
+            //   for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
+            //     tempY.push(singleItem.data[i - 1]);
+            //   }
+            //   yAxis.push(tempY);
+            // }
+            // }
           }
-        });
+        }
+
+        // data.x[0].data.forEach((item, index) => {
+        //   if (item === this.curPro) {
+        //     data.x[1].data.forEach((items, indexs) => {
+        //       if (items === temp) {
+        //         let tempY = [];
+        //         data.x.forEach(singleItem => {
+        //           tempY.push(singleItem.data[indexs]);
+        //         });
+        //         yAxis1.push(tempY);
+        //       }
+        //     });
+        //   }
+        // });
 
         this.modalData = {
           right2Modal: {

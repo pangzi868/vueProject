@@ -234,6 +234,7 @@ export default {
         ]
       });
       myCharts.on("click", params => {
+        let temp = params.name
         let data = this.$store.state.screenSecondData.middle4Aux;
         let align = [];
         let xAxis = data.x.map(item => {
@@ -242,7 +243,7 @@ export default {
         });
         let yAxis = [];
         data.x[0].data.forEach((item, index) => {
-          if (item === this.curPro) {
+          if (item === temp) {
             let tempY = [];
             data.x.forEach(items => {
               tempY.push(items.data[index]);

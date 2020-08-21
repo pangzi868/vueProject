@@ -171,6 +171,9 @@ export default {
       this.bottomScrollConfig.header = this.data.xAxis;
       this.bottomScrollConfig.data = this.data.yAxis;
       this.bottomScrollConfig.align = this.data.align;
+      this.bottomScrollConfig = JSON.parse(
+        JSON.stringify(this.bottomScrollConfig)
+      );
     }
   },
   watch: {
@@ -182,6 +185,9 @@ export default {
       if (this.visibility) {
         this.initTable();
       }
+    },
+    data: function(newVal) {
+      this.initTable();
     }
   }
 };
@@ -304,6 +310,8 @@ export default {
   }
   .rows {
     .row-item {
+      height: 150px !important;
+      line-height: 150px !important;
       font-size: 56px;
     }
   }

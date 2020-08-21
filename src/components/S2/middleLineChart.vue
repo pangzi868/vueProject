@@ -304,6 +304,7 @@ export default {
       myCharts.setOption(Option);
 
       myCharts.on("click", params => {
+        let temp = params.name;
         let data = this.$store.state.screenSecondData.middle2Aux;
         let align = [];
         let xAxis = data.x.map(item => {
@@ -311,16 +312,37 @@ export default {
           return item.name;
         });
         let yAxis = [];
-        data.x[0].data.forEach((item, index) => {
-          if (item === this.curPro) {
-            let tempY = [];
-            let align = [];
-            data.x.forEach(items => {
-              tempY.push(items.data[index]);
-            });
-            yAxis.push(tempY);
+
+        let tempData = data.x;
+        let tempPro = this.curPro;
+        for (let i = 0, item; (item = tempData[0].data[i++]); ) {
+          if (item === tempPro) {
+            // for (let j = 0, items; (items = tempData[1].data[j++]); ) {
+            if (tempData[1].data[i - 1] === temp) {
+              let tempY = [];
+              for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
+                tempY.push(singleItem.data[i - 1]);
+              }
+              yAxis.push(tempY);
+            }
+            // }
           }
-        });
+        }
+
+        // data.x[0].data.forEach((item, index) => {
+        //   if (item === this.curPro) {
+        //     data.x[1].data.forEach((items, indexs) => {
+        //       if (items === temp) {
+        //         let tempY = [];
+        //         let align = [];
+        //         data.x.forEach(singleItem => {
+        //           tempY.push(singleItem.data[indexs]);
+        //         });
+        //         yAxis.push(tempY);
+        //       }
+        //     });
+        //   }
+        // });
 
         this.modalData = {
           middle2Modal: {

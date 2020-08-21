@@ -6,7 +6,9 @@
 export default {
   props: ["ids", "chartData"],
   data() {
-    return {};
+    return {
+      myChart: null
+    };
   },
   mounted() {
     this.drawChart(this.ids, this.chartData);
@@ -26,9 +28,13 @@ export default {
           draggable: false
         };
       });
-      let myChart = this.$echarts.init(document.getElementById(id));
+      if (this.myChart) {
+        this.myChart.clear();
+      } else {
+        this.myChart = this.$echarts.init(document.getElementById(id));
+      }
       // 绘制图表
-      myChart.setOption({
+      this.myChart.setOption({
         title: {
           show: true, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
           x: "center", // 水平安放位置，默认为左对齐，可选为：
@@ -88,7 +94,7 @@ export default {
         color: ["#fff"],
         series: [
           {
-            name: '转资量',
+            name: "转资量",
             type: "graph",
             layout: "force",
             force: {
@@ -149,7 +155,8 @@ export default {
           }
         ]
       });
-      myChart.on("click", params => {
+      this.myChart.on("click", params => {
+        let temp = params.name;
         let data = this.$store.state.screenSecondData.right1Aux;
         let align = [];
         let xAxis = data.x.map(item => {
@@ -157,15 +164,31 @@ export default {
           return item.name;
         });
         let yAxis = [];
-        data.x[0].data.forEach((item, index) => {
-          if (item === this.curPro) {
+
+        let tempData = data.x;
+        for (let i = 0, item; (item = tempData[0].data[i++]); ) {
+          if (item === temp) {
             let tempY = [];
-            data.x.forEach(items => {
-              tempY.push(items.data[index]);
-            });
+            for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
+              if (singleItem === '总投资') {
+                tempY.push(parseFloat(singleItem.data[i - 1]).toFixed(2));
+              } else {
+                tempY.push(singleItem.data[i - 1]);
+              }
+            }
             yAxis.push(tempY);
           }
-        });
+        }
+
+        // data.x[0].data.forEach((item, index) => {
+        //   if (item === temp) {
+        //     let tempY = [];
+        //     data.x.forEach(items => {
+        //       tempY.push(items.data[index]);
+        //     });
+        //     yAxis.push(tempY);
+        //   }
+        // });
 
         this.modalData = {
           right1Modal: {
