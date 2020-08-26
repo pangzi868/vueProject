@@ -15,8 +15,25 @@ export default {
   computed: {},
   methods: {
     initColumnChart(id, data) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
+      let temp = data.y,
+        topVal = [],
+        bottomVal = [];
       let myCharts = this.$echarts.init(document.getElementById(id));
-      var os_age = ["现场勘查", "方案答复", "中间检查", "竣工验收", "装表送电"];
+      var os_age = [
+        "供电答复方案",
+        "设计审查",
+        "中间检查",
+        "竣工验收",
+        "装表送电"
+      ];
+      for (var i = 0; i < temp.length; i++) {
+        if ((i + 2) % 2 === 0) {
+          topVal.push(temp[i].data[0]);
+        } else {
+          bottomVal.push(-temp[i].data[0]);
+        }
+      }
       var os_agevalue = [15, 12, 3, 18, 4];
       var os_agevalue1 = [0, -2, -7, -12, -4];
       myCharts.setOption({
@@ -44,7 +61,16 @@ export default {
             fontFamily: "微软雅黑",
             fontSize: 52
           },
-          formatter: "{b}<br />{a}: {c}"
+          // formatter: "{b}<br />{a}: {c}"
+          formatter: function(params) {
+            return (
+              params.name +
+              "<br />" +
+              params.seriesName +
+              "：" +
+              Math.abs(params.value)
+            );
+          }
         },
         xAxis: {
           data: os_age,
@@ -80,6 +106,9 @@ export default {
               textStyle: {
                 color: "#999",
                 fontSize: 56
+              },
+              formatter: function(params) {
+                return Math.abs(params);
               }
             },
             splitArea: {
@@ -139,7 +168,7 @@ export default {
                 opacity: 1
               }
             },
-            data: os_agevalue,
+            data: topVal || os_agevalue,
             z: 10
           },
           {
@@ -154,7 +183,10 @@ export default {
               distance: 15,
               color: "#2D8CF0",
               fontWeight: "bolder",
-              fontSize: 56
+              fontSize: 56,
+              formatter: function(params) {
+                return Math.abs(params.value);
+              }
             },
             itemStyle: {
               normal: {
@@ -183,7 +215,7 @@ export default {
                 opacity: 1
               }
             },
-            data: os_agevalue1,
+            data: bottomVal || os_agevalue1,
             z: 10
           }
         ]
@@ -193,7 +225,7 @@ export default {
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData);
+      this.initColumnChart(this.ids, newVal);
     }
   }
 };

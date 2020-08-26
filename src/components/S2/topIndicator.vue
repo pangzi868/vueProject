@@ -1,11 +1,17 @@
 <template>
   <div class="top-indicator" :id="ids">
-    <div class="single-indicator" v-for="(item, index) in theme" :key="index">
+    <div
+      :class="'single-indicator ' + (index === 0 ? 'first-ind' : '')"
+      v-for="(item, index) in theme"
+      :key="index"
+      @click="checkout(item.name)"
+    >
       <div class="img-left" />
       <img :src="item.imgUrl" alt class="img-span" />
       <div class="img-right" />
       <div class="indicator-right">
-        <span v-html="item.name"></span>
+        <span v-html="item.name" class="single-name"></span>
+        <span v-html="item.desc" class="single-desc"></span>
       </div>
     </div>
   </div>
@@ -27,33 +33,51 @@ export default {
     return {
       theme: [
         {
-          name: "现场勘查",
-          imgUrl: Scene
+          name: "供电答复方案",
+          imgUrl: Scene,
+          desc: "单≤9  双≤17"
         },
         {
-          name: "方案答复",
-          imgUrl: Response
+          name: "设计审查",
+          imgUrl: Response,
+          desc: "≤3"
         },
         {
           name: "中间检查",
-          imgUrl: Middle
+          imgUrl: Middle,
+          desc: "≤3"
         },
         {
           name: "竣工验收",
-          imgUrl: Check
+          imgUrl: Check,
+          desc: "≤3"
         },
         {
           name: "装表送电",
-          imgUrl: Power
+          imgUrl: Power,
+          desc: "≤6"
         }
       ]
     };
   },
-  computed: {},
+  computed: {
+    topIndex: {
+      get: function() {
+        return this.$store.state.topIndex;
+      },
+      set: function(val) {
+        this.$store.commit("newTopIndex", val);
+      }
+    }
+  },
   methods: {
     initColumnChart(id, data) {
       //   let myCharts = this.$echarts.init(document.getElementById(id));
       //   myCharts.setOption({});
+    },
+    checkout(name) {
+      if (this.topIndex === name) return;
+      this.topIndex = name;
     }
   },
   components: {},
@@ -81,6 +105,7 @@ export default {
     padding: 0 40px 0 20px;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     .img-left {
       display: inline-block;
       width: 32px;
@@ -110,7 +135,20 @@ export default {
       line-height: 104px;
       letter-spacing: 0px;
       text-align: left;
+      .single-name {
+        line-height: 74px;
+        vertical-align: top;
+      }
+      .single-desc {
+        line-height: 74px;
+        vertical-align: top;
+        color: #00ffff;
+      }
     }
+  }
+
+  .first-ind {
+    width: 23%;
   }
 }
 </style>

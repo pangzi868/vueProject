@@ -68,4 +68,8 @@ export default {
     newModalData(state, data) {
         state.modalData = Object.assign({}, state.modalData, data)
     },
+
+    newTopIndex(state, data) {
+        state.topIndex = data
+    }
 }

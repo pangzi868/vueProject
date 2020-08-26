@@ -84,7 +84,16 @@
         >
           <div class="sidebar-content-title">业扩报装关键时长预警主题</div>
           <top-indicator />
-          <sand-clock-chart ids="sandClock" />
+          <sand-clock-chart
+            v-if="draw && (curPro === '全省')"
+            :ids="middleSandIds"
+            :chartData="middleSandData"
+          />
+          <mid-top-line-chart
+            v-if="draw && (curPro !== '全省')"
+            :ids="midTopLineIds"
+            :chartData="midTopLineData"
+          />
         </hover-box>
         <hover-box
           class="middle-theme middle-second single-area bg-2"
@@ -252,6 +261,7 @@ import SecondIndicator from "@/components/S2/secondIndicator.vue";
 import TopIndicator from "@/components/S2/topIndicator.vue";
 import LeftIndicator from "@/components/S2/leftIndicator.vue";
 import SandClockChart from "@/components/S2/sandClockChart.vue";
+import MidTopLineChart from "@/components/S2/midTopLineChart.vue";
 import MiddleLineChart from "@/components/S2/middleLineChart.vue";
 import MiddleBubbleChart from "@/components/S2/middleBubbleChart.vue";
 import MiddleBarChart from "@/components/S2/middleBarChart.vue";
@@ -399,9 +409,13 @@ export default {
       leftBarData: null,
       leftLineAndColumnIds: "leftLineAndColumnChart",
       leftLineAndColumnData: null,
+      middleSandIds: "middleSandIds",
+      middleSandData: null,
       middleLeftIndi: null,
       middleLineIds: "middleLineChart",
       middleLineData: null,
+      midTopLineIds: "midTopLineChart",
+      MidTopLineData: null,
       middleBubbleIds: "middleBubbleChart",
       middleBubbleData: null,
       middleBarIds: "middleBarChart",
@@ -479,6 +493,8 @@ export default {
       console.log(key, keyPath);
     },
     initData() {
+      this.middleSandData = this.screenSecondData.middle1;
+      this.midTopLineData = this.screenSecondData.middle1Branch;
       this.middleLineData = this.screenSecondData.middle2;
       this.middleLeftIndi = this.screenSecondData.middle2Indicator;
       this.middleBubbleData = this.screenSecondData.middle3;
@@ -576,6 +592,7 @@ export default {
     LeftIndicator,
     SandClockChart,
     MiddleLineChart,
+    MidTopLineChart,
     MiddleBubbleChart,
     MiddleBarChart,
 
