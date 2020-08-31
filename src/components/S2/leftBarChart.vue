@@ -5,31 +5,56 @@
 <script>
 export default {
   name: "",
-  props: ["ids", "chartData"],
+  props: ["ids", "chartData", "curType"],
   mounted() {
-    this.initColumnChart(this.ids, this.chartData);
+    this.initColumnChart(this.ids, this.chartData, this.curType);
   },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
+    }
+  },
   methods: {
-    initColumnChart(id, data) {
-      var spNum = 5,
-        _max = this.total;
-      var legendData = ["常住人口", "户籍人口", "农村人口", "城镇居民"];
-      var y_data = ["经济责任", "工程", "财务收支", "营销管理", "人资管理"];
-      var _data1 = [10, 15, 10, 13, 15],
-        _data2 = [19, 5, 40, 33, 12],
-        _data3 = [21, 55, 10, 13, 35];
-      var fomatter_fn = function(v) {
-        return ((v.value / _max) * 100).toFixed(0);
-      };
+    initColumnChart(id, data, type) {
+      let tempData = data.x,
+        tempYData = data.y,
+        trueData = {},
+        trueL = [],
+        colorArr = [
+          "50,107,255",
+          "109,168,255",
+          "255,173,86",
+          "193,147,255",
+          "0,153,235",
+          "70,180,184",
+          "0,102,255",
+          "244,221,103"
+        ];
+      for (let i = 0, item; (item = tempData[0].data[i++]); ) {
+        if (item === type) {
+          if (!trueData[tempData[1].data[i - 1]]) {
+            trueData[tempData[1].data[i - 1]] = {};
+          }
+          if (!trueL.includes(tempData[2].data[i - 1])) {
+            trueL.push(tempData[2].data[i - 1]);
+          }
+          trueData[tempData[1].data[i - 1]][tempData[2].data[i - 1]] =
+            tempYData[0].data[i - 1];
+        }
+      }
+      var spNum = 5;
       var _label = {
         normal: {
           show: false,
           position: "inside",
-          formatter: fomatter_fn,
           textStyle: {
             color: "#fff",
             fontSize: 16
@@ -38,9 +63,8 @@ export default {
       };
       if (!id) return;
       let chart = this.$echarts.init(document.getElementById(id));
-      chart.setOption({
+      let options = {
         legend: {
-          data: legendData,
           textStyle: {
             color: "rgba(255, 255, 255, 0.7)",
             fontSize: 48
@@ -55,8 +79,8 @@ export default {
         grid: {
           containLabel: true,
           top: "5%",
-          left: 0,
-          right: '18%',
+          left: "5%",
+          right: "18%",
           bottom: 30
         },
         tooltip: {
@@ -81,29 +105,19 @@ export default {
             var _arr = p.seriesName.split("/"),
               idx = p.seriesIndex; //1，2，3
             return (
-              "名称：" +
-              p.seriesName +
-              "<br>" +
-              "完成：" +
-              p.value +
-              "<br>" +
-              "占比：" +
-              ((p.value / _max) * 100).toFixed(0) +
-              "%"
+              "名称：" + p.seriesName + "<br>" + "完成：" + p.value
+              // "<br>" +
+              // "占比：" +
+              // ((p.value / _max) * 100).toFixed(0) +
+              // "%"
             );
           },
           extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 0.1)"
         },
         xAxis: {
           splitNumber: spNum,
-          // interval: _max / spNum,
-          // max: _max,
           axisLabel: {
             show: false
-            // formatter: function(v) {
-            //   var _v = ((v / _max) * 100).toFixed(0);
-            //   return _v == 0 ? _v : _v + "%";
-            // }
           },
           axisLine: {
             show: false
@@ -117,7 +131,6 @@ export default {
         },
         yAxis: [
           {
-            data: this.xAxis ? this.xAxis : y_data,
             axisLabel: {
               fontSize: 56,
               textAlign: "left",
@@ -136,72 +149,116 @@ export default {
           },
           {
             show: false,
-            data: this.xAxis ? this.xAxis : y_data,
             axisLine: {
               show: false
             }
           }
-        ],
-        series: [
-          {
-            type: "bar",
-            name: this.type ? this.type[0] : "常住人口",
-            stack: "2",
-            label: _label,
-            legendHoverLink: false,
-            barWidth: 40,
-            itemStyle: {
-              normal: {
-                color: "rgba(0,87,248,1)"
-              },
-              emphasis: {
-                color: "rgba(0,87,248,1)"
-              }
-            },
-            data: this.yAxis1 ? this.yAxis1 : _data1
-          },
-          {
-            type: "bar",
-            name: this.type ? this.type[1] : "户籍人口",
-            stack: "2",
-            legendHoverLink: false,
-            barWidth: 40,
-            label: _label,
-            itemStyle: {
-              normal: {
-                color: "rgba(255,179,88,1)"
-              },
-              emphasis: {
-                color: "rgba(255,179,88,1)"
-              }
-            },
-            data: this.yAxis2 ? this.yAxis2 : _data2
-          },
-          {
-            type: "bar",
-            stack: "2",
-            name: this.type ? this.type[2] : "农村人口",
-            legendHoverLink: false,
-            barWidth: 40,
-            label: _label,
-            itemStyle: {
-              normal: {
-                color: "rgba(0,247,255,1)"
-              },
-              emphasis: {
-                color: "rgba(0,247,255,1)"
-              }
-            },
-            data: this.yAxis3 ? this.yAxis3 : _data3
-          }
         ]
+      };
+      options.legend.data = trueL;
+      options.yAxis[0].data = Object.keys(trueData);
+      options.yAxis[1].data = Object.keys(trueData);
+      options.dataZoom =
+        Object.keys(trueData).length > 8
+          ? {
+              show: true,
+              height: 560,
+              yAxisIndex: [0],
+              left: "2%",
+              start: 0,
+              end: 50,
+
+              handleSize: "110%",
+              handleStyle: {
+                color: "rgba(0,0,0,0)"
+              },
+              textStyle: {
+                color: "rgba(0,0,0,0)"
+              },
+              borderColor: "#90979c"
+            }
+          : [];
+      options.series = trueL.map((item, index) => {
+        return {
+          type: "bar",
+          stack: "one",
+          name: item,
+          legendHoverLink: false,
+          barWidth: 40,
+          label: _label,
+          itemStyle: {
+            normal: {
+              color: new this.$echarts.graphic.LinearGradient(
+                0,
+                0,
+                1,
+                0,
+                [
+                  {
+                    offset: 1,
+                    color: "rgba(" + colorArr[index] + ",1)" // 100% 处的颜色
+                  },
+                  {
+                    offset: 0,
+                    color: "rgba(" + colorArr[index] + ",0.1)" // 0% 处的颜色
+                  }
+                ],
+                false
+              )
+            }
+          },
+          data: Object.keys(trueData).map((items, indexs) => {
+            return trueData[items][item] ? trueData[items][item] : 0;
+          })
+        };
+      });
+
+      chart.setOption(options);
+      chart.on("click", params => {
+        let temp = params.name;
+        let tempSeries = params.seriesName;
+        let data = this.$store.state.screenSecondData.left3Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        data.x[0].data.forEach((item, index) => {
+          if (item === temp) {
+            if (data.x[1].data[index] === tempSeries) {
+              let tempY = [];
+              data.x.forEach(items => {
+                tempY.push(items.data[index]);
+              });
+              yAxis.push(tempY);
+            }
+          }
+        });
+
+        this.modalData = {
+          left3Modal: {
+            type: "type1",
+            visible: true,
+            keys: "left3Modal",
+            zIndex: 21,
+            data: {
+              xAxis: xAxis,
+              yAxis: yAxis,
+              align: align
+            }
+          }
+        };
       });
     }
   },
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData);
+      this.initColumnChart(this.ids, newVal, this.curType);
+    },
+    curType: function(newVal) {
+      this.initColumnChart(this.ids, this.chartData, curType);
     }
   }
 };

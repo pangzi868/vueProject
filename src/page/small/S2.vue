@@ -58,7 +58,12 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <left-bar class="left-bar-chart" :ids="leftBarIds" :chartData="leftBarData" />
+          <left-bar
+            :curType="selectValue"
+            class="left-bar-chart"
+            :ids="leftBarIds"
+            :chartData="leftBarData"
+          />
         </hover-box>
         <hover-box
           class="left-theme sidebar-forth single-area bg-2"
@@ -336,28 +341,29 @@ export default {
         right3: "right3",
         right4: "right4"
       },
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
+      // options: [
+      //   {
+      //     value: "选项1",
+      //     label: "黄金糕"
+      //   },
+      //   {
+      //     value: "选项2",
+      //     label: "双皮奶"
+      //   },
+      //   {
+      //     value: "选项3",
+      //     label: "蚵仔煎"
+      //   },
+      //   {
+      //     value: "选项4",
+      //     label: "龙须面"
+      //   },
+      //   {
+      //     value: "选项5",
+      //     label: "北京烤鸭"
+      //   }
+      // ],
+      options: [],
       left1Menu: [
         {
           index: "1",
@@ -493,6 +499,8 @@ export default {
       console.log(key, keyPath);
     },
     initData() {
+      this.initButton();
+      this.leftBarData = this.screenSecondData.left3;
       this.middleSandData = this.screenSecondData.middle1;
       this.midTopLineData = this.screenSecondData.middle1Branch;
       this.middleLineData = this.screenSecondData.middle2;
@@ -511,6 +519,16 @@ export default {
       this.$nextTick(() => {
         this.draw = true;
       });
+    },
+
+    initButton() {
+      this.options = this.screenSecondData.left3Type.x[0].data.map(item => {
+        return {
+          label: item,
+          value: item
+        };
+      });
+      this.selectValue = this.screenSecondData.left3Type.x[0].data[0];
     },
     clickItem(item) {
       let tempCur = this.fabItem.filter((items, index) => {
