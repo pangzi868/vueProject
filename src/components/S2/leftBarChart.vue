@@ -258,7 +258,7 @@ export default {
       this.initColumnChart(this.ids, newVal, this.curType);
     },
     curType: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData, curType);
+      this.initColumnChart(this.ids, this.chartData, newVal);
     }
   }
 };

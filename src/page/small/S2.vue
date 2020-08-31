@@ -59,6 +59,7 @@
             ></el-option>
           </el-select>
           <left-bar
+            v-if="draw"
             :curType="selectValue"
             class="left-bar-chart"
             :ids="leftBarIds"
@@ -72,6 +73,7 @@
         >
           <div class="sidebar-content-title">增值税进项税额抵扣率预警主题</div>
           <line-and-column
+            v-if="draw"
             class="left-line-chart"
             :ids="leftLineAndColumnIds"
             :chartData="leftLineAndColumnData"
@@ -249,6 +251,10 @@
       :type="item.type"
       :data="item.data"
       :keys="item.keys"
+      :chartIds="item.chartIds"
+      :tableJudge="item.tableJudge"
+      :dime='item.name'
+      :zIndex='item.zIndex'
     />
     <!-- <move-modal /> -->
   </div>
@@ -501,6 +507,7 @@ export default {
     initData() {
       this.initButton();
       this.leftBarData = this.screenSecondData.left3;
+      this.leftLineAndColumnData = this.screenSecondData.left4one;
       this.middleSandData = this.screenSecondData.middle1;
       this.midTopLineData = this.screenSecondData.middle1Branch;
       this.middleLineData = this.screenSecondData.middle2;

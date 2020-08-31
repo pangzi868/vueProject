@@ -7,32 +7,40 @@ export default {
   name: "",
   props: ["ids", "chartData"],
   mounted() {
-    this.initColumnChart(this.ids, this.chartData, this.currentPro);
+    this.initColumnChart(this.ids, this.chartData, this.curPro);
   },
   data() {
     return {};
   },
   computed: {
     // 切换部门
-    currentPro: {
+    curPro: {
       get: function() {
-        return this.$store.state.currentPro;
+        return this.$store.state.curPro;
       },
       set: function(newVal) {
-        this.$store.commit("newCurrentPro", newVal);
+        this.$store.commit("newCurPro", newVal);
+      }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
       }
     }
   },
   methods: {
-    initColumnChart(id, data, currentPro) {
-      //   if (!data || JSON.stringify(data) == '"{}"') return;
-      data = {};
+    initColumnChart(id, data, curPro) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
+      // data = {};
       let myCharts = this.$echarts.init(document.getElementById(id));
       myCharts.setOption({
         tooltip: {
           //提示框组件
           trigger: "axis",
-          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}<br />{a2}: {c2}",
+          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}<br />{a2}: {c2} %",
           axisPointer: {
             type: "shadow",
             label: {
@@ -204,9 +212,8 @@ export default {
             data: data.y
               ? data.y[0].data.map((item, index) => {
                   if (
-                    data.x[0].data[index] === currentPro ||
-                    (data.x[0].data[index] === "直属" &&
-                      currentPro === "直属单位")
+                    data.x[0].data[index] === curPro ||
+                    (data.x[0].data[index] === "直属" && curPro === "直属单位")
                   ) {
                     return {
                       value: item,
@@ -265,9 +272,8 @@ export default {
             data: data.y
               ? data.y[1].data.map((item, index) => {
                   if (
-                    data.x[0].data[index] === currentPro ||
-                    (data.x[0].data[index] === "直属" &&
-                      currentPro === "直属单位")
+                    data.x[0].data[index] === curPro ||
+                    (data.x[0].data[index] === "直属" && curPro === "直属单位")
                   ) {
                     return {
                       value: item,
@@ -324,14 +330,13 @@ export default {
             name: data.y ? data.y[2].name : "执行比例",
             type: "line",
             data: data.y
-              ? data.y[1].data.map((item, index) => {
+              ? data.y[2].data.map((item, index) => {
                   if (
-                    data.x[0].data[index] === currentPro ||
-                    (data.x[0].data[index] === "直属" &&
-                      currentPro === "直属单位")
+                    data.x[0].data[index] === curPro ||
+                    (data.x[0].data[index] === "直属" && curPro === "直属单位")
                   ) {
                     return {
-                      value: item,
+                      value: item * 100,
                       itemStyle: {
                         normal: {
                           show: true,
@@ -357,7 +362,7 @@ export default {
                       }
                     };
                   } else {
-                    return item;
+                    return item * 100;
                   }
                 })
               : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60],
@@ -385,14 +390,49 @@ export default {
           }
         ]
       });
+      myCharts.on("click", params => {
+        if (this.ids === "leftLineAndColumnChart") {
+          let name = params.name,
+            data = this.$store.state.screenSecondData.left4two,
+            trueData = {
+              x: [{ name: data.x[1].name, data: [] }],
+              y: [
+                { name: data.y[0].name, data: [] },
+                { name: data.y[1].name, data: [] },
+                { name: data.y[2].name, data: [] }
+              ]
+            };
+          for (let i = 0, item; (item = data.x[0].data[i++]); ) {
+            if (item === name) {
+              trueData.x[0].data.push(data.x[1].data[i - 1]);
+              trueData.y[0].data.push(data.y[0].data[i - 1]);
+              trueData.y[1].data.push(data.y[1].data[i - 1]);
+              trueData.y[2].data.push(data.y[2].data[i - 1]);
+            }
+          }
+          this.modalData = {
+            left4OneModal: {
+              type: "type1",
+              visible: true,
+              keys: "left4OneModal",
+              zIndex: 21,
+              data: trueData,
+              chartIds: "left4Chart1",
+              tableJudge: true,
+              name: name
+            }
+          };
+        } else if (this.ids === "littleLineAndColumnChart") {
+        }
+      });
     }
   },
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, newVal, this.currentPro);
+      this.initColumnChart(this.ids, newVal, this.curPro);
     },
-    currentPro: function(newVal) {
+    curPro: function(newVal) {
       this.initColumnChart(this.ids, this.chartData, newVal);
     }
   }
