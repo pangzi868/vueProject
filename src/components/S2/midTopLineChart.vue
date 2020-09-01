@@ -45,6 +45,14 @@ export default {
       set: function(val) {
         this.$store.commit("newTopIndex", val);
       }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
+      }
     }
   },
   methods: {
@@ -62,20 +70,6 @@ export default {
       this.yAxis = {};
       let indexArr = [];
 
-      //   let tempData = data.x;
-      //   for (let i = 0, item; (item = tempData[0].data[i++]); ) {
-      //     if (item === this.curPro) {
-      //       let tempY = [];
-      //       //   for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
-      //       //     if (singleItem === "总投资") {
-      //       //       tempY.push(parseFloat(singleItem.data[i - 1]).toFixed(2));
-      //       //     } else {
-      //       //       tempY.push(singleItem.data[i - 1]);
-      //       //     }
-      //       //   }
-      //       //   yAxis.push(tempY);
-      //     }
-      //   }
       this.chartData.x[0].data.forEach((item, index) => {
         if (item === this.curPro) {
           // this.chartData.x[1].data.forEach((items, indexs) => {
@@ -130,9 +124,13 @@ export default {
 
       let max = 0;
       for (var i in this.yAxis) {
-        let temp = Math.max.apply(null, this.yAxis[i]);
-        if (temp > max) {
-          max = temp;
+        let tempM = Math.max.apply(null, this.yAxis[i]),
+          tempS = Math.min.apply(null, this.yAxis[i]);
+        if (tempM > max) {
+          max = tempM;
+        }
+        if (Math.abs(tempS) > max) {
+          max = Math.abs(tempS);
         }
       }
 
@@ -346,6 +344,44 @@ export default {
       // myCharts.setOption(Option, { notMerge: true });
       myCharts.clear();
       myCharts.setOption(Option);
+      myCharts.on("click", params => {
+        let temp = params.name;
+        let data = this.$store.state.screenSecondData.middle1Aux;
+        let align = [];
+        let xAxis = data.x.map(item => {
+          align.push("center");
+          return item.name;
+        });
+        let yAxis = [];
+        let tempData = data.x;
+        for (let i = 0, item; (item = tempData[0].data[i++]); ) {
+          if (item === this.curPro) {
+            // for (let j = 0, items; (items = tempData[1].data[j++]); ) {
+            if (tempData[1].data[i - 1] === temp) {
+              let tempY = [];
+              for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
+                tempY.push(singleItem.data[i - 1]);
+              }
+              yAxis.push(tempY);
+            }
+          }
+        }
+        setTimeout(() => {
+          this.modalData = {
+            middle1Modal: {
+              type: "type1",
+              visible: true,
+              keys: "middle1Modal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                align: align
+              }
+            }
+          };
+        }, 300);
+      });
     }
   },
   components: {},

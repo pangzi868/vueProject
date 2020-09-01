@@ -6,9 +6,9 @@
       :key="index"
       @click="checkout(item.name)"
     >
-      <div class="img-left" />
+      <div :class="'img-left ' + (item.name === topIndex && curPro !== '全省' ? 'choosen' : '')" />
       <img :src="item.imgUrl" alt class="img-span" />
-      <div class="img-right" />
+      <div :class="'img-right ' + (item.name === topIndex && curPro !== '全省'  ? 'choosen' : '')" />
       <div class="indicator-right">
         <span v-html="item.name" class="single-name"></span>
         <span v-html="item.desc" class="single-desc"></span>
@@ -68,6 +68,14 @@ export default {
       set: function(val) {
         this.$store.commit("newTopIndex", val);
       }
+    },
+    curPro: {
+      get: function() {
+        return this.$store.state.curPro;
+      },
+      set: function(newVal) {
+        this.$store.commit("newCurPro", newVal);
+      }
     }
   },
   methods: {
@@ -84,6 +92,9 @@ export default {
   watch: {
     chartData: function(newVal) {
       //   this.initColumnChart(this.ids, this.chartData);
+    },
+    curPro: function(newVal) {
+      this.topIndex = "供电答复方案";
     }
   }
 };
@@ -120,6 +131,9 @@ export default {
       border: 4px solid rgba(255, 255, 255, 0.25);
       border-left: 0px;
       margin-right: 32px;
+    }
+    .choosen {
+      background: rgba(255, 255, 255, 0.3);
     }
     .img-span {
       display: inline-block;

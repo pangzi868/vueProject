@@ -343,20 +343,21 @@ export default {
         //     });
         //   }
         // });
-
-        this.modalData = {
-          middle2Modal: {
-            type: "type1",
-            visible: true,
-            keys: "middle2Modal",
-            zIndex: 21,
-            data: {
-              xAxis: xAxis,
-              yAxis: yAxis,
-              align: align
+        setTimeout(() => {
+          this.modalData = {
+            middle2Modal: {
+              type: "type1",
+              visible: true,
+              keys: "middle2Modal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                align: align
+              }
             }
-          }
-        };
+          };
+        }, 300);
       });
     }
   },

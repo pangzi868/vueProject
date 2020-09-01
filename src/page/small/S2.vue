@@ -253,8 +253,8 @@
       :keys="item.keys"
       :chartIds="item.chartIds"
       :tableJudge="item.tableJudge"
-      :dime='item.name'
-      :zIndex='item.zIndex'
+      :dime="item.name"
+      :zIndex="item.zIndex"
     />
     <!-- <move-modal /> -->
   </div>
@@ -447,8 +447,8 @@ export default {
       rightBarIds: "rightBarChart",
       rightBarData: null,
       fabItem: [
-        { name: "全省", ids: 11 },
-        { name: "本部", ids: 10 },
+        { name: "全省", ids: 10 },
+        // { name: "本部", ids: 10 },
         { name: "长春", ids: 9 },
         { name: "吉林", ids: 8 },
         { name: "四平", ids: 7 },
@@ -497,6 +497,14 @@ export default {
       },
       set: function(newValue) {
         this.$store.commit("newModalVisibility", newValue);
+      }
+    },
+    topIndex: {
+      get: function() {
+        return this.$store.state.topIndex;
+      },
+      set: function(val) {
+        this.$store.commit("newTopIndex", val);
       }
     }
   },

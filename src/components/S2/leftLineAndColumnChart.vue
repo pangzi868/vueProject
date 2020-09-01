@@ -410,18 +410,20 @@ export default {
               trueData.y[2].data.push(data.y[2].data[i - 1]);
             }
           }
-          this.modalData = {
-            left4OneModal: {
-              type: "type1",
-              visible: true,
-              keys: "left4OneModal",
-              zIndex: 21,
-              data: trueData,
-              chartIds: "left4Chart1",
-              tableJudge: true,
-              name: name
-            }
-          };
+          setTimeout(() => {
+            this.modalData = {
+              left4OneModal: {
+                type: "type1",
+                visible: true,
+                keys: "left4OneModal",
+                zIndex: 21,
+                data: trueData,
+                chartIds: "left4Chart1",
+                tableJudge: true,
+                name: name
+              }
+            };
+          }, 300);
         } else if (this.ids === "littleLineAndColumnChart") {
         }
       });

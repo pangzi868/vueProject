@@ -235,20 +235,21 @@ export default {
             }
           }
         });
-
-        this.modalData = {
-          left3Modal: {
-            type: "type1",
-            visible: true,
-            keys: "left3Modal",
-            zIndex: 21,
-            data: {
-              xAxis: xAxis,
-              yAxis: yAxis,
-              align: align
+        setTimeout(() => {
+          this.modalData = {
+            left3Modal: {
+              type: "type1",
+              visible: true,
+              keys: "left3Modal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                align: align
+              }
             }
-          }
-        };
+          };
+        }, 300);
       });
     }
   },

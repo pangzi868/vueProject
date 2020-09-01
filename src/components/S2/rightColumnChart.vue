@@ -251,20 +251,21 @@ export default {
         //     });
         //   }
         // });
-
-        this.modalData = {
-          right2Modal: {
-            type: "type1",
-            visible: true,
-            keys: "right2Modal",
-            zIndex: 21,
-            data: {
-              xAxis: xAxis,
-              yAxis: yAxis,
-              align: align
+        setTimeout(() => {
+          this.modalData = {
+            right2Modal: {
+              type: "type1",
+              visible: true,
+              keys: "right2Modal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                align: align
+              }
             }
-          }
-        };
+          };
+        }, 300);
       });
     }
   },

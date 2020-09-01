@@ -577,17 +577,19 @@ export default {
               trueData.y[2].data.push(data.y[2].data[i - 1]);
             }
           }
-          this.modalData = {
-            left4TwoModal: {
-              type: "type1",
-              visible: true,
-              keys: "left4TwoModal",
-              zIndex: 22,
-              data: trueData,
-              chartIds: "left4Chart2",
-              tableJudge: true
-            }
-          };
+          setTimeout(() => {
+            this.modalData = {
+              left4TwoModal: {
+                type: "type1",
+                visible: true,
+                keys: "left4TwoModal",
+                zIndex: 22,
+                data: trueData,
+                chartIds: "left4Chart2",
+                tableJudge: true
+              }
+            };
+          }, 300);
         }
       });
     }

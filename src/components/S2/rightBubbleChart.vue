@@ -189,20 +189,21 @@ export default {
         //     yAxis.push(tempY);
         //   }
         // });
-
-        this.modalData = {
-          right1Modal: {
-            type: "type1",
-            visible: true,
-            keys: "right1Modal",
-            zIndex: 21,
-            data: {
-              xAxis: xAxis,
-              yAxis: yAxis,
-              align: align
+        setTimeout(() => {
+          this.modalData = {
+            right1Modal: {
+              type: "type1",
+              visible: true,
+              keys: "right1Modal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                align: align
+              }
             }
-          }
-        };
+          };
+        }, 300);
       });
     }
   },

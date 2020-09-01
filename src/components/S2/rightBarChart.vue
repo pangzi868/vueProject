@@ -361,20 +361,21 @@ export default {
             yAxis.push(tempY);
           }
         });
-
-        this.modalData = {
-          right4Modal: {
-            type: "type1",
-            visible: true,
-            keys: "right4Modal",
-            zIndex: 21,
-            data: {
-              xAxis: xAxis,
-              yAxis: yAxis,
-              align: align
+        setTimeout(() => {
+          this.modalData = {
+            right4Modal: {
+              type: "type1",
+              visible: true,
+              keys: "right4Modal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                align: align
+              }
             }
-          }
-        };
+          };
+        }, 300);
       });
     }
   },

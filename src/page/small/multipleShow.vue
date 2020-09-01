@@ -97,7 +97,6 @@ export default {
   },
   methods: {
     mouseOverHander(e) {
-      // debugger
       let id = e.target.id;
       this.mouseOverJudge[id] = true;
     },

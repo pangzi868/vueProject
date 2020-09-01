@@ -234,7 +234,7 @@ export default {
         ]
       });
       myCharts.on("click", params => {
-        let temp = params.name
+        let temp = params.name;
         let data = this.$store.state.screenSecondData.middle4Aux;
         let align = [];
         let xAxis = data.x.map(item => {
@@ -251,20 +251,21 @@ export default {
             yAxis.push(tempY);
           }
         });
-
-        this.modalData = {
-          middle4Modal: {
-            type: "type1",
-            visible: true,
-            keys: "middle4Modal",
-            zIndex: 21,
-            data: {
-              xAxis: xAxis,
-              yAxis: yAxis,
-              align: align
+        setTimeout(() => {
+          this.modalData = {
+            middle4Modal: {
+              type: "type1",
+              visible: true,
+              keys: "middle4Modal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                align: align
+              }
             }
-          }
-        };
+          };
+        }, 300);
       });
     },
     initRightBarChart(id, data, cp) {
@@ -472,19 +473,20 @@ export default {
             yAxis.push(tempY);
           }
         });
-
-        this.modalData = {
-          middle4RightModal: {
-            type: "type1",
-            visible: true,
-            keys: "middle4RightModal",
-            zIndex: 21,
-            data: {
-              xAxis: xAxis,
-              yAxis: yAxis
+        setTimeout(() => {
+          this.modalData = {
+            middle4RightModal: {
+              type: "type1",
+              visible: true,
+              keys: "middle4RightModal",
+              zIndex: 21,
+              data: {
+                xAxis: xAxis,
+                yAxis: yAxis
+              }
             }
-          }
-        };
+          };
+        }, 300);
       });
     }
   },
