@@ -159,14 +159,14 @@ export default {
       options.yAxis[0].data = Object.keys(trueData);
       options.yAxis[1].data = Object.keys(trueData);
       options.dataZoom =
-        Object.keys(trueData).length > 8
+        Object.keys(trueData).length > 6
           ? {
               show: true,
               height: 560,
               yAxisIndex: [0],
               left: "2%",
               start: 0,
-              end: 50,
+              end: (5 / Object.keys(trueData).length) * 100,
 
               handleSize: "110%",
               handleStyle: {
@@ -177,7 +177,7 @@ export default {
               },
               borderColor: "#90979c"
             }
-          : [];
+          : { show: false };
       options.series = trueL.map((item, index) => {
         return {
           type: "bar",

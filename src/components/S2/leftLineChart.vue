@@ -5,34 +5,75 @@
 <script>
 export default {
   name: "",
-  props: ["ids", "chartData"],
+  props: ["ids", "chartData", "activeIndex"],
   mounted() {
-    this.initColumnChart(this.ids, this.chartData, this.currentPro);
+    this.initColumnChart(
+      this.ids,
+      this.chartData,
+      this.curPro,
+      this.activeIndex
+    );
   },
   data() {
     return {};
   },
   computed: {
     // 切换部门
-    currentPro: {
+    curPro: {
       get: function() {
-        return this.$store.state.currentPro;
+        return this.$store.state.curPro;
       },
       set: function(newVal) {
-        this.$store.commit("newCurrentPro", newVal);
+        this.$store.commit("newCurPro", newVal);
+      }
+    },
+    modalData: {
+      get: function() {
+        return this.$store.state.modalData;
+      },
+      set: function(newValue) {
+        this.$store.commit("newModalData", newValue);
       }
     }
   },
   methods: {
-    initColumnChart(id, data, currentPro) {
-      //   if (!data || JSON.stringify(data) == '"{}"') return;
-      data = {};
+    initColumnChart(id, data, curPro, activeIndex) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
+
+      let tempX = [],
+        tempY1 = [],
+        tempY2 = [];
+      for (let i = 0, item; (item = data.x[0].data[i++]); ) {
+        if (item === this.curPro) {
+          if (data.x[1].data[i - 1] === activeIndex) {
+            tempX.push(data.x[2].data[i - 1]);
+            tempY1.push(data.y[0].data[i - 1]);
+            tempY2.push(data.y[1].data[i - 1]);
+          }
+        }
+      }
+
+      let tempData = {
+        x: [{ name: data.x[2].name, data: tempX }],
+        y: [
+          {
+            name: data.y[0].name,
+            data: tempY1
+          },
+          {
+            name: data.y[1].name,
+            data: tempY2
+          }
+        ]
+      };
+
+      // data = {};
       let myCharts = this.$echarts.init(document.getElementById(id));
       myCharts.setOption({
         tooltip: {
           //提示框组件
           trigger: "axis",
-          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}<br />{a2}: {c2}",
+          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
           axisPointer: {
             type: "shadow",
             label: {
@@ -67,12 +108,12 @@ export default {
           itemHeight: 14,
           data: [
             {
-              name: data.y ? data.y[0].name : "预算值",
+              name: tempData.y ? tempData.y[0].name + "值" : "预算值",
               icon: "rect"
               //icon:'image://../wwwroot/js/url2.png', //路径
             },
             {
-              name: data.y ? data.y[1].name : "实际值",
+              name: tempData.y ? tempData.y[1].name + "值" : "实际值",
               icon: "rect"
             }
           ],
@@ -87,14 +128,8 @@ export default {
           {
             type: "category",
             //	boundaryGap: true,//坐标轴两边留白
-            data: data.x
-              ? data.x[0].data.map(item => {
-                  if (item === "直属单位") {
-                    return "直属";
-                  } else {
-                    return item;
-                  }
-                })
+            data: tempData.x
+              ? tempData.x[0].data
               : [
                   "22:18",
                   "22:23",
@@ -140,8 +175,8 @@ export default {
           {
             type: "value",
             name: "",
-            min: 0,
-            max: 100,
+            // min: 0,
+            // max: 100,
             axisLabel: {
               color: "#a8aab0",
               fontStyle: "normal",
@@ -169,45 +204,10 @@ export default {
         ],
         series: [
           {
-            name: data.y ? data.y[0].name : "预算值",
+            name: tempData.y ? tempData.y[0].name + "值" : "预算值",
             type: "line",
-            data: data.y
-              ? data.y[1].data.map((item, index) => {
-                  if (
-                    data.x[0].data[index] === currentPro ||
-                    (data.x[0].data[index] === "直属" &&
-                      currentPro === "直属单位")
-                  ) {
-                    return {
-                      value: item,
-                      itemStyle: {
-                        normal: {
-                          show: true,
-                          color: new this.$echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                              {
-                                offset: 0,
-                                color: "rgba(0,232,246,1)"
-                              },
-                              {
-                                offset: 1,
-                                color: "rgba(0,232,246,1)"
-                              }
-                            ]
-                          ),
-                          barBorderRadius: [30, 30, 0, 0],
-                          borderWidth: 0
-                        }
-                      }
-                    };
-                  } else {
-                    return item;
-                  }
-                })
+            data: tempData.y
+              ? tempData.y[1].data
               : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60],
             smooth: 0.5,
             symbolSize: 0,
@@ -231,45 +231,10 @@ export default {
             }
           },
           {
-            name: data.y ? data.y[1].name : "实际值",
+            name: tempData.y ? tempData.y[1].name + "值" : "实际值",
             type: "line",
-            data: data.y
-              ? data.y[1].data.map((item, index) => {
-                  if (
-                    data.x[0].data[index] === currentPro ||
-                    (data.x[0].data[index] === "直属" &&
-                      currentPro === "直属单位")
-                  ) {
-                    return {
-                      value: item,
-                      itemStyle: {
-                        normal: {
-                          show: true,
-                          color: new this.$echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                              {
-                                offset: 0,
-                                color: "rgba(255,228,181,1)"
-                              },
-                              {
-                                offset: 1,
-                                color: "rgba(255,222,173,1)"
-                              }
-                            ]
-                          ),
-                          barBorderRadius: [30, 30, 0, 0],
-                          borderWidth: 0
-                        }
-                      }
-                    };
-                  } else {
-                    return item;
-                  }
-                })
+            data: tempData.y
+              ? tempData.y[1].data
               : [2, 6, 45, 20, 15, 75, 52, 38, 25, 85, 10],
             smooth: 0.5,
             symbolSize: 0,
@@ -294,15 +259,70 @@ export default {
           }
         ]
       });
+
+      //  线图点击较为麻烦
+      myCharts.getZr().on("click", params => {
+        if (curPro === "全省" || this.activeIndex !== "总览") {
+          return;
+        }
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if (myCharts.containPixel("grid", pointInPixel)) {
+          /*此处添加具体执行代码*/
+
+          let pointInGrid = myCharts.convertFromPixel(
+            { seriesIndex: 0 },
+            pointInPixel
+          );
+          //X轴序号
+          let xIndex = pointInGrid[0];
+
+          //获取当前图表的option
+          let op = myCharts.getOption();
+
+          //获得图表中我们想要的数据
+          let year = op.xAxis[0].data[xIndex];
+          // let value = op.series[0].data[xIndex];
+          let yusuan = op.series[1].data[xIndex];
+
+          let data = this.$store.state.screenSecondData.left1Aux,
+            trueData = {
+              x: [{ name: data.x[3].name, data: [] }],
+              y: [{ name: data.y[0].name, data: [] }]
+            };
+          for (let i = 0, item; (item = data.x[0].data[i++]); ) {
+            if (item === this.curPro && data.x[2].data[i - 1] === year) {
+              trueData.x[0].data.push(data.x[3].data[i - 1]);
+              trueData.y[0].data.push(data.y[0].data[i - 1]);
+            }
+          }
+          setTimeout(() => {
+            this.modalData = {
+              left1OneChart: {
+                type: "type1",
+                visible: true,
+                keys: "left1OneChart",
+                zIndex: 21,
+                data: trueData,
+                chartIds: "left1Chart1",
+                tableJudge: true,
+                yusuan: yusuan
+              }
+            };
+          }, 300);
+        }
+      });
     }
   },
   components: {},
   watch: {
     chartData: function(newVal) {
-      this.initColumnChart(this.ids, newVal, this.currentPro);
+      this.initColumnChart(this.ids, newVal, this.curPro, this.activeIndex);
     },
-    currentPro: function(newVal) {
-      this.initColumnChart(this.ids, this.chartData, newVal);
+    curPro: function(newVal) {
+      this.initColumnChart(this.ids, this.chartData, newVal, this.activeIndex);
+    },
+    activeIndex: function(newVal) {
+      this.initColumnChart(this.ids, this.chartData, this.curPro, newVal);
     }
   }
 };

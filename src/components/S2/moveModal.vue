@@ -43,7 +43,8 @@ export default {
     chartIds: String,
     tableJudge: Boolean,
     dime: String,
-    zIndex: Number
+    zIndex: Number,
+    yusuan: [String, Number]
     // id: [String, Number]
   },
   data() {
@@ -187,7 +188,11 @@ export default {
     },
     initTable() {
       if (this.chartIds !== undefined) {
-        this.initColumnChart(this.chartIds, this.data, this.curPro);
+        if (this.chartIds === "left1Chart1") {
+          this.initFirstChart(this.chartIds, this.data, this.curPro);
+        } else {
+          this.initColumnChart(this.chartIds, this.data, this.curPro);
+        }
         return;
       }
 
@@ -198,6 +203,7 @@ export default {
         JSON.stringify(this.bottomScrollConfig)
       );
     },
+    // 左四的实例化
     initColumnChart(id, data, curPro) {
       if (!data || JSON.stringify(data) == '"{}"') return;
       // data = {};
@@ -590,6 +596,258 @@ export default {
               }
             };
           }, 300);
+        }
+      });
+    },
+    // 左一的实例化
+    initFirstChart(id, data, curPro) {
+      if (!data || JSON.stringify(data) == '"{}"') return;
+      // data = {};
+      let myCharts = this.$echarts.init(document.getElementById(id));
+      let that = this;
+      myCharts.setOption({
+        tooltip: {
+          //提示框组件
+          trigger: "axis",
+          // formatter: "{b}<br />{a0}: {c0}",
+          formatter: function(params, value) {
+            return (
+              "预算值：" +
+              ((that.yusuan / 12) * parseInt(params[0].name)).toFixed(2) +
+              "</br> 完成值： " +
+              params[0].value +
+              "</br> 完成比率： " +
+              (
+                (((that.yusuan / 12) * parseInt(params[0].name)) /
+                  params[0].value) *
+                100
+              ).toFixed(2) +
+              "%"
+            );
+          },
+          axisPointer: {
+            type: "shadow",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          },
+          backgroundColor: "rgba(70,130,180,0.8)",
+          borderColor: "rgba(47,79,79,1)",
+          borderWidth: 1,
+          padding: [12, 24],
+          textStyle: {
+            color: "rgba(255, 255, 255, 0.8)",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 52
+          }
+        },
+        grid: {
+          left: "3%",
+          right: "3%",
+          bottom: "5%",
+          top: "10%",
+          //	padding:'0 0 10 0',
+          containLabel: true
+        },
+        legend: {
+          //图例组件，颜色和名字
+          right: "3%",
+          top: "3%",
+          itemGap: 64,
+          itemWidth: 44,
+          itemHeight: 14,
+          data: [
+            {
+              name: data.y ? data.y[0].name + "值" : "预算值",
+              icon: "rect"
+              //icon:'image://../wwwroot/js/url2.png', //路径
+            }
+          ],
+          textStyle: {
+            color: "#a8aab0",
+            fontStyle: "normal",
+            fontFamily: "微软雅黑",
+            fontSize: 56
+          }
+        },
+        xAxis: [
+          {
+            type: "category",
+            //	boundaryGap: true,//坐标轴两边留白
+            data: data.x
+              ? data.x[0].data
+              : [
+                  "22:18",
+                  "22:23",
+                  "22:25",
+                  "22:28",
+                  "22:30",
+                  "22:33",
+                  "22:35",
+                  "22:40",
+                  "22:18",
+                  "22:23",
+                  "22:25"
+                ],
+            axisLabel: {
+              //坐标轴刻度标签的相关设置。
+              //		interval: 0,//设置为 1，表示『隔一个标签显示一个标签』
+              //	margin:15,
+              textStyle: {
+                color: "rgba(255,255,255,.6)",
+                fontStyle: "normal",
+                fontFamily: "微软雅黑",
+                fontSize: 52
+              }
+            },
+            axisTick: {
+              //坐标轴刻度相关设置。
+              show: false
+            },
+            axisLine: {
+              //坐标轴轴线相关设置
+              lineStyle: {
+                color: "#fff",
+                opacity: 0.2
+              }
+            },
+            splitLine: {
+              //坐标轴在 grid 区域中的分隔线。
+              show: false
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            name: "",
+            min: 0,
+            max: this.yusuan,
+            splitNumber: 4,
+            interval: this.yusuan / 4,
+            axisLabel: {
+              color: "#a8aab0",
+              fontStyle: "normal",
+              fontFamily: "微软雅黑",
+              fontSize: 52,
+              formatter: function(value) {
+                return (value / that.yusuan) * 100 + "%";
+              }
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: "#FFF"
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                type: "dashed",
+                width: 4,
+                color: "rgba(255,255,255,0.4)"
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: data.y ? data.y[0].name + "值" : "预算值",
+            type: "line",
+            data: data.y
+              ? data.y[0].data
+              : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60],
+            smooth: 0.5,
+            symbolSize: 0,
+            symbol: "circle",
+            lineStyle: {
+              normal: {
+                width: 12
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: "rgba(0,232,246,1)",
+                borderColor: "#fff",
+                borderWidth: 2
+              }
+            },
+            label: {
+              normal: {
+                show: false
+              }
+            }
+          }
+        ]
+      });
+
+      //  线图点击较为麻烦
+      myCharts.getZr().on("click", params => {
+        if (curPro === "全省") {
+          return;
+        }
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if (myCharts.containPixel("grid", pointInPixel)) {
+          /*此处添加具体执行代码*/
+
+          let pointInGrid = myCharts.convertFromPixel(
+            { seriesIndex: 0 },
+            pointInPixel
+          );
+          //X轴序号
+          let xIndex = pointInGrid[0];
+
+          //获取当前图表的option
+          let op = myCharts.getOption();
+
+          //获得图表中我们想要的数据
+          let year = op.xAxis[0].data[xIndex];
+          // let value = op.series[0].data[xIndex];
+
+          // let data = this.$store.state.screenSecondData.left1Aux,
+          //   trueData = {
+          //     x: [{ name: data.x[3].name, data: [] }],
+          //     y: [{ name: data.y[0].name, data: [] }]
+          //   };
+
+          // let align = [];
+          // let xAxis = data.x.map(item => {
+          //   align.push("center");
+          //   return item.name;
+          // });
+          // let yAxis = [];
+          // let tempData = data.x;
+          // for (let i = 0, item; (item = tempData[0].data[i++]); ) {
+          //   if (item === this.curPro) {
+          //     // for (let j = 0, items; (items = tempData[1].data[j++]); ) {
+          //     if (tempData[1].data[i - 1] === temp) {
+          //       let tempY = [];
+          //       for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
+          //         tempY.push(singleItem.data[i - 1]);
+          //       }
+          //       yAxis.push(tempY);
+          //     }
+          //   }
+          // }
+          // setTimeout(() => {
+          //   this.modalData = {
+          //     middle1Modal: {
+          //       type: "type1",
+          //       visible: true,
+          //       keys: "middle1Modal",
+          //       zIndex: 21,
+          //       data: {
+          //         xAxis: xAxis,
+          //         yAxis: yAxis,
+          //         align: align
+          //       }
+          //     }
+          //   };
+          // }, 300);
         }
       });
     }

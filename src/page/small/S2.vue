@@ -23,13 +23,14 @@
             text-color="rgba(255,255,255,0.7)"
             active-text-color="rgba(255,255,255,1)"
           >
-            <el-menu-item
-              v-for="item in left1Menu"
-              :key="item.key"
-              :index="item.index"
-            >{{item.name}}</el-menu-item>
+            <el-menu-item v-for="item in leftMenu" :key="item.key" :index="item.name">{{item.name}}</el-menu-item>
           </el-menu>
-          <left-line class="line-chart" :ids="lineIds" :chartData="lineData" />
+          <left-line
+            class="line-chart"
+            :ids="lineIds"
+            :chartData="lineData"
+            :activeIndex="activeIndex"
+          />
         </hover-box>
         <hover-box
           class="left-theme sidebar-second single-area bg-2"
@@ -254,6 +255,7 @@
       :chartIds="item.chartIds"
       :tableJudge="item.tableJudge"
       :dime="item.name"
+      :yusuan="item.yusuan"
       :zIndex="item.zIndex"
     />
     <!-- <move-modal /> -->
@@ -328,7 +330,7 @@ export default {
       },
 
       draw: false,
-      activeIndex: "1",
+      activeIndex: "",
       title: Title,
       financeTitle: FinanceTitle,
       marketingTitle: MarketingTitle,
@@ -412,6 +414,7 @@ export default {
           name: "党建工作"
         }
       ],
+      leftMenu: [],
       selectValue: "",
       lineIds: "lineChart",
       lineData: null,
@@ -510,10 +513,11 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      this.activeIndex = key;
     },
     initData() {
       this.initButton();
+      this.lineData = this.screenSecondData.left1;
       this.leftBarData = this.screenSecondData.left3;
       this.leftLineAndColumnData = this.screenSecondData.left4one;
       this.middleSandData = this.screenSecondData.middle1;
@@ -544,6 +548,16 @@ export default {
         };
       });
       this.selectValue = this.screenSecondData.left3Type.x[0].data[0];
+      this.leftMenu = this.screenSecondData.left1Option.x[0].data.map(
+        (item, index) => {
+          return {
+            index: index + 1,
+            name: item,
+            key: "menu" + (index + 1)
+          };
+        }
+      );
+      this.activeIndex = this.screenSecondData.left1Option.x[0].data[0];
     },
     clickItem(item) {
       let tempCur = this.fabItem.filter((items, index) => {
