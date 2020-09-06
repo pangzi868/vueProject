@@ -255,7 +255,7 @@
       :chartIds="item.chartIds"
       :tableJudge="item.tableJudge"
       :dime="item.name"
-      :yusuan="item.yusuan"
+      :filter="item.filter"
       :zIndex="item.zIndex"
     />
     <!-- <move-modal /> -->

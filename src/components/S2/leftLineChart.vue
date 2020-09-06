@@ -262,7 +262,7 @@ export default {
 
       //  线图点击较为麻烦
       myCharts.getZr().on("click", params => {
-        if (curPro === "全省" || this.activeIndex !== "总览") {
+        if (curPro === "全省") {
           return;
         }
         let pointInPixel = [params.offsetX, params.offsetY];
@@ -305,7 +305,10 @@ export default {
                 data: trueData,
                 chartIds: "left1Chart1",
                 tableJudge: true,
-                yusuan: yusuan
+                filter: {
+                  yusuan: yusuan,
+                  year: year
+                }
               }
             };
           }, 300);

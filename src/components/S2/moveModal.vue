@@ -44,7 +44,7 @@ export default {
     tableJudge: Boolean,
     dime: String,
     zIndex: Number,
-    yusuan: [String, Number]
+    filter: Object
     // id: [String, Number]
   },
   data() {
@@ -613,12 +613,14 @@ export default {
           formatter: function(params, value) {
             return (
               "预算值：" +
-              ((that.yusuan / 12) * parseInt(params[0].name)).toFixed(2) +
+              ((that.filter.yusuan / 12) * parseInt(params[0].name)).toFixed(
+                2
+              ) +
               "</br> 完成值： " +
               params[0].value +
               "</br> 完成比率： " +
               (
-                (((that.yusuan / 12) * parseInt(params[0].name)) /
+                (((that.filter.yusuan / 12) * parseInt(params[0].name)) /
                   params[0].value) *
                 100
               ).toFixed(2) +
@@ -723,16 +725,16 @@ export default {
             type: "value",
             name: "",
             min: 0,
-            max: this.yusuan,
+            max: this.filter.yusuan,
             splitNumber: 4,
-            interval: this.yusuan / 4,
+            interval: this.filter.yusuan / 4,
             axisLabel: {
               color: "#a8aab0",
               fontStyle: "normal",
               fontFamily: "微软雅黑",
               fontSize: 52,
               formatter: function(value) {
-                return (value / that.yusuan) * 100 + "%";
+                return (value / that.filter.yusuan) * 100 + "%";
               }
             },
             axisLine: {
@@ -787,9 +789,6 @@ export default {
 
       //  线图点击较为麻烦
       myCharts.getZr().on("click", params => {
-        if (curPro === "全省") {
-          return;
-        }
         let pointInPixel = [params.offsetX, params.offsetY];
         if (myCharts.containPixel("grid", pointInPixel)) {
           /*此处添加具体执行代码*/
@@ -805,49 +804,66 @@ export default {
           let op = myCharts.getOption();
 
           //获得图表中我们想要的数据
-          let year = op.xAxis[0].data[xIndex];
-          // let value = op.series[0].data[xIndex];
+          let month = op.xAxis[0].data[xIndex];
+          let year = that.filter.year;
 
-          // let data = this.$store.state.screenSecondData.left1Aux,
-          //   trueData = {
-          //     x: [{ name: data.x[3].name, data: [] }],
-          //     y: [{ name: data.y[0].name, data: [] }]
-          //   };
+          let data = this.$store.state.screenSecondData.left1Aux2;
 
-          // let align = [];
-          // let xAxis = data.x.map(item => {
-          //   align.push("center");
-          //   return item.name;
-          // });
-          // let yAxis = [];
-          // let tempData = data.x;
-          // for (let i = 0, item; (item = tempData[0].data[i++]); ) {
-          //   if (item === this.curPro) {
-          //     // for (let j = 0, items; (items = tempData[1].data[j++]); ) {
-          //     if (tempData[1].data[i - 1] === temp) {
-          //       let tempY = [];
-          //       for (let j = 0, singleItem; (singleItem = tempData[j++]); ) {
-          //         tempY.push(singleItem.data[i - 1]);
-          //       }
-          //       yAxis.push(tempY);
-          //     }
-          //   }
-          // }
-          // setTimeout(() => {
-          //   this.modalData = {
-          //     middle1Modal: {
-          //       type: "type1",
-          //       visible: true,
-          //       keys: "middle1Modal",
-          //       zIndex: 21,
-          //       data: {
-          //         xAxis: xAxis,
-          //         yAxis: yAxis,
-          //         align: align
-          //       }
-          //     }
-          //   };
-          // }, 300);
+          let align = [];
+          for (var i in 7) {
+            align.push("center");
+          }
+          let xAxis = [
+            "序号",
+            "费用名称",
+            "年度预算额",
+            "实际完成额",
+            "未完成值",
+            "执行进度",
+            "未完成值占可控费用"
+          ];
+          let yAxis = [];
+          let tempData = data.x;
+          let index = 1;
+          for (let i = 0, item; (item = tempData[0].data[i++]); ) {
+            if (
+              item === this.curPro &&
+              tempData[1].data[i - 1] === year &&
+              tempData[2].data[i - 1] === month
+            ) {
+              let perBedget = that.filter.yusuan,
+                finish = data.y[0].data[i - 1],
+                unfinish = perBedget - finish,
+                schedule = finish / perBedget,
+                unfinishPerc = perBedget - finish;
+              let tempY = [
+                index,
+                tempData[3].data[i - 1],
+                perBedget,
+                finish,
+                unfinish,
+                schedule,
+                unfinishPerc
+              ];
+              index++;
+              yAxis.push(tempY);
+            }
+          }
+          setTimeout(() => {
+            this.modalData = {
+              left1Modal2: {
+                type: "type1",
+                visible: true,
+                keys: "left1Modal2",
+                zIndex: 21,
+                data: {
+                  xAxis: xAxis,
+                  yAxis: yAxis,
+                  align: align
+                }
+              }
+            };
+          }, 300);
         }
       });
     }
