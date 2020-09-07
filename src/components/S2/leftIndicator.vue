@@ -35,7 +35,14 @@ export default {
   },
   methods: {
     initColumnChart(id, data) {
-      if (!data) return;
+      if (!data) {
+        let temp = [...this.indicator];
+        temp[0].value = "0";
+        temp[1].value = "0万";
+        this.indicator = [...temp];
+        return;
+      }
+      let judge = false;
       for (var index in data.x[0].data) {
         if (this.curPro === data.x[0].data[index]) {
           let temp = [...this.indicator];
@@ -43,7 +50,14 @@ export default {
           temp[1].value =
             (Number(data.y[1].data[index]) / 10000).toFixed(2) + "万";
           this.indicator = [...temp];
+          judge = true;
         }
+      }
+      if (!judge) {
+        let temp = [...this.indicator];
+        temp[0].value = "0";
+        temp[1].value = "0万";
+        this.indicator = [...temp];
       }
       // let myCharts = this.$echarts.init(document.getElementById(id));
       // myCharts.setOption({});
@@ -51,9 +65,9 @@ export default {
   },
   components: {},
   watch: {
-    // chartData: function(newVal) {
-    //   this.initColumnChart(this.ids, this.chartData);
-    // }
+    chartData: function(newVal) {
+      this.initColumnChart(this.ids, newVal, this.curPro);
+    },
     curPro: function(newVal) {
       this.initColumnChart(this.ids, this.chartData, newVal);
     }

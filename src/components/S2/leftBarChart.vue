@@ -135,7 +135,14 @@ export default {
               fontSize: 56,
               textAlign: "left",
               padding: [0, 40, 0, 0],
-              color: "rgba(255, 255, 255, 0.6)"
+              color: "rgba(255, 255, 255, 0.6)",
+              formatter: function(value) {
+                if (value.length > 8) {
+                  return value.substr(0, 7) + "...";
+                } else {
+                  return value;
+                }
+              }
             },
             axisLine: {
               show: false
@@ -161,9 +168,10 @@ export default {
       options.dataZoom =
         Object.keys(trueData).length > 6
           ? {
+              type: "slider",
               show: true,
               height: 560,
-              yAxisIndex: [0],
+              yAxisIndex: 0,
               left: "2%",
               start: 0,
               end: (5 / Object.keys(trueData).length) * 100,
@@ -175,7 +183,8 @@ export default {
               textStyle: {
                 color: "rgba(0,0,0,0)"
               },
-              borderColor: "#90979c"
+              borderColor: "#90979c",
+              orient: "vertical"
             }
           : { show: false };
       options.series = trueL.map((item, index) => {

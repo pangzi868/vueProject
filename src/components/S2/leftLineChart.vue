@@ -207,7 +207,7 @@ export default {
             name: tempData.y ? tempData.y[0].name + "值" : "预算值",
             type: "line",
             data: tempData.y
-              ? tempData.y[1].data
+              ? tempData.y[0].data
               : [8, 5, 25, 30, 35, 55, 62, 78, 65, 55, 60],
             smooth: 0.5,
             symbolSize: 0,

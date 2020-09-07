@@ -734,7 +734,7 @@ export default {
               fontFamily: "微软雅黑",
               fontSize: 52,
               formatter: function(value) {
-                return (value / that.filter.yusuan) * 100 + "%";
+                return ((value / that.filter.yusuan) * 100).toFixed(0) + "%";
               }
             },
             axisLine: {
