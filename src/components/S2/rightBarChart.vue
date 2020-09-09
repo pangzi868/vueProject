@@ -103,17 +103,11 @@ export default {
             let tempStr = params.map((item, index) => {
               return (
                 "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
-                  colorArr[index] ||
-                "rgba(21,177,255,1)" +
-                  "'></span>" +
-                  item.seriesName +
-                  "：" +
-                  (item.value
-                    ? item.seriesName.indexOf("数") !== -1 ||
-                      item.value.indexOf(".") === -1
-                      ? item.value
-                      : parseFloat(item.value).toFixed(2)
-                    : "0")
+                colorArr[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                item.data
               );
             });
             return params[0].name + tempStr.join(" ");
@@ -142,13 +136,15 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: xAxis1 || [
-              "三角函数",
-              "数列",
-              "平面向量",
-              "不等式",
-              "立体几何"
-            ],
+            data: xAxis1
+              ? xAxis1.map(item => {
+                  if (item === "直属单位") {
+                    return "直属";
+                  } else {
+                    return item;
+                  }
+                })
+              : ["三角函数", "数列", "平面向量", "不等式", "立体几何"],
             axisTick: {
               alignWithLabel: true
             },
@@ -161,6 +157,7 @@ export default {
               }
             },
             axisLabel: {
+              interval: 0,
               textStyle: {
                 color: "white",
                 fontSize: 56

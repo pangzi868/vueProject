@@ -10,8 +10,14 @@
       <img :src="item.imgUrl" alt class="img-span" />
       <div :class="'img-right ' + (item.name === topIndex && curPro !== '全省'  ? 'choosen' : '')" />
       <div class="indicator-right">
-        <span v-html="item.name" class="single-name"></span>
-        <span v-html="item.desc" class="single-desc"></span>
+        <span
+          v-html="item.name"
+          :class="'single-name ' + (item.name === topIndex && curPro !== '全省' ? 'choosen-name' : '')"
+        ></span>
+        <span
+          v-html="item.desc"
+          :class="'single-desc ' + (item.name === topIndex && curPro !== '全省' ? 'choosen-desc' : '')"
+        ></span>
       </div>
     </div>
   </div>
@@ -132,9 +138,9 @@ export default {
       border-left: 0px;
       margin-right: 32px;
     }
-    .choosen {
-      background: rgba(255, 255, 255, 0.3);
-    }
+    // .choosen {
+    //   background: rgba(255, 255, 255, 0.3);
+    // }
     .img-span {
       display: inline-block;
       height: 50%;
@@ -157,6 +163,12 @@ export default {
         line-height: 74px;
         vertical-align: top;
         color: #00ffff;
+      }
+      .choosen-name {
+        color: #00ffff;
+      }
+      .choosen-desc {
+        color: #1E90FF;
       }
     }
   }

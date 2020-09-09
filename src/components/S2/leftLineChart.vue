@@ -66,6 +66,8 @@ export default {
           }
         ]
       };
+      let colorArr = ["rgba(0,232,246,1)", "rgba(24,40,255,1)"],
+        reg = /(率|值|额|数)$/g;
 
       // data = {};
       let myCharts = this.$echarts.init(document.getElementById(id));
@@ -73,7 +75,24 @@ export default {
         tooltip: {
           //提示框组件
           trigger: "axis",
-          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
+          // formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}",
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
+                colorArr[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                (item.value
+                  ? reg.test(item.seriesName) || item.value.indexOf(".") !== -1
+                    ? parseFloat(item.value).toFixed(2)
+                    : item.value
+                  : "0")
+              );
+            });
+            return params[0].name + tempStr.join(" ");
+          },
           axisPointer: {
             type: "shadow",
             label: {
@@ -174,7 +193,13 @@ export default {
         yAxis: [
           {
             type: "value",
-            name: "",
+            name: "单位：（万元）",
+            nameTextStyle: {
+              fontSize: 40,
+              color: "rgba(255, 255, 255, 0.6)",
+              padding: [0, 0, 0, 79]
+            },
+            nameGap: 35,
             // min: 0,
             // max: 100,
             axisLabel: {
@@ -246,7 +271,7 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: "rgba(222,159,100,1)",
+                color: "rgba(24,40,255,1)",
                 borderColor: "#fff",
                 borderWidth: 2
               }

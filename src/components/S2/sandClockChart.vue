@@ -29,16 +29,16 @@ export default {
       ];
       for (var i = 0; i < temp.length; i++) {
         if ((i + 2) % 2 === 0) {
-          topVal.push(temp[i].data[0]);
+          topVal.push(parseFloat(temp[i].data[0]) / 1440);
         } else {
-          bottomVal.push(-temp[i].data[0]);
+          bottomVal.push(-parseFloat(temp[i].data[0]) / 1440);
         }
       }
       var os_agevalue = [15, 12, 3, 18, 4];
       var os_agevalue1 = [0, -2, -7, -12, -4];
       myCharts.setOption({
         grid: {
-          left: "3%",
+          left: "7%",
           top: "5%",
           bottom: "10%",
           right: "0%"
@@ -128,7 +128,7 @@ export default {
         ],
         series: [
           {
-            name: "年龄阶段",
+            name: "天数",
             type: "pictorialBar",
             barCategoryGap: "0%",
             symbol:
@@ -139,7 +139,10 @@ export default {
               distance: 15,
               color: "#2D8CF0",
               fontWeight: "bolder",
-              fontSize: 56
+              fontSize: 56,
+              formatter: function(params) {
+                return params.value.toFixed(0);
+              }
             },
             itemStyle: {
               normal: {
@@ -172,7 +175,7 @@ export default {
             z: 10
           },
           {
-            name: "年龄阶段",
+            name: "天数",
             type: "pictorialBar",
             barCategoryGap: "0%",
             symbol:
@@ -185,7 +188,7 @@ export default {
               fontWeight: "bolder",
               fontSize: 56,
               formatter: function(params) {
-                return Math.abs(params.value);
+                return Math.abs(params.value).toFixed(3);
               }
             },
             itemStyle: {

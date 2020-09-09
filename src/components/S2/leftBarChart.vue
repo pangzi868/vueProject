@@ -10,7 +10,11 @@ export default {
     this.initColumnChart(this.ids, this.chartData, this.curType);
   },
   data() {
-    return {};
+    return {
+      chartDom: null,
+      interIndex: 0,
+      animation: null
+    };
   },
   computed: {
     modalData: {
@@ -29,14 +33,14 @@ export default {
         trueData = {},
         trueL = [],
         colorArr = [
-          "50,107,255",
-          "109,168,255",
-          "255,173,86",
-          "193,147,255",
-          "0,153,235",
-          "70,180,184",
+          "65,105,225",
+          "0,128,128",
+          "255,160,122",
+          "255,165,0",
+          "222,184,135",
           "0,102,255",
-          "244,221,103"
+          "70,130,180",
+          "238,130,238"
         ];
       for (let i = 0, item; (item = tempData[0].data[i++]); ) {
         if (item === type) {
@@ -62,7 +66,12 @@ export default {
         }
       };
       if (!id) return;
+      if (this.animation !== null) {
+        clearInterval(this.animation);
+        this.animation = null;
+      }
       let chart = this.$echarts.init(document.getElementById(id));
+      this.chartDom = chart;
       let options = {
         legend: {
           textStyle: {
@@ -79,7 +88,7 @@ export default {
         grid: {
           containLabel: true,
           top: "5%",
-          left: "5%",
+          left: "2%",
           right: "18%",
           bottom: 30
         },
@@ -138,7 +147,7 @@ export default {
               color: "rgba(255, 255, 255, 0.6)",
               formatter: function(value) {
                 if (value.length > 8) {
-                  return value.substr(0, 7) + "...";
+                  return value.substr(0, 9) + "...";
                 } else {
                   return value;
                 }
@@ -163,30 +172,29 @@ export default {
         ]
       };
       options.legend.data = trueL;
-      options.yAxis[0].data = Object.keys(trueData);
-      options.yAxis[1].data = Object.keys(trueData);
-      options.dataZoom =
-        Object.keys(trueData).length > 6
-          ? {
-              type: "slider",
-              show: true,
-              height: 560,
-              yAxisIndex: 0,
-              left: "2%",
-              start: 0,
-              end: (5 / Object.keys(trueData).length) * 100,
 
-              handleSize: "110%",
-              handleStyle: {
-                color: "rgba(0,0,0,0)"
-              },
-              textStyle: {
-                color: "rgba(0,0,0,0)"
-              },
-              borderColor: "#90979c",
-              orient: "vertical"
-            }
-          : { show: false };
+      // options.dataZoom =
+      //   Object.keys(trueData).length > 6
+      //     ? {
+      //         type: "slider",
+      //         show: true,
+      //         height: 560,
+      //         yAxisIndex: 0,
+      //         left: "2%",
+      //         start: 0,
+      //         end: (5 / Object.keys(trueData).length) * 100,
+
+      //         handleSize: "110%",
+      //         handleStyle: {
+      //           color: "rgba(0,0,0,0)"
+      //         },
+      //         textStyle: {
+      //           color: "rgba(0,0,0,0)"
+      //         },
+      //         borderColor: "#90979c",
+      //         orient: "vertical"
+      //       }
+      //     : { show: false };
       options.series = trueL.map((item, index) => {
         return {
           type: "bar",
@@ -222,6 +230,31 @@ export default {
         };
       });
 
+      if (Object.keys(trueData).length > 5) {
+        // options.yAxis[0].data = Object.keys(trueData);
+        // options.yAxis[1].data = Object.keys(trueData);
+        let tempArr = [];
+        for (let i = 0; i < 5; i++) {
+          if (i < Object.keys(trueData).length) {
+            tempArr.push(Object.keys(trueData)[i]);
+          } else if (i >= Object.keys(trueData).length) {
+            tempArr.push(Object.keys(trueData)[i % 5]);
+          }
+        }
+        options.yAxis[0].data = tempArr;
+        options.yAxis[1].data = tempArr;
+        this.setInterFunc(trueData, options);
+        chart.on("mouseover", params => {
+          clearInterval(this.animation);
+        });
+        chart.on("mouseout", params => {
+          this.setInterFunc(trueData, options);
+        });
+      } else {
+        options.yAxis[0].data = Object.keys(trueData);
+        options.yAxis[1].data = Object.keys(trueData);
+      }
+
       chart.setOption(options);
       chart.on("click", params => {
         let temp = params.name;
@@ -233,11 +266,17 @@ export default {
           return item.name;
         });
         let yAxis = [];
+        let reg = /(率|值|额|数)$/g;
         data.x[0].data.forEach((item, index) => {
           if (item === temp) {
             if (data.x[1].data[index] === tempSeries) {
               let tempY = [];
               data.x.forEach(items => {
+                let tempValue = null;
+                tempValue =
+                  reg.test(items.name) || items.data[index].indexOf(".") !== -1
+                    ? parseFloat(items.data[index]).toFixed(2)
+                    : items.data[index];
                 tempY.push(items.data[index]);
               });
               yAxis.push(tempY);
@@ -260,6 +299,32 @@ export default {
           };
         }, 300);
       });
+    },
+
+    // 设置柱状图轮播
+    setInterFunc(trueData, options) {
+      // this.interIndex;
+      let that = this;
+      this.animation = setInterval(
+        (trueData, options, that) => {
+          let tempArr = [];
+          for (let i = this.interIndex; i < this.interIndex + 5; i++) {
+            if (i < Object.keys(trueData).length) {
+              tempArr.push(Object.keys(trueData)[i]);
+            } else if (i >= Object.keys(trueData).length) {
+              tempArr.push(Object.keys(trueData)[i % 5]);
+            }
+          }
+          options.yAxis[0].data = tempArr;
+          options.yAxis[1].data = tempArr;
+          that.chartDom.setOption(options);
+          this.interIndex++;
+        },
+        2000,
+        trueData,
+        options,
+        that
+      );
     }
   },
   components: {},

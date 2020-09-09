@@ -36,11 +36,34 @@ export default {
       if (!data || JSON.stringify(data) == '"{}"') return;
       // data = {};
       let myCharts = this.$echarts.init(document.getElementById(id));
+      let colorArr = [
+          "rgba(0,150,255,1)",
+          "rgba(24,40,255,1)",
+          "rgba(222,159,100,1)"
+        ],
+        reg = /(率|值|额|数)$/g;
       myCharts.setOption({
         tooltip: {
           //提示框组件
           trigger: "axis",
-          formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}<br />{a2}: {c2} %",
+          // formatter: "{b}<br />{a0}: {c0}<br />{a1}: {c1}<br />{a2}: {c2} %",
+          formatter: function(params) {
+            let tempStr = params.map((item, index) => {
+              return (
+                "</br><span style='display:inline-block;margin-right:25px;border-radius:25px;width:40px;height:40px;background-color:" +
+                colorArr[index] +
+                "'></span>" +
+                item.seriesName +
+                "：" +
+                (item.value
+                  ? reg.test(item.seriesName) || item.value.indexOf(".") !== -1
+                    ? parseFloat(item.value).toFixed(2)
+                    : item.value
+                  : "0")
+              );
+            });
+            return params[0].name + tempStr.join(" ");
+          },
           axisPointer: {
             type: "shadow",
             label: {
@@ -75,11 +98,11 @@ export default {
           itemHeight: 44,
           data: [
             {
-              name: data.y ? data.y[0].name : "计划数"
-              //icon:'image://../wwwroot/js/url2.png', //路径
+              name: data.y ? data.y[1].name : "实际数"
             },
             {
-              name: data.y ? data.y[1].name : "实际数"
+              name: data.y ? data.y[0].name : "计划数"
+              //icon:'image://../wwwroot/js/url2.png', //路径
             },
             {
               name: data.y ? data.y[2].name : "执行比例",
@@ -148,6 +171,13 @@ export default {
         ],
         yAxis: [
           {
+            name: "单位：（万元）",
+            nameTextStyle: {
+              fontSize: 40,
+              color: "rgba(255, 255, 255, 0.6)",
+              padding: [0, 0, 0, 79]
+            },
+            nameGap: 35,
             type: "value",
             splitNumber: 5,
             axisLabel: {
@@ -207,66 +237,6 @@ export default {
         ],
         series: [
           {
-            name: data.y ? data.y[0].name : "计划数",
-            type: "bar",
-            data: data.y
-              ? data.y[0].data.map((item, index) => {
-                  if (
-                    data.x[0].data[index] === curPro ||
-                    (data.x[0].data[index] === "直属" && curPro === "直属单位")
-                  ) {
-                    return {
-                      value: item,
-                      itemStyle: {
-                        normal: {
-                          show: true,
-                          color: new this.$echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                              {
-                                offset: 0,
-                                color: "rgba(255,165,0,1)"
-                              },
-                              {
-                                offset: 1,
-                                color: "rgba(255,140,0,1)"
-                              }
-                            ]
-                          ),
-                          barBorderRadius: [30, 30, 0, 0],
-                          borderWidth: 0
-                        }
-                      }
-                    };
-                  } else {
-                    return item;
-                  }
-                })
-              : [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60],
-            barWidth: 26,
-            barGap: 0, //柱间距离
-            itemStyle: {
-              normal: {
-                show: true,
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: "rgba(13,139,255,1)"
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(24,40,255,1)"
-                  }
-                ]),
-                barBorderRadius: [30, 30, 0, 0],
-                borderWidth: 0
-              }
-            }
-          },
-          {
             name: data.y ? data.y[1].name : "实际数",
             type: "bar",
             data: data.y
@@ -319,6 +289,66 @@ export default {
                   {
                     offset: 1,
                     color: "rgba(0,150,255,1)"
+                  }
+                ]),
+                barBorderRadius: [30, 30, 0, 0],
+                borderWidth: 0
+              }
+            }
+          },
+          {
+            name: data.y ? data.y[0].name : "计划数",
+            type: "bar",
+            data: data.y
+              ? data.y[0].data.map((item, index) => {
+                  if (
+                    data.x[0].data[index] === curPro ||
+                    (data.x[0].data[index] === "直属" && curPro === "直属单位")
+                  ) {
+                    return {
+                      value: item,
+                      itemStyle: {
+                        normal: {
+                          show: true,
+                          color: new this.$echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [
+                              {
+                                offset: 0,
+                                color: "rgba(255,165,0,1)"
+                              },
+                              {
+                                offset: 1,
+                                color: "rgba(255,140,0,1)"
+                              }
+                            ]
+                          ),
+                          barBorderRadius: [30, 30, 0, 0],
+                          borderWidth: 0
+                        }
+                      }
+                    };
+                  } else {
+                    return item;
+                  }
+                })
+              : [10, 15, 30, 45, 55, 60, 62, 80, 80, 62, 60],
+            barWidth: 26,
+            barGap: 0, //柱间距离
+            itemStyle: {
+              normal: {
+                show: true,
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "rgba(13,139,255,1)"
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(24,40,255,1)"
                   }
                 ]),
                 barBorderRadius: [30, 30, 0, 0],

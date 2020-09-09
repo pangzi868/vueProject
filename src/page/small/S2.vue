@@ -38,8 +38,8 @@
           theme="left"
         >
           <div class="sidebar-content-title">成本项目计划执行进度预警主题</div>
-          <second-indicator class="second-indicator" />
-          <line-and-column
+          <!-- <second-indicator class="second-indicator" /> -->
+          <kong-line-and-column
             class="little-left-line-chart"
             :ids="littleLineAndColumnIds"
             :chartData="littleLineAndColumnData"
@@ -229,6 +229,7 @@
       @touchmove.native.prevent="move($event)"
       @mouseup.native.prevent="end($event)"
       @touchend.native.prevent="end($event)"
+      ref="fab"
       id="fab"
     >
       <!-- <img
@@ -268,6 +269,7 @@ import MoveModal from "@/components/S2/moveModal.vue";
 import HoverBox from "@/components/S2/hoverBox.vue";
 import LeftLine from "@/components/S2/leftLineChart.vue";
 import LineAndColumn from "@/components/S2/leftLineAndColumnChart.vue";
+import KongLineAndColumn from "@/components/S2/kongLineAndColumnChart.vue";
 import LeftBar from "@/components/S2/leftBarChart.vue";
 import SecondIndicator from "@/components/S2/secondIndicator.vue";
 
@@ -518,6 +520,7 @@ export default {
     initData() {
       this.initButton();
       this.lineData = this.screenSecondData.left1;
+      this.littleLineAndColumnData = this.screenSecondData.left2;
       this.leftBarData = this.screenSecondData.left3;
       this.leftLineAndColumnData = this.screenSecondData.left4one;
       this.middleSandData = this.screenSecondData.middle1;
@@ -607,8 +610,9 @@ export default {
         parseInt(this.dragObj.endTime) - parseInt(this.dragObj.startTime);
       dragDis = Math.abs(this.dragObj.moveX) + Math.abs(this.dragObj.moveY);
       // 如果（拖动距离）大于5且小于200 且（拖动时长）小于200ms
-      if (dragDis > 5 && dragDis < 1000 && this.dragObj.dragTime < 200) {
+      if (dragDis < 20) {
         // this.closeDialog();
+        this.$refs.fab.$el.click()
       }
       this.dragging = false;
       this.dragObj = {
@@ -631,6 +635,7 @@ export default {
     MoveModal,
     HoverBox,
     LineAndColumn,
+    KongLineAndColumn,
     LeftLine,
     LeftBar,
     SecondIndicator,
@@ -806,9 +811,9 @@ export default {
       }
       .little-left-line-chart {
         position: absolute;
-        left: 600px;
+        left: 0px;
         top: 200px;
-        width: 1632px;
+        width: 100%;
         height: 75%;
       }
       .left-bar-chart {
