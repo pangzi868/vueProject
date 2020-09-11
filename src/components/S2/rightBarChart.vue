@@ -361,7 +361,7 @@ export default {
         setTimeout(() => {
           this.modalData = {
             right4Modal: {
-              type: "type1",
+              type: "type2",
               visible: true,
               keys: "right4Modal",
               zIndex: 21,

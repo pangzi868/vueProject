@@ -612,6 +612,7 @@ export default {
       // 如果（拖动距离）大于5且小于200 且（拖动时长）小于200ms
       if (dragDis < 20) {
         // this.closeDialog();
+          
         this.$refs.fab.$el.click()
       }
       this.dragging = false;

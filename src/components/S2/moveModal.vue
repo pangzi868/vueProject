@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container
-      :class="(visibility ? 'trans' : '')"
+      :class="((visibility ? ('trans-' + type) : ' ') + (' trans-ori-' + type))"
       v-bind:id="id"
       @mousedown.native.prevent="down($event)"
       @touchstart.native.prevent="down($event)"
@@ -383,8 +383,8 @@ export default {
           {
             type: "value",
             name: "",
-            min: 0,
-            max: 100,
+            // min: 0,
+            // max: 100,
             axisLabel: {
               show: false,
               formatter: "{value}",
@@ -1456,15 +1456,15 @@ export default {
   border-radius: 2px;
 
   opacity: 0;
-  transform: rotate(0.5turn);
-  -webkit-transition: all 0.8s ease-in-out, left 0s, top 0s;
-  -moz-transition: all 0.8s ease-in-out, left 0s, top 0s;
-  -ms-transition: all 0.8s ease-in-out, left 0s, top 0s;
-  -o-transition: all 0.8s ease-in-out, left 0s, top 0s;
-  transition: all 0.8s ease-in-out, left 0s, top 0s;
+  -webkit-transition: all 0.8s ease-in-out, left 0s, top 0s, opacity 1.5s;
+  -moz-transition: all 0.8s ease-in-out, left 0s, top 0s, opacity 1.5s;
+  -ms-transition: all 0.8s ease-in-out, left 0s, top 0s, opacity 1.5s;
+  -o-transition: all 0.8s ease-in-out, left 0s, top 0s, opacity 1.5s;
+  transition: all 0.8s ease-in-out, left 0s, top 0s, opacity 1.5s;
   border-radius: 34px;
   box-shadow: rgba(0, 0, 0, 1) 0px -30px 10px;
 }
+// 25.68.64.183
 // .singlemove {
 //   -webkit-transition: width 0.8s ease-out, height 0.8s ease-out,
 //     opacity 0.4s ease-in, visibility 0.4s ease-in;
@@ -1477,12 +1477,42 @@ export default {
 //   transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.4s ease-in,
 //     visibility 0.4s ease-in;
 // }
-.trans {
+// 定义初始的状态
+.trans-ori-type1 {
+  height: 0px;
+  width: 0px;
+  transform: rotate(0.5turn);
+}
+.trans-type1 {
   opacity: 1;
   height: 2500px;
   width: 6000px;
   transform: rotate(0);
 }
+// 定义初始的状态
+.trans-ori-type2 {
+  height: 0px;
+  width: 0px;
+  // transform: rotate(0.5turn);
+}
+.trans-type2 {
+  opacity: 1;
+  height: 2500px;
+  width: 6000px;
+  // transform: rotate(0);
+}// 定义初始的状态
+.trans-ori-type1 {
+  // transform: rotate(0.5turn);
+  height: 2500px;
+  width: 6000px;
+}
+.trans-type1 {
+  opacity: 1;
+  height: 2500px;
+  width: 6000px;
+  // transform: rotate(0);
+}
+
 .dialog-footer {
   text-align: right;
 }

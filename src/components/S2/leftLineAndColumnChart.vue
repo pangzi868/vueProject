@@ -206,8 +206,8 @@ export default {
           {
             type: "value",
             name: "",
-            min: 0,
-            max: 100,
+            // min: 0,
+            // max: 100,
             axisLabel: {
               show: false,
               formatter: "{value}",

@@ -286,7 +286,7 @@ export default {
         setTimeout(() => {
           this.modalData = {
             left3Modal: {
-              type: "type1",
+              type: "type2",
               visible: true,
               keys: "left3Modal",
               zIndex: 21,
