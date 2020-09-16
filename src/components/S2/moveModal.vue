@@ -184,7 +184,8 @@ export default {
       // this.keys;
       let temp = {};
       temp[this.keys] = Object.assign({}, this.modalData[this.keys], {
-        visible: false
+        visible: false,
+        data: null
       });
       this.modalData = temp;
     },

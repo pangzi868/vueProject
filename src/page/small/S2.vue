@@ -223,12 +223,12 @@
     <vue-fab
       mainBtnColor="rgba(150,211,255,0.58)"
       :globalOptions="globalOptions"
-      @mousedown.native.prevent="down($event)"
-      @touchstart.native.prevent="down($event)"
-      @mousemove.native.prevent="move($event)"
-      @touchmove.native.prevent="move($event)"
-      @mouseup.native.prevent="end($event)"
-      @touchend.native.prevent="end($event)"
+      @mousedown.native="down($event)"
+      @touchstart.native="down($event)"
+      @mousemove.native="move($event)"
+      @touchmove.native="move($event)"
+      @mouseup.native="end($event)"
+      @touchend.native="end($event)"
       ref="fab"
       id="fab"
     >
